@@ -97,8 +97,8 @@ jobs:
             publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B1FFA7D58B6A45F6A44D08364D7212AC }}
             package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
         
-        - name: Publish Artifacts
-          uses: action/upload-artifact@v1.0.0
-          with:
-            name: webapp
-            path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        # - name: Publish Artifacts
+          # uses: action/upload-artifact@v1.0.0
+          # with:
+            # name: webapp
+            # path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
