@@ -16,6 +16,7 @@
 
         // GET: Login/Logout
         [AllowAnonymous]
+        [Route("/")]
         [HttpGet]
         public async Task<IActionResult> SingOffd()
         {

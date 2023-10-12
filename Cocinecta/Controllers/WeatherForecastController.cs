@@ -16,6 +16,7 @@ namespace Cocinecta.Controllers
             _logger = logger;
         }
 
+        [Route("/")]
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
