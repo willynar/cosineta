@@ -79,5 +79,13 @@ jobs:
         - name: Build
           run: dotnet build --no-restore -c Release
           
-        - name: Publish
-          run: dotnet publish --no-build -c Release -o ./published
+        - name: Publish app for deploy
+          run: dotnet publish --configuration Release --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          
+        - name: Deploy to Azure Web App
+          uses: azure/webapps-deploy@v2
+          with:
+            app-name: ${{ env.AZURE_WEBAPP_NAME }}
+            slot-name: 'Production'
+            publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B1FFA7D58B6A45F6A44D08364D7212AC }}
+            package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
