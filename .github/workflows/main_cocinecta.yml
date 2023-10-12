@@ -65,7 +65,7 @@ on:
   workflow_dispatch:
 
 env:
-    AZURE_WEBAPP_NAME: cocinecta-deploy
+    AZURE_WEBAPP_NAME: cocinecta
     AZURE_WEBAPP_PACKAGE_PATH: './published'
     NETCORE_VERSION: '7.0'
 
