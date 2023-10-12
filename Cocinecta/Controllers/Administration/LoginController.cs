@@ -15,23 +15,6 @@
         }
 
         // GET: Login/Logout
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> SingOffd()
-        {
-            try
-            {
-                return Json(new { success = true, message = "Funcionando" });
-            }
-            catch (Exception exc)
-            {
-                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
-                return Json(new { success = false, message = ErrorMsg });
-            }
-        }
-
-
-        // GET: Login/Logout
         [HttpGet("Logout")]
         public async Task<IActionResult> SingOff()
         {
