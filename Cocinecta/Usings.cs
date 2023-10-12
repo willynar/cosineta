@@ -1,0 +1,10 @@
+﻿global using Cocinecta.Common;
+global using Entities;
+global using Entities.Enums;
+global using Entities.Interfaces;
+global using Entities.ViewModels;
+global using Logic.Administration;
+global using Logic.Utilities;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc;
