@@ -2,7 +2,7 @@
 
 namespace Logic.Administration
 {
-    public class LUser : ILUser
+    public class LUser : ILUserService
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Entities.Interfaces
 {
-    public interface ILUser
+    public interface ILUserService
     {
         Task<IdentityResult> ChangePassword(ApplicationUser entity, ChangePasswordViewModel model);
         Task<IdentityResult> Edit(ApplicationUser entity);

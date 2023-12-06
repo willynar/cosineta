@@ -5,13 +5,13 @@ using System.Text;
 
 namespace Logic.Administration
 {
-    public class LLogin : ILLogin
+    public class LLogin : ILLoginService
     {
         private readonly IConfiguration _configuration;
-        private readonly ILUser _lUser;
-        private readonly ILUserToken _lUserToken;
+        private readonly ILUserService _lUser;
+        private readonly ILUserTokenService _lUserToken;
 
-        public LLogin(IConfiguration configuration, ILUser lUser, ILUserToken lUserToken)
+        public LLogin(IConfiguration configuration, ILUserService lUser, ILUserTokenService lUserToken)
         {
             _configuration = configuration;
             _lUser = lUser;

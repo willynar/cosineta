@@ -14,7 +14,7 @@
         public string? Image { get; set; }
 
         [Required, StringLength(50), ForeignKey("Chef")]
-        public string? ChefId { get; set; }
+        public int? ChefId { get; set; }
 
         public decimal Price { get; set; }
 
@@ -24,7 +24,13 @@
 
         public bool Active { get; set; }
 
+        [Required, StringLength(50), ForeignKey("Category")]
+        public int? CategoryId { get; set; }
+
         [JsonIgnore]
         public Chef? Chef { get; set; }
+
+        [JsonIgnore]
+        public Category? Category { get; set; }
     }
 }

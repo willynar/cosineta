@@ -1,6 +1,6 @@
 ﻿namespace Logic.Administration
 {
-    public class LUserToken : ILUserToken
+    public class LUserToken : ILUserTokenService
     {
         private readonly ApplicationDbContext _context;
 
