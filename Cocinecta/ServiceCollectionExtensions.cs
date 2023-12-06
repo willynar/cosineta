@@ -12,9 +12,10 @@
         /// </returns>
         public static IServiceCollection AddNecessaryServices(this IServiceCollection services)
         {
-            services.AddScoped<ILLogin, LLogin>();
-            services.AddScoped<ILUserToken, LUserToken>();
-            services.AddScoped<ILUser, LUser>();
+            services.AddScoped<ILLoginService, LLogin>();
+            services.AddScoped<ILUserTokenService, LUserToken>();
+            services.AddScoped<ILUserService, LUser>();
+            services.AddScoped<IProductService, LProduct>();
 
             return services;
         }

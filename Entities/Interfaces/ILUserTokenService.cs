@@ -2,7 +2,7 @@
 
 namespace Entities.Interfaces
 {
-    public interface ILUserToken
+    public interface ILUserTokenService
     {
         Task Delete(UserToken entity);
         Task<UserToken?> GetById(string userId);

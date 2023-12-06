@@ -2,8 +2,8 @@
 {
     public class Chef
     {
-        [Key, StringLength(50)]
-        public string Id { get; set; } = string.Empty;
+        [Key]
+        public int Id { get; set; }
 
         [Required, StringLength(200)]
         public string Name { get; set; } = string.Empty;

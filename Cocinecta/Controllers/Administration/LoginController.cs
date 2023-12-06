@@ -5,10 +5,10 @@
     [Route("Login")]
     public class LoginController : Controller
     {
-        private readonly ILLogin _lLogin;
-        private readonly ILUser _lUser;
+        private readonly ILLoginService _lLogin;
+        private readonly ILUserService _lUser;
 
-        public LoginController(ILLogin lLogin, ILUser lUser)
+        public LoginController(ILLoginService lLogin, ILUserService lUser)
         {
             _lLogin = lLogin;
             _lUser = lUser;
