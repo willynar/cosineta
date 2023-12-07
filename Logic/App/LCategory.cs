@@ -24,7 +24,7 @@ namespace Logic.App
         /// <param name="CategoryId"></param>
         /// <returns></returns>
         public async Task<Category> GetCategoryById(int CategoryId) =>
-          await _context.Categories.FirstOrDefaultAsync(p => p.Id == CategoryId);
+          await _context.Categories.FirstOrDefaultAsync(p => p.CategoryId == CategoryId);
 
         /// <summary>
         /// save new Category
@@ -42,7 +42,7 @@ namespace Logic.App
         /// <param name="updatedCategory"></param>
         public async Task UpdCategoryById(Category updatedCategory)
         {
-            var Category = _context.Categories.Find(updatedCategory.Id);
+            var Category = _context.Categories.Find(updatedCategory.CategoryId);
 
             if (Category != null)
             {

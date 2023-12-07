@@ -30,7 +30,7 @@ namespace Logic.App
           await _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.Chef)
-                .FirstOrDefaultAsync(p => p.Id == productId);
+                .FirstOrDefaultAsync(p => p.ProductId == productId);
 
         /// <summary>
         /// save new product
@@ -48,7 +48,7 @@ namespace Logic.App
         /// <param name="updatedProduct"></param>
         public async Task UpdProductById(Product updatedProduct)
         {
-            var product = _context.Products.Find(updatedProduct.Id);
+            var product = _context.Products.Find(updatedProduct.ProductId);
 
             if (product != null)
             {

@@ -3,7 +3,7 @@
     public class Product
     {
         [Key]
-        public int Id { get; set; }
+        public int ProductId { get; set; }
 
         [Required, StringLength(200)]
         public string Name { get; set; } = string.Empty;
@@ -27,9 +27,11 @@
         [Required, StringLength(50), ForeignKey("Category")]
         public int? CategoryId { get; set; }
 
+        [NotMapped]
         [JsonIgnore]
         public Chef? Chef { get; set; }
 
+        [NotMapped]
         [JsonIgnore]
         public Category? Category { get; set; }
     }

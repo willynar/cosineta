@@ -24,7 +24,7 @@ namespace Logic.App
         /// <param name="ChefId"></param>
         /// <returns></returns>
         public async Task<Chef> GetChefById(int ChefId) =>
-          await _context.Chefs.FirstOrDefaultAsync(p => p.Id == ChefId);
+          await _context.Chefs.FirstOrDefaultAsync(p => p.ChefId == ChefId);
 
         /// <summary>
         /// save new Chef
@@ -42,7 +42,7 @@ namespace Logic.App
         /// <param name="updatedChef"></param>
         public async Task UpdChefById(Chef updatedChef)
         {
-            var Chef = _context.Chefs.Find(updatedChef.Id);
+            var Chef = _context.Chefs.Find(updatedChef.ChefId);
 
             if (Chef != null)
             {

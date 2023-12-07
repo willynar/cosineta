@@ -1,2 +1,2 @@
 ﻿Add-Migration mdf-table-product -Context ApplicationDbContext -OutputDir Migrations -p Entities
-update-database -Context ApplicationDbContext -p Entities -migration 20231206004556_mdf-table-product
+update-database -Context ApplicationDbContext -p Entities -migration 20231207143232_mdf-table-product
