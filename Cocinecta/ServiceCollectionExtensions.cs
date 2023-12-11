@@ -15,6 +15,8 @@
             services.AddScoped<ILLoginService, LLogin>();
             services.AddScoped<ILUserTokenService, LUserToken>();
             services.AddScoped<ILUserService, LUser>();
+            services.AddScoped<ICategoryService, LCategory>();
+            services.AddScoped<IChefService, LChefs>();
             services.AddScoped<IProductService, LProduct>();
 
             return services;
