@@ -16,6 +16,7 @@ namespace Cocinecta.Controllers.App
         }
 
         // GET: api/<CategoryController>
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
