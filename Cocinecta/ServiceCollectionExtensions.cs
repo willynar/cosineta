@@ -1,4 +1,11 @@
-﻿namespace Cocinecta
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Entities.Administration;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Cocinecta
 {
     static class ServiceCollectionExtensions
     {
@@ -12,9 +19,11 @@
         /// </returns>
         public static IServiceCollection AddNecessaryServices(this IServiceCollection services)
         {
-            services.AddScoped<ILLoginService, LLogin>();
-            services.AddScoped<ILUserTokenService, LUserToken>();
+            services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
+            services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
             services.AddScoped<ILUserService, LUser>();
+            services.AddScoped<ILUserTokenService, LUserToken>();
+            services.AddScoped<ILLoginService, LLogin>();
             services.AddScoped<ICategoryService, LCategory>();
             services.AddScoped<IChefService, LChefs>();
             services.AddScoped<IProductService, LProduct>();

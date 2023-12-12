@@ -1,8 +1,9 @@
 ﻿namespace Cocinecta.Controllers.Administration
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Route("api/[controller]")]
     [Produces("application/json")]
-    [Route("Login")]
+    [ApiController]
     public class LoginController : Controller
     {
         private readonly ILLoginService _lLogin;
@@ -31,7 +32,6 @@
         }
 
         // POST: Login
-        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginViewModel entity)
         {
@@ -67,7 +67,7 @@
             catch (Exception exc)
             {
                 var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
-                return Json(new { success = false, message = ErrorMsg });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
             }
         }
     }
