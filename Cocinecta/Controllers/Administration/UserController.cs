@@ -49,6 +49,7 @@ namespace Cocinecta.Controllers.Administration
 
         // POST: api/<UserController>
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody] ApplicationUser user)
         {
             if (!ModelState.IsValid)
@@ -78,6 +79,7 @@ namespace Cocinecta.Controllers.Administration
 
         // POST: api/<UserController>/Role
         [HttpPost("Role")]
+        [AllowAnonymous]
         public async Task<IActionResult> PostRole([FromBody] ApplicationRole role)
         {
             if (!ModelState.IsValid)
