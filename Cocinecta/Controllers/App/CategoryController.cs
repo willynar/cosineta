@@ -16,7 +16,6 @@ namespace Cocinecta.Controllers.App
         }
 
         // GET: api/<CategoryController>
-        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -33,7 +32,7 @@ namespace Cocinecta.Controllers.App
 
         // GET api/<CategoryController>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get([FromRoute] int id)
         {
             try
             {
@@ -68,7 +67,7 @@ namespace Cocinecta.Controllers.App
 
         // PUT api/<CategoryController>/5
         [HttpPut]
-        public async Task<IActionResult> Put(int id, [FromBody] Category product)
+        public async Task<IActionResult> Put([FromBody] Category product)
         {
             if (!ModelState.IsValid)
             {

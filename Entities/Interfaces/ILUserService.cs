@@ -17,5 +17,7 @@ namespace Entities.Interfaces
         Task<ApplicationUser?> GetUserByUserOrEmail(string email);
         Task<IdentityResult> Save(ApplicationUser entity);
         Task<SignInResult> ValidPassLogin(ApplicationUser entity);
+        Task<IdentityResult> SaveRole(ApplicationRole role);
+        Task AssignRoleAsync(ApplicationUser appUser, List<ApplicationRole> lstRole);
     }
 }

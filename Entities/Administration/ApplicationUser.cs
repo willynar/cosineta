@@ -13,6 +13,10 @@ namespace Entities.Administration
         public string Login { get; set; } = string.Empty;
         [NotMapped]
         public string Password { get; set; } = string.Empty;
+
+        //[NotMapped]
+        //[JsonIgnore]
+        //public object Roles { get; set; }
     }
 
     public class ApplicationRole : IdentityRole<string>

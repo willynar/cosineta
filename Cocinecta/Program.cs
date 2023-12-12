@@ -1,6 +1,7 @@
 using Cocinecta;
 using Entities.Administration;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -11,15 +12,19 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CorsPolicy", builder2 => builder2.AllowAnyOrigin()
-                                                        .AllowAnyMethod()
-                                                        .AllowAnyHeader()
-                                                        .Build());
+    options.AddPolicy("CorsPolicy", policyBuilder =>
+        policyBuilder.AllowAnyOrigin()
+                     .AllowAnyMethod()
+                     .AllowAnyHeader());
 });
 
-// Configuration
-ConfigurationManager configuration = builder.Configuration;
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("serverConnection")).EnableSensitiveDataLogging());
+// IConfiguration
+var configuration = builder.Configuration;
+
+// Add DbContext and Identity
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
+           .EnableSensitiveDataLogging());
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 {
@@ -30,13 +35,19 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.User.RequireUniqueEmail = true;
     options.User.AllowedUserNameCharacters = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYYZ0123456789-._@ +";
-}).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+})
+//.AddRoleStore<RoleStore<ApplicationRole>>()
+//.AddRoleManager<RoleManager<ApplicationRole>>()
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
 
+// Add Authentication
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
+})
+.AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
 {
     ValidateIssuer = true,
     ValidateAudience = false,
@@ -48,7 +59,10 @@ builder.Services.AddAuthentication(x =>
     ClockSkew = TimeSpan.Zero
 });
 
+// Add Authorization
 builder.Services.AddAuthorization(options => { });
+
+// Add Controllers
 builder.Services.AddControllers();
 builder.Services.AddMvc().AddNewtonsoftJson(options =>
 {
@@ -57,7 +71,7 @@ builder.Services.AddMvc().AddNewtonsoftJson(options =>
 
 builder.Services.AddNecessaryServices();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Swagger Configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
 {

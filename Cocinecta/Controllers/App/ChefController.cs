@@ -32,7 +32,7 @@ namespace Cocinecta.Controllers.App
 
         // GET api/<ChefController>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get([FromRoute] int id)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Cocinecta.Controllers.App
 
         // PUT api/<ChefController>/5
         [HttpPut]
-        public async Task<IActionResult> Put(int id, [FromBody] Chef product)
+        public async Task<IActionResult> Put([FromBody] Chef product)
         {
             if (!ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace Cocinecta.Controllers.App
 
         // DELETE api/<ChefController>/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
             try
             {
