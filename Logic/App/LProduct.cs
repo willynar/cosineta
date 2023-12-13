@@ -17,8 +17,8 @@ namespace Logic.App
         /// <returns></returns>
         public async Task<List<Product>> GetAllProducts() =>
           await _context.Products
-                .Include(p => p.Category)
-                .Include(p => p.Chef)
+                .Include(p => p.CategoryIdNavigation)
+                .Include(p => p.ChefIdNavigation)
                 .ToListAsync();
 
         /// <summary>
@@ -28,8 +28,8 @@ namespace Logic.App
         /// <returns></returns>
         public async Task<Product> GetProductById(int productId) =>
           await _context.Products
-                .Include(p => p.Category)
-                .Include(p => p.Chef)
+                .Include(p => p.CategoryIdNavigation)
+                .Include(p => p.ChefIdNavigation)
                 .FirstOrDefaultAsync(p => p.ProductId == productId);
 
         /// <summary>

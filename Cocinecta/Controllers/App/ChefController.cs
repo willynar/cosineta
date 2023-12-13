@@ -17,6 +17,7 @@ namespace Cocinecta.Controllers.App
 
         // GET: api/<ChefController>
         [HttpGet]
+        [ProducesResponseType(typeof(List<Chef>), 200)]
         public async Task<IActionResult> Get()
         {
             try

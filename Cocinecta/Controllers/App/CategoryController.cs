@@ -17,6 +17,7 @@ namespace Cocinecta.Controllers.App
 
         // GET: api/<CategoryController>
         [HttpGet]
+        [ProducesResponseType(typeof(List<Category>), 200)]
         public async Task<IActionResult> Get()
         {
             try

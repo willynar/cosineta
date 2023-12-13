@@ -1,2 +1,2 @@
-﻿Add-Migration mdf-identity -Context ApplicationDbContext -OutputDir Migrations -p Entities
-update-database -Context ApplicationDbContext -p Entities -migration 20231207143232_mdf-table-product
+﻿Add-Migration mdf-proct-rl -Context ApplicationDbContext -OutputDir Migrations -p Entities
+update-database -Context ApplicationDbContext -p Entities -migration 20231213232308_mdf-proct-rl

@@ -1,4 +1,5 @@
-﻿using Entities.App;
+﻿using Entities.Administration;
+using Entities.App;
 
 namespace Cocinecta.Controllers.App
 {
@@ -18,6 +19,7 @@ namespace Cocinecta.Controllers.App
 
         // GET: api/<ProductController>
         [HttpGet]
+        [ProducesResponseType(typeof(List<Product>), 200)]
         public async Task<IActionResult> Get()
         {
             try

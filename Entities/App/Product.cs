@@ -13,9 +13,6 @@
         [StringLength(200)]
         public string? Image { get; set; }
 
-        [Required, StringLength(50), ForeignKey("Chef")]
-        public int? ChefId { get; set; }
-
         public decimal Price { get; set; }
 
         public int Serving { get; set; }
@@ -24,15 +21,12 @@
 
         public bool Active { get; set; }
 
-        [Required, StringLength(50), ForeignKey("Category")]
+        public int? ChefId { get; set; }
+
         public int? CategoryId { get; set; }
 
-        [NotMapped]
-        [JsonIgnore]
-        public Chef? Chef { get; set; }
+        public virtual required Category CategoryIdNavigation { get; set; }
 
-        [NotMapped]
-        [JsonIgnore]
-        public Category? Category { get; set; }
+        public virtual required Chef ChefIdNavigation { get; set; }
     }
 }

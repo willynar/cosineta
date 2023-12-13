@@ -45,5 +45,7 @@
         public string? Description { get; set; }
 
         public bool Active { get; set; }
+
+        public virtual ICollection<Product> Products { get; } = new List<Product>();
     }
 }
