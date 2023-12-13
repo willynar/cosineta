@@ -15,9 +15,10 @@ namespace Cocinecta.Controllers.Administration
             _lUser = lUser ?? throw new ArgumentNullException(nameof(lUser));
         }
 
+
         // GET: api/<UserController>
         [HttpGet]
-        [AllowAnonymous]
+        [ProducesResponseType(typeof(List<ApplicationUser>), 200)]
         public async Task<IActionResult> Get()
         {
             try
@@ -33,7 +34,6 @@ namespace Cocinecta.Controllers.Administration
 
         // GET: api/<UserController>
         [HttpGet("Id/{id}")]
-        [AllowAnonymous]
         public async Task<IActionResult> GetById([FromRoute] string id)
         {
             try
@@ -49,7 +49,6 @@ namespace Cocinecta.Controllers.Administration
 
         // GET: api/<UserController>/Role
         [HttpGet("Role")]
-        [AllowAnonymous]
         public async Task<IActionResult> GetAllRole()
         {
             try
@@ -65,7 +64,6 @@ namespace Cocinecta.Controllers.Administration
 
         // POST: api/<UserController>
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody] ApplicationUser user)
         {
             if (!ModelState.IsValid)
@@ -78,6 +76,7 @@ namespace Cocinecta.Controllers.Administration
                 var result = await _lUser.Save(user);
                 if (result.Succeeded)
                 {
+                    await _lUser.AssignRoleAsync(user);
                     return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Saved) });
                 }
                 else
@@ -95,7 +94,6 @@ namespace Cocinecta.Controllers.Administration
 
         // POST: api/<UserController>/Role
         [HttpPost("Role")]
-        [AllowAnonymous]
         public async Task<IActionResult> PostRole([FromBody] ApplicationRole role)
         {
             if (!ModelState.IsValid)
@@ -134,7 +132,10 @@ namespace Cocinecta.Controllers.Administration
             try
             {
                 await _lUser.Edit(user);
+
+                await _lUser.AssignRoleAsync(user);
                 return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Updated) });
+
             }
             catch (Exception exc)
             {

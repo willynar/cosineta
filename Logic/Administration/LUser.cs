@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using System.Security;
+using System;
 using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
 
 namespace Logic.Administration
@@ -28,10 +31,36 @@ namespace Logic.Administration
             return await _userManager.FindByIdAsync(id);
         }
 
-        public async Task<List<ApplicationUser>> GetAll() =>
-            await _userManager.Users
+        public async Task<List<ApplicationUser>> GetAll()
+        {
+            var users = await _context.Users
             .Where(x => x.Active)
             .ToListAsync();
+            var result = (from USU in users
+                          select new ApplicationUser()
+                          {
+                              Id = USU.Id,
+                              UserName = USU.UserName,
+                              NormalizedUserName = USU.NormalizedUserName,
+                              Email = USU.Email,
+                              NormalizedEmail = USU.NormalizedEmail,
+                              EmailConfirmed = USU.EmailConfirmed,
+                              PasswordHash = USU.PasswordHash,
+                              SecurityStamp = USU.SecurityStamp,
+                              ConcurrencyStamp = USU.ConcurrencyStamp,
+                              PhoneNumber = USU.PhoneNumber,
+                              PhoneNumberConfirmed = USU.PhoneNumberConfirmed,
+                              TwoFactorEnabled = USU.TwoFactorEnabled,
+                              LockoutEnd = USU.LockoutEnd,
+                              LockoutEnabled = USU.LockoutEnabled,
+                              AccessFailedCount = USU.AccessFailedCount,
+                              Name = USU.Name,
+                              Active = USU.Active,
+                              //Login = USU.Login,
+                              Roles = _context.Roles.ToList().Join(_context.UserRoles, ur => ur.Id, r => r.RoleId, (ur, r) => ur).ToList()
+                          }).ToList();
+            return result;
+        }
 
         public async Task<ApplicationUser?> GetByEmail(string email) =>
             await _userManager.FindByEmailAsync(email);
@@ -54,11 +83,30 @@ namespace Logic.Administration
         public async Task<SignInResult> ValidPassLogin(ApplicationUser entity) =>
             await _signInManager.PasswordSignInAsync(entity, entity.Password, isPersistent: false, lockoutOnFailure: false);
 
-        public async Task<IdentityResult> Edit(ApplicationUser entity)
+        public async Task Edit(ApplicationUser entity)
         {
-            var result = await _userManager.UpdateAsync(entity);
-            _userManager.Dispose();
-            return result;
+            if (_context.Users.Any(x => x.Id == entity.Id))
+            {
+                var usuario = await _context.Users.FirstOrDefaultAsync(x => x.Id == entity.Id);
+                usuario.UserName = entity.UserName;
+                usuario.NormalizedUserName = entity.NormalizedUserName;
+                usuario.Email = entity.Email;
+                usuario.NormalizedEmail = entity.NormalizedEmail;
+                usuario.EmailConfirmed = entity.EmailConfirmed;
+                usuario.PasswordHash = entity.PasswordHash;
+                usuario.SecurityStamp = entity.SecurityStamp;
+                usuario.ConcurrencyStamp = entity.ConcurrencyStamp;
+                usuario.PhoneNumber = entity.PhoneNumber;
+                usuario.PhoneNumberConfirmed = entity.PhoneNumberConfirmed;
+                usuario.TwoFactorEnabled = entity.TwoFactorEnabled;
+                usuario.LockoutEnd = entity.LockoutEnd;
+                usuario.LockoutEnabled = entity.LockoutEnabled;
+                usuario.AccessFailedCount = entity.AccessFailedCount;
+                usuario.Name = entity.Name;
+                usuario.Active = entity.Active;
+                _context.Entry(usuario).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<IdentityResult> Save(ApplicationUser entity)
@@ -66,12 +114,16 @@ namespace Logic.Administration
             entity.TwoFactorEnabled = false;
             entity.LockoutEnabled = false;
             var result = await _userManager.CreateAsync(entity, entity.Password);
+
+
             _userManager.Dispose();
             return result;
         }
 
-        public async Task<IdentityResult> SaveRole(ApplicationRole role) =>
-            await _roleManager.CreateAsync(role);
+        public async Task<IdentityResult> SaveRole(ApplicationRole role)
+        {
+            return await _roleManager.CreateAsync(role);
+        }
 
         public async Task<List<ApplicationRole>> GetAllRole() =>
            await _context.Roles.ToListAsync();
@@ -80,19 +132,24 @@ namespace Logic.Administration
         {
             try
             {
-                var userRoles = await _userManager.GetRolesAsync(appUser);
-                var rolesToRemove = userRoles.Except(appUser.Roles.Select(r => r.NormalizedName)).ToList();
-                var rolesToAdd = appUser.Roles.Select(r => r.NormalizedName).Except(userRoles).ToList();
+                if (_context.Users.Any(x => x.Id == appUser.Id))
+                {
+                    // Elimina roles no deseados
+                    if (_context.UserRoles.Any(x => x.UserId == appUser.Id))
+                    {
+                        _context.UserRoles.RemoveRange(_context.UserRoles.Where(x => x.UserId == appUser.Id));
+                        await _context.SaveChangesAsync();
+                    }
 
-                // Elimina roles no deseados
-                if (rolesToRemove.Any())
-                    await _userManager.RemoveFromRolesAsync(appUser, rolesToRemove);
+                    // Agrega roles nuevos
+                    if (appUser.Roles.Any())
+                        foreach (var item in appUser.Roles)
+                        {
+                            _context.UserRoles.Add(new ApplicationUserRole() { RoleId = item.Id, UserId = appUser.Id });
+                            await _context.SaveChangesAsync();
+                        }
+                }
 
-                // Agrega roles nuevos
-                if (rolesToAdd.Any())
-                    await _userManager.AddToRolesAsync(appUser, rolesToAdd);
-
-                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {

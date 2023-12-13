@@ -15,14 +15,13 @@ namespace Entities.Administration
         public string Password { get; set; } = string.Empty;
 
         [NotMapped]
-        [JsonIgnore]
+        //[JsonIgnore]
         public List<ApplicationRole> Roles { get; set; }
     }
 
     public class ApplicationRole : IdentityRole<string>
     {
         public bool Active { get; set; }
-        public ICollection<ApplicationUser> Users { get; set; }
     }
 
     public class IdentityUserClaim : IdentityUserClaim<string> { }

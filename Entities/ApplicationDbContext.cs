@@ -29,21 +29,21 @@ namespace Entities
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ApplicationUser>(x =>
-            {
-                x.HasMany(z => z.Roles)
-                .WithOne()
-                .HasForeignKey(z => z.Id)
-                .IsRequired();
-            });
+            //modelBuilder.Entity<ApplicationUser>(x =>
+            //{
+            //    x.HasMany(z => z.Roles)
+            //    .WithOne()
+            //    .HasForeignKey(z => z.Id)
+            //    .IsRequired();
+            //});
 
-            modelBuilder.Entity<ApplicationRole>(x =>
-            {
-                x.HasMany(z => z.Users)
-                .WithOne()
-                .HasForeignKey(z=>z.Id)
-                .IsRequired();
-            });
+            //modelBuilder.Entity<ApplicationRole>(x =>
+            //{
+            //    x.HasMany(z => z.Users)
+            //    .WithOne()
+            //    .HasForeignKey(z=>z.Id)
+            //    .IsRequired();
+            //});
 
         }
     }

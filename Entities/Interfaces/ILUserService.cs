@@ -6,7 +6,7 @@ namespace Entities.Interfaces
     public interface ILUserService
     {
         Task<IdentityResult> ChangePassword(ApplicationUser entity, ChangePasswordViewModel model);
-        Task<IdentityResult> Edit(ApplicationUser entity);
+        Task Edit(ApplicationUser entity);
         Task<IdentityResult> ForceChangePassword(ApplicationUser entity, string token, string password);
         Task<string> GenerateToken(ApplicationUser entity);
         Task<List<ApplicationUser>> GetAll();
