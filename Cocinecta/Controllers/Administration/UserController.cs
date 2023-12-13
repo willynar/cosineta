@@ -47,6 +47,22 @@ namespace Cocinecta.Controllers.Administration
             }
         }
 
+        // GET: api/<UserController>/Role
+        [HttpGet("Role")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAllRole()
+        {
+            try
+            {
+                return Ok(await _lUser.GetAllRole());
+            }
+            catch (Exception exc)
+            {
+                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
+            }
+        }
+
         // POST: api/<UserController>
         [HttpPost]
         [AllowAnonymous]
@@ -107,7 +123,6 @@ namespace Cocinecta.Controllers.Administration
             }
         }
 
-
         // PUT api/<UserController>/5
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] ApplicationUser user)
@@ -127,6 +142,7 @@ namespace Cocinecta.Controllers.Administration
                 return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
             }
         }
+
 
         //// DELETE api/<UserController>/5
         //[HttpDelete("{id}")]

@@ -1,5 +1,4 @@
-﻿using Entities.Administration;
-using Entities.ViewModels;
+﻿using Entities.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace Entities.Interfaces
@@ -18,6 +17,7 @@ namespace Entities.Interfaces
         Task<IdentityResult> Save(ApplicationUser entity);
         Task<SignInResult> ValidPassLogin(ApplicationUser entity);
         Task<IdentityResult> SaveRole(ApplicationRole role);
-        Task AssignRoleAsync(ApplicationUser appUser, List<ApplicationRole> lstRole);
+        Task<List<ApplicationRole>> GetAllRole();
+        Task AssignRoleAsync(ApplicationUser appUser);
     }
 }

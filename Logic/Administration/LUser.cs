@@ -29,7 +29,9 @@ namespace Logic.Administration
         }
 
         public async Task<List<ApplicationUser>> GetAll() =>
-            await _userManager.Users.Where(x => x.Active).ToListAsync();
+            await _userManager.Users
+            .Where(x => x.Active)
+            .ToListAsync();
 
         public async Task<ApplicationUser?> GetByEmail(string email) =>
             await _userManager.FindByEmailAsync(email);
@@ -61,6 +63,8 @@ namespace Logic.Administration
 
         public async Task<IdentityResult> Save(ApplicationUser entity)
         {
+            entity.TwoFactorEnabled = false;
+            entity.LockoutEnabled = false;
             var result = await _userManager.CreateAsync(entity, entity.Password);
             _userManager.Dispose();
             return result;
@@ -69,13 +73,16 @@ namespace Logic.Administration
         public async Task<IdentityResult> SaveRole(ApplicationRole role) =>
             await _roleManager.CreateAsync(role);
 
-        public async Task AssignRoleAsync(ApplicationUser appUser, List<ApplicationRole> lstRole)
+        public async Task<List<ApplicationRole>> GetAllRole() =>
+           await _context.Roles.ToListAsync();
+
+        public async Task AssignRoleAsync(ApplicationUser appUser)
         {
             try
             {
                 var userRoles = await _userManager.GetRolesAsync(appUser);
-                var rolesToRemove = userRoles.Except(lstRole.Select(r => r.NormalizedName)).ToList();
-                var rolesToAdd = lstRole.Select(r => r.NormalizedName).Except(userRoles).ToList();
+                var rolesToRemove = userRoles.Except(appUser.Roles.Select(r => r.NormalizedName)).ToList();
+                var rolesToAdd = appUser.Roles.Select(r => r.NormalizedName).Except(userRoles).ToList();
 
                 // Elimina roles no deseados
                 if (rolesToRemove.Any())

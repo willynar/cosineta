@@ -33,6 +33,7 @@
 
         // POST: Login
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginViewModel entity)
         {
             if (!ModelState.IsValid)
