@@ -18,6 +18,6 @@ namespace Entities.Interfaces
         Task<SignInResult> ValidPassLogin(ApplicationUser entity);
         Task<IdentityResult> SaveRole(ApplicationRole role);
         Task<List<ApplicationRole>> GetAllRole();
-        Task AssignRoleAsync(ApplicationUser appUser);
+        Task AssignRoleAsync(string idUser, List<UserRole> ListaRoles);
     }
 }

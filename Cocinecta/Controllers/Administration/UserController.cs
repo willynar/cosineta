@@ -18,7 +18,6 @@ namespace Cocinecta.Controllers.Administration
 
         // GET: api/<UserController>
         [HttpGet]
-        [AllowAnonymous]
         [ProducesResponseType(typeof(List<ApplicationUser>), 200)]
         public async Task<IActionResult> Get()
         {
@@ -77,7 +76,7 @@ namespace Cocinecta.Controllers.Administration
                 var result = await _lUser.Save(user);
                 if (result.Succeeded)
                 {
-                    await _lUser.AssignRoleAsync(user);
+                    await _lUser.AssignRoleAsync(user.Id, user.UsersRoles.ToList());
                     return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Saved) });
                 }
                 else
@@ -134,7 +133,7 @@ namespace Cocinecta.Controllers.Administration
             {
                 await _lUser.Edit(user);
 
-                await _lUser.AssignRoleAsync(user);
+                await _lUser.AssignRoleAsync(user.Id, user.UsersRoles.ToList());
                 return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Updated) });
 
             }

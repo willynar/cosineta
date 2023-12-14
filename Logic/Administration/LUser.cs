@@ -118,22 +118,22 @@ namespace Logic.Administration
         public async Task<List<ApplicationRole>> GetAllRole() =>
            await _context.Roles.ToListAsync();
 
-        public async Task AssignRoleAsync(ApplicationUser appUser)
+        public async Task AssignRoleAsync(string idUser,List<UserRole> ListaRoles)
         {
             try
             {
-                if (_context.Users.Any(x => x.Id == appUser.Id))
+                if (_context.Users.Any(x => x.Id == idUser))
                 {
                     // Elimina roles no deseados
-                    if (_context.UsersRoles.Any(x => x.ApplicationUserId == appUser.Id))
+                    if (_context.UsersRoles.Any(x => x.ApplicationUserId == idUser))
                     {
-                        _context.UsersRoles.RemoveRange(_context.UsersRoles.Where(x => x.ApplicationUserId == appUser.Id));
+                        _context.UsersRoles.RemoveRange(_context.UsersRoles.Where(x => x.ApplicationUserId == idUser));
                         await _context.SaveChangesAsync();
                     }
 
                     // Agrega roles nuevos
-                    if (appUser.UsersRoles.Any())
-                        foreach (var item in appUser.UsersRoles)
+                    if (ListaRoles.Any())
+                        foreach (var item in ListaRoles)
                         {
                             _context.UsersRoles.Add(item);
                             await _context.SaveChangesAsync();
