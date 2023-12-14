@@ -1,5 +1,6 @@
 ﻿using Entities.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Entities.Interfaces
 {
@@ -19,5 +20,12 @@ namespace Entities.Interfaces
         Task<IdentityResult> SaveRole(ApplicationRole role);
         Task<List<ApplicationRole>> GetAllRole();
         Task AssignRoleAsync(string idUser, List<UserRole> ListaRoles);
+        Task<List<RolLink>> GetModulesByUserId(string userId);
+        Task<List<ApplicationRole>> GetRolsByUserId(string userId);
+        Task SaveModule(Module module);
+        Task SaveUserRole(UserRole userRole);
+        Task SaveRolLink(RolLink rolLink);
+        Task SaveLink(Link link);
+        Task SaveApplicationRole(ApplicationRole role);
     }
 }

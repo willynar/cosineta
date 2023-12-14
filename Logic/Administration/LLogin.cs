@@ -7,20 +7,20 @@ namespace Logic.Administration
 {
     public class LLogin : ILLoginService
     {
-        private readonly IConfiguration _configuration;
-        private readonly ILUserService _lUser;
-        private readonly ILUserTokenService _lUserToken;
+        private readonly IConfiguration IConfiguration;
+        private readonly ILUserService ILUserService;
+        private readonly ILUserTokenService ILUserTokenService;
 
         public LLogin(IConfiguration configuration, ILUserService lUser, ILUserTokenService lUserToken)
         {
-            _configuration = configuration;
-            _lUser = lUser;
-            _lUserToken = lUserToken;
+            IConfiguration = configuration;
+            ILUserService = lUser;
+            ILUserTokenService = lUserToken;
         }
 
         public async Task<TokenViewModel> BuildToken(ApplicationUser entity)
         {
-            var user = await _lUser.GetUserByUserOrEmail(entity.Login);
+            var user = await ILUserService.GetUserByUserOrEmail(entity.Login);
             if (user != null)
             {
                 var claims = new[]
@@ -31,20 +31,20 @@ namespace Logic.Administration
                 };
                 ClaimsIdentity claimsIdentity = new(claims, "Token");
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetConnectionString("Secret_key")?.ToString() ?? string.Empty));
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(IConfiguration.GetConnectionString("Secret_key")?.ToString() ?? string.Empty));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                JwtSecurityToken token = new(issuer: _configuration.GetConnectionString("serverDomain"), audience: _configuration.GetConnectionString("serverDomain"),
+                JwtSecurityToken token = new(issuer: IConfiguration.GetConnectionString("serverDomain"), audience: IConfiguration.GetConnectionString("serverDomain"),
                    claims: claimsIdentity.Claims, signingCredentials: creds);
 
-                var resultUserToken = await _lUserToken.GetById(user.Id);
+                var resultUserToken = await ILUserTokenService.GetById(user.Id);
                 if (resultUserToken != null)
                 {
-                    await _lUserToken.Delete(resultUserToken);
+                    await ILUserTokenService.Delete(resultUserToken);
                 }
 
                 var userToken = new UserToken { UserId = user.Id, Token = new JwtSecurityTokenHandler().WriteToken(token) };
-                await _lUserToken.Save(userToken);
+                await ILUserTokenService.Save(userToken);
 
                 var userViewModel = new UserViewModel
                 {
@@ -52,7 +52,8 @@ namespace Logic.Administration
                     UserName = user?.UserName ?? string.Empty,
                     Name = user?.Name ?? string.Empty,
                     Email = user?.Email ?? string.Empty,
-                    //Rol = user?.Rol ?? string.Empty
+                    Rols = string.IsNullOrEmpty(user.Id) ? new() : await ILUserService.GetRolsByUserId(user.Id),
+                    Modules = string.IsNullOrEmpty(user.Id) ? new() : await ILUserService.GetModulesByUserId(user.Id)
                 };
 
                 return new TokenViewModel
@@ -70,10 +71,10 @@ namespace Logic.Administration
 
         public async Task CloseSesion(string userId)
         {
-            var res = await _lUserToken.GetById(userId);
+            var res = await ILUserTokenService.GetById(userId);
             if (res != null)
             {
-                await _lUserToken.Delete(res);
+                await ILUserTokenService.Delete(res);
             }
         }
     }

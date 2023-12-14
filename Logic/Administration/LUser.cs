@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security;
 using System;
 using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
+using Entities.Administration;
+using System.Data;
 
 namespace Logic.Administration
 {
@@ -118,7 +120,7 @@ namespace Logic.Administration
         public async Task<List<ApplicationRole>> GetAllRole() =>
            await _context.Roles.ToListAsync();
 
-        public async Task AssignRoleAsync(string idUser,List<UserRole> ListaRoles)
+        public async Task AssignRoleAsync(string idUser, List<UserRole> ListaRoles)
         {
             try
             {
@@ -145,6 +147,106 @@ namespace Logic.Administration
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        public async Task<List<RolLink>> GetModulesByUserId(string userId) =>
+            _context.Users
+                .Where(user => user.Id == userId)
+                .SelectMany(user => user.UsersRoles
+                    .SelectMany(userRole => userRole.ApplicationRoleIdNavigation.RolLinks))
+                .Include(rolLink => rolLink.LinkIdNavigation)
+                .ToList();
+
+        public async Task<List<ApplicationRole>> GetRolsByUserId(string userId) =>
+           await _context.Users
+        .Where(user => user.Id == userId)
+        .SelectMany(user => user.UsersRoles
+            .Select(userRole => userRole.ApplicationRoleIdNavigation))
+        .ToListAsync();
+
+        public async Task SaveModule(Module module)
+        {
+            // Lógica para guardar o actualizar un módulo
+            if (module.ModuleId == 0)
+            {
+                // Agregar nuevo módulo
+                _context.Modules.Add(module);
+            }
+            else
+            {
+                // Actualizar módulo existente
+                _context.Entry(module).State = EntityState.Modified;
+            }
+
+            await  _context.SaveChangesAsync();
+        }
+
+        public async Task SaveUserRole(UserRole userRole)
+        {
+            // Lógica para guardar o actualizar un UserRole
+            if (userRole.UserRoleId == 0)
+            {
+                // Agregar nuevo UserRole
+                _context.UsersRoles.Add(userRole);
+            }
+            else
+            {
+                // Actualizar UserRole existente
+                _context.Entry(userRole).State = EntityState.Modified;
+            }
+
+            await  _context.SaveChangesAsync();
+        }
+
+        public async Task SaveRolLink(RolLink rolLink)
+        {
+            // Lógica para guardar o actualizar un RolLink
+            if (rolLink.RolLinkId == 0)
+            {
+                // Agregar nuevo RolLink
+                _context.RolLinks.Add(rolLink);
+            }
+            else
+            {
+                // Actualizar RolLink existente
+                _context.Entry(rolLink).State = EntityState.Modified;
+            }
+
+            await  _context.SaveChangesAsync();
+        }
+
+        public async Task SaveLink(Link link)
+        {
+            // Lógica para guardar o actualizar un Link
+            if (link.LinkId == 0)
+            {
+                // Agregar nuevo Link
+                _context.Links.Add(link);
+            }
+            else
+            {
+                // Actualizar Link existente
+                _context.Entry(link).State = EntityState.Modified;
+            }
+
+            await  _context.SaveChangesAsync();
+        }
+
+        public async Task SaveApplicationRole(ApplicationRole role)
+        {
+            // Lógica para guardar o actualizar un ApplicationRole
+            if (role.Id == null)
+            {
+                // Agregar nuevo ApplicationRole
+                _context.Roles.Add(role);
+            }
+            else
+            {
+                // Actualizar ApplicationRole existente
+                _context.Entry(role).State = EntityState.Modified;
+            }
+
+          await  _context.SaveChangesAsync();
         }
     }
 }
