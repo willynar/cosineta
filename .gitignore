@@ -259,3 +259,4 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/Entities/Migrations/20231214140400_add-table-RolLinks-modules.cs
