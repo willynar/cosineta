@@ -33,33 +33,46 @@ namespace Logic.Administration
 
         public async Task<List<ApplicationUser>> GetAll()
         {
-            var users = await _context.Users
-            .Where(x => x.Active)
-            .ToListAsync();
-            var result = (from USU in users
-                          select new ApplicationUser()
-                          {
-                              Id = USU.Id,
-                              UserName = USU.UserName,
-                              NormalizedUserName = USU.NormalizedUserName,
-                              Email = USU.Email,
-                              NormalizedEmail = USU.NormalizedEmail,
-                              EmailConfirmed = USU.EmailConfirmed,
-                              PasswordHash = USU.PasswordHash,
-                              SecurityStamp = USU.SecurityStamp,
-                              ConcurrencyStamp = USU.ConcurrencyStamp,
-                              PhoneNumber = USU.PhoneNumber,
-                              PhoneNumberConfirmed = USU.PhoneNumberConfirmed,
-                              TwoFactorEnabled = USU.TwoFactorEnabled,
-                              LockoutEnd = USU.LockoutEnd,
-                              LockoutEnabled = USU.LockoutEnabled,
-                              AccessFailedCount = USU.AccessFailedCount,
-                              Name = USU.Name,
-                              Active = USU.Active,
-                              //Login = USU.Login,
-                              Roles = _context.Roles.ToList().Join(_context.UserRoles, ur => ur.Id, r => r.RoleId, (ur, r) => ur).ToList()
-                          }).ToList();
-            return result;
+            //var users = await _context.Users
+            //.Where(x => x.Active)
+            //.ToListAsync();
+            //var result = (from USU in users
+            //              select new ApplicationUser()
+            //              {
+            //                  Id = USU.Id,
+            //                  UserName = USU.UserName,
+            //                  NormalizedUserName = USU.NormalizedUserName,
+            //                  Email = USU.Email,
+            //                  NormalizedEmail = USU.NormalizedEmail,
+            //                  EmailConfirmed = USU.EmailConfirmed,
+            //                  PasswordHash = USU.PasswordHash,
+            //                  SecurityStamp = USU.SecurityStamp,
+            //                  ConcurrencyStamp = USU.ConcurrencyStamp,
+            //                  PhoneNumber = USU.PhoneNumber,
+            //                  PhoneNumberConfirmed = USU.PhoneNumberConfirmed,
+            //                  TwoFactorEnabled = USU.TwoFactorEnabled,
+            //                  LockoutEnd = USU.LockoutEnd,
+            //                  LockoutEnabled = USU.LockoutEnabled,
+            //                  AccessFailedCount = USU.AccessFailedCount,
+            //                  Name = USU.Name,
+            //                  Active = USU.Active,
+            //                  //Login = USU.Login,
+            //                  Roles = _context.Roles.Include(x=>x.RolLinks).ToList()
+            //                            .Join(_context.UserRoles, ar => ar.Id, aur => aur.RoleId, (ur, r) => ur).ToList()
+            //              }).ToList();
+            var userWithRelatedEntities = _context.Users
+           .Include(user => user.Rols)
+            .ThenInclude(userRole => userRole.RoleId)
+                .ThenInclude(role => role.rol)
+                    .ThenInclude(rolLink => rolLink.ApplicationRoleIdNavigation)
+            .ThenInclude(userRole => userRole.Role)
+                .ThenInclude(role => role.RolLinks)
+                    .ThenInclude(rolLink => rolLink.LinkIdNavigation)
+                        .ThenInclude(link => link.ModuleIdNavigation) // Include para Module en Link
+                                                                      // Agrega Include para otras propiedades de navegación según sea necesario
+        .ToList();
+
+            return userWithRelatedEntities;
         }
 
         public async Task<ApplicationUser?> GetByEmail(string email) =>
@@ -122,6 +135,7 @@ namespace Logic.Administration
 
         public async Task<IdentityResult> SaveRole(ApplicationRole role)
         {
+            role.Id = Guid.NewGuid().ToString();
             return await _roleManager.CreateAsync(role);
         }
 

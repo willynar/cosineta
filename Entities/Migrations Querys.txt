@@ -1,2 +1,16 @@
-﻿Add-Migration mdf-proct-rl -Context ApplicationDbContext -OutputDir Migrations -p Entities
-update-database -Context ApplicationDbContext -p Entities -migration 20231213232308_mdf-proct-rl
+﻿Add-Migration add-table-RolLinks-modules -Context ApplicationDbContext -OutputDir Migrations -p Entities
+update-database -Context ApplicationDbContext -p Entities -migration 20231214141200_add-table-RolLinks-modules
+
+
+
+
+       migrationBuilder.AddForeignKey(
+              name: "FK_Links_AspNetRoles_AspNetRolesId",
+              table: "Links",
+              column: "ApplicationRoleId",
+              principalTable: "AspNetRoles",
+              principalColumn: "Id");
+
+            migrationBuilder.DropForeignKey(
+                  name: "FK_Links_ApplicationRole_ApplicationRoleId",
+                  table: "Links");

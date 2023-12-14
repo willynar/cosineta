@@ -18,6 +18,7 @@ namespace Cocinecta.Controllers.Administration
 
         // GET: api/<UserController>
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(List<ApplicationUser>), 200)]
         public async Task<IActionResult> Get()
         {
