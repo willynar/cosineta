@@ -27,6 +27,7 @@ namespace Entities
         public DbSet<Link> Links { get; set; }
         public DbSet<RolLink> RolLinks { get; set; }
         public DbSet<Module> Modules { get; set; }
+        public DbSet<UserRole> UsersRoles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,5 +1,5 @@
-﻿Add-Migration add-table-RolLinks-modules -Context ApplicationDbContext -OutputDir Migrations -p Entities
-update-database -Context ApplicationDbContext -p Entities -migration 20231214141200_add-table-RolLinks-modules
+﻿Add-Migration mdf-table-Role -Context ApplicationDbContext -OutputDir Migrations -p Entities
+update-database -Context ApplicationDbContext -p Entities -migration 20231214193300_mdf-table-Role
 
 
 

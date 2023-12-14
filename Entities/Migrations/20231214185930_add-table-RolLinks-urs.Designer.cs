@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231214185930_add-table-RolLinks-urs")]
+    partial class addtableRolLinksurs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,7 +136,12 @@ namespace Entities.Migrations
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("ApplicationUserIdNavigationId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("ApplicationUserIdNavigationId");
 
                     b.HasIndex("RoleId");
 
@@ -196,6 +204,7 @@ namespace Entities.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RolLinkId"));
 
                     b.Property<string>("ApplicationRoleIdNavigationId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Consult")
@@ -211,7 +220,7 @@ namespace Entities.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("LinkIdNavigationLinkId")
+                    b.Property<int>("LinkIdNavigationLinkId")
                         .HasColumnType("int");
 
                     b.Property<string>("RoleId")
@@ -231,34 +240,6 @@ namespace Entities.Migrations
                     b.HasIndex("LinkIdNavigationLinkId");
 
                     b.ToTable("RolLinks");
-                });
-
-            modelBuilder.Entity("Entities.Administration.UserRole", b =>
-                {
-                    b.Property<int>("UserRoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserRoleId"));
-
-                    b.Property<string>("ApplicationRoleIdNavigationId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserRoleId");
-
-                    b.HasIndex("ApplicationRoleIdNavigationId");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("UsersRoles");
                 });
 
             modelBuilder.Entity("Entities.Administration.UserToken", b =>
@@ -521,6 +502,10 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Administration.ApplicationUserRole", b =>
                 {
+                    b.HasOne("Entities.Administration.ApplicationUser", "ApplicationUserIdNavigation")
+                        .WithMany("Rols")
+                        .HasForeignKey("ApplicationUserIdNavigationId");
+
                     b.HasOne("Entities.Administration.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
@@ -532,6 +517,8 @@ namespace Entities.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ApplicationUserIdNavigation");
                 });
 
             modelBuilder.Entity("Entities.Administration.Link", b =>
@@ -549,32 +536,19 @@ namespace Entities.Migrations
                 {
                     b.HasOne("Entities.Administration.ApplicationRole", "ApplicationRoleIdNavigation")
                         .WithMany("RolLinks")
-                        .HasForeignKey("ApplicationRoleIdNavigationId");
+                        .HasForeignKey("ApplicationRoleIdNavigationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Entities.Administration.Link", "LinkIdNavigation")
                         .WithMany("RolLinks")
-                        .HasForeignKey("LinkIdNavigationLinkId");
-
-                    b.Navigation("ApplicationRoleIdNavigation");
-
-                    b.Navigation("LinkIdNavigation");
-                });
-
-            modelBuilder.Entity("Entities.Administration.UserRole", b =>
-                {
-                    b.HasOne("Entities.Administration.ApplicationRole", "ApplicationRoleIdNavigation")
-                        .WithMany("UsersRoles")
-                        .HasForeignKey("ApplicationRoleIdNavigationId");
-
-                    b.HasOne("Entities.Administration.ApplicationUser", "ApplicationUserIdNavigation")
-                        .WithMany("UsersRoles")
-                        .HasForeignKey("ApplicationUserId")
+                        .HasForeignKey("LinkIdNavigationLinkId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ApplicationRoleIdNavigation");
 
-                    b.Navigation("ApplicationUserIdNavigation");
+                    b.Navigation("LinkIdNavigation");
                 });
 
             modelBuilder.Entity("Entities.Administration.UserToken", b =>
@@ -642,13 +616,11 @@ namespace Entities.Migrations
             modelBuilder.Entity("Entities.Administration.ApplicationRole", b =>
                 {
                     b.Navigation("RolLinks");
-
-                    b.Navigation("UsersRoles");
                 });
 
             modelBuilder.Entity("Entities.Administration.ApplicationUser", b =>
                 {
-                    b.Navigation("UsersRoles");
+                    b.Navigation("Rols");
                 });
 
             modelBuilder.Entity("Entities.Administration.Link", b =>

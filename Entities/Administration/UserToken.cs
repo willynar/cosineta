@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace Entities.Administration
+﻿namespace Entities.Administration
 {
     public class UserToken
     {
@@ -14,6 +12,6 @@ namespace Entities.Administration
         public string Token { get; set; } = string.Empty;
 
         [JsonIgnore]
-        public ApplicationUser? User { get; set; }
+        public virtual ApplicationUser? User { get; set; }
     }
 }

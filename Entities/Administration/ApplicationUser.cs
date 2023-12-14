@@ -14,7 +14,7 @@ namespace Entities.Administration
         [NotMapped]
         public string Password { get; set; } = string.Empty;
 
-        public virtual ICollection<ApplicationUserRole> Rols { get; } = new List<ApplicationUserRole>();
+        public virtual ICollection<UserRole> UsersRoles { get; } = new List<UserRole>();
     }
 
     public class ApplicationRole : IdentityRole<string>
@@ -22,6 +22,7 @@ namespace Entities.Administration
         public bool Active { get; set; }
 
         public virtual ICollection<RolLink> RolLinks { get; } = new List<RolLink>();
+        public virtual ICollection<UserRole> UsersRoles { get; } = new List<UserRole>();
 
     }
 
@@ -29,8 +30,5 @@ namespace Entities.Administration
 
     public class IdentityUserLogin : IdentityUserLogin<string> { }
 
-    public class ApplicationUserRole : IdentityUserRole<string> {
-        public virtual required ApplicationUser ApplicationUserIdNavigation { get; set; }
-        public virtual required ApplicationRole ApplicationRoleIdNavigation { get; set; }
-    }
+    public class ApplicationUserRole : IdentityUserRole<string> { }
 }
