@@ -99,6 +99,91 @@ namespace Cocinecta.Controllers.Administration
             }
         }
 
+        // GET: api/<UserController>/Roles
+        [HttpGet("Roles")]
+        public async Task<IActionResult> GetAllRoles()
+        {
+            try
+            {
+                return Ok(await _lUser.GetAllRoles());
+            }
+            catch (Exception exc)
+            {
+                var errorMsg = exc.GetBaseException().InnerException != null
+                    ? exc.GetBaseException().InnerException?.Message
+                    : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = errorMsg });
+            }
+        }
+
+        // GET: api/<UserController>/Links
+        [HttpGet("Links")]
+        public async Task<IActionResult> GetAllLinks()
+        {
+            try
+            {
+                return Ok(await _lUser.GetAllLinks());
+            }
+            catch (Exception exc)
+            {
+                var errorMsg = exc.GetBaseException().InnerException != null
+                    ? exc.GetBaseException().InnerException?.Message
+                    : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = errorMsg });
+            }
+        }
+
+        // GET: api/<UserController>/RolLinks
+        [HttpGet("RolLinks")]
+        public async Task<IActionResult> GetAllRolLinks()
+        {
+            try
+            {
+                return Ok(await _lUser.GetAllRolLinks());
+            }
+            catch (Exception exc)
+            {
+                var errorMsg = exc.GetBaseException().InnerException != null
+                    ? exc.GetBaseException().InnerException?.Message
+                    : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = errorMsg });
+            }
+        }
+
+        // GET: api/<UserController>/Modules
+        [HttpGet("Modules")]
+        public async Task<IActionResult> GetAllModules()
+        {
+            try
+            {
+                return Ok(await _lUser.GetAllModules());
+            }
+            catch (Exception exc)
+            {
+                var errorMsg = exc.GetBaseException().InnerException != null
+                    ? exc.GetBaseException().InnerException?.Message
+                    : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = errorMsg });
+            }
+        }
+
+        // GET: api/<UserController>/UsersRoles
+        [HttpGet("UsersRoles")]
+        public async Task<IActionResult> GetAllUsersRoles()
+        {
+            try
+            {
+                return Ok(await _lUser.GetAllUsersRoles());
+            }
+            catch (Exception exc)
+            {
+                var errorMsg = exc.GetBaseException().InnerException != null
+                    ? exc.GetBaseException().InnerException?.Message
+                    : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = errorMsg });
+            }
+        }
+
         // POST: api/<UserController>
         [HttpPost]
         [AllowAnonymous]

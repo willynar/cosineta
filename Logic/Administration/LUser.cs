@@ -178,7 +178,7 @@ namespace Logic.Administration
                 _context.Entry(module).State = EntityState.Modified;
             }
 
-            await  _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task SaveUserRole(UserRole userRole)
@@ -195,7 +195,7 @@ namespace Logic.Administration
                 _context.Entry(userRole).State = EntityState.Modified;
             }
 
-            await  _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task SaveRolLink(RolLink rolLink)
@@ -212,7 +212,7 @@ namespace Logic.Administration
                 _context.Entry(rolLink).State = EntityState.Modified;
             }
 
-            await  _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task SaveLink(Link link)
@@ -229,7 +229,7 @@ namespace Logic.Administration
                 _context.Entry(link).State = EntityState.Modified;
             }
 
-            await  _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task SaveApplicationRole(ApplicationRole role)
@@ -246,7 +246,57 @@ namespace Logic.Administration
                 _context.Entry(role).State = EntityState.Modified;
             }
 
-          await  _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
+
+        public async Task<List<ApplicationRole>> GetAllRoles()
+        {
+            return await _context.Roles
+                .Include(role => role.RolLinks)
+                    .ThenInclude(rolLink => rolLink.LinkIdNavigation)
+                        .ThenInclude(link => link.ModuleIdNavigation)
+                .Include(role => role.UsersRoles)
+                    .ThenInclude(userRole => userRole.ApplicationUserIdNavigation)
+                        .ThenInclude(user => user.UsersRoles)
+                .ToListAsync();
+        }
+        public async Task<List<Link>> GetAllLinks()
+        {
+            return await _context.Links
+                .Include(link => link.ModuleIdNavigation)
+                .Include(link => link.RolLinks)
+                    .ThenInclude(rolLink => rolLink.ApplicationRoleIdNavigation)
+                    .ThenInclude(role => role.UsersRoles)
+                .ToListAsync();
+        }
+        public async Task<List<RolLink>> GetAllRolLinks()
+        {
+            return await _context.RolLinks
+                .Include(rolLink => rolLink.ApplicationRoleIdNavigation)
+                    .ThenInclude(role => role.UsersRoles)
+                .Include(rolLink => rolLink.LinkIdNavigation)
+                    .ThenInclude(link => link.ModuleIdNavigation)
+                .ToListAsync();
+        }
+        public async Task<List<Module>> GetAllModules()
+        {
+            return await _context.Modules
+                .Include(module => module.Links)
+                    .ThenInclude(link => link.RolLinks)
+                        .ThenInclude(rolLink => rolLink.ApplicationRoleIdNavigation)
+                        .ThenInclude(role => role.UsersRoles)
+                .ToListAsync();
+        }
+        public async Task<List<UserRole>> GetAllUsersRoles()
+        {
+            return await _context.UsersRoles
+                .Include(userRole => userRole.ApplicationRoleIdNavigation)
+                    .ThenInclude(role => role.RolLinks)
+                        .ThenInclude(rolLink => rolLink.LinkIdNavigation)
+                            .ThenInclude(link => link.ModuleIdNavigation)
+                .Include(userRole => userRole.ApplicationUserIdNavigation)
+                .ToListAsync();
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Entities.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
 
 namespace Entities.Interfaces
 {
@@ -27,5 +28,11 @@ namespace Entities.Interfaces
         Task SaveRolLink(RolLink rolLink);
         Task SaveLink(Link link);
         Task SaveApplicationRole(ApplicationRole role);
+
+        Task<List<ApplicationRole>> GetAllRoles();
+        Task<List<Link>> GetAllLinks();
+        Task<List<RolLink>> GetAllRolLinks();
+        Task<List<Module>> GetAllModules();
+        Task<List<UserRole>> GetAllUsersRoles();
     }
 }
