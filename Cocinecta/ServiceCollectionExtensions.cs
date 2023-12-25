@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Entities.Administration;
+using Logic.Dao;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Entities.Administration;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Cocinecta
 {
@@ -27,6 +24,9 @@ namespace Cocinecta
             services.AddScoped<ICategoryService, LCategory>();
             services.AddScoped<IChefService, LChefs>();
             services.AddScoped<IProductService, LProduct>();
+            services.AddScoped<IDaoService, LDao>();
+            services.AddScoped<IExecuteProceduresService, LExecuteProcedures>();
+            services.AddScoped<IStoredProceduresService, LStoreProcedures>();
 
             return services;
         }

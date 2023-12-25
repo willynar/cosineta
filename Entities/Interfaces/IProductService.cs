@@ -1,4 +1,6 @@
-﻿namespace Entities.Interfaces
+﻿using System.Data;
+
+namespace Entities.Interfaces
 {
     public interface IProductService
     {
@@ -32,5 +34,25 @@
         /// </summary>
         /// <param name="productId"></param>
         Task DeleteProductById(int productId);
+
+        /// <summary>
+        /// get all products paginated by store procedure
+        /// </summary>
+        /// <param name="Pagina"></param>
+        /// <param name="Registros"></param>
+        /// <param name="Filtrado"></param>
+        /// <param name="Orden"></param>
+        /// <param name="Ordenar"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        Task<List<ProductStoreProcedure>> GetAllProductsFromPaginated(int Pagina, int Registros, string? Filtrado, string? Orden, bool Ordenar);
+
+        /// <summary>
+        /// list  datatable  to list<T>
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        List<ProductStoreProcedure> ListProductsFronStoreProcedure(DataTable data);
     }
 }

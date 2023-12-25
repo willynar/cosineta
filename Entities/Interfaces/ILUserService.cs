@@ -28,7 +28,6 @@ namespace Entities.Interfaces
         Task SaveRolLink(RolLink rolLink);
         Task SaveLink(Link link);
         Task SaveApplicationRole(ApplicationRole role);
-
         Task<List<ApplicationRole>> GetAllRoles();
         Task<List<Link>> GetAllLinks();
         Task<List<RolLink>> GetAllRolLinks();

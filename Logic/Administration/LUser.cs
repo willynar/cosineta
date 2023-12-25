@@ -260,6 +260,7 @@ namespace Logic.Administration
                         .ThenInclude(user => user.UsersRoles)
                 .ToListAsync();
         }
+
         public async Task<List<Link>> GetAllLinks()
         {
             return await _context.Links
@@ -269,6 +270,7 @@ namespace Logic.Administration
                     .ThenInclude(role => role.UsersRoles)
                 .ToListAsync();
         }
+
         public async Task<List<RolLink>> GetAllRolLinks()
         {
             return await _context.RolLinks
@@ -278,6 +280,7 @@ namespace Logic.Administration
                     .ThenInclude(link => link.ModuleIdNavigation)
                 .ToListAsync();
         }
+
         public async Task<List<Module>> GetAllModules()
         {
             return await _context.Modules
@@ -287,6 +290,7 @@ namespace Logic.Administration
                         .ThenInclude(role => role.UsersRoles)
                 .ToListAsync();
         }
+
         public async Task<List<UserRole>> GetAllUsersRoles()
         {
             return await _context.UsersRoles
