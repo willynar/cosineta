@@ -25,6 +25,8 @@
 
         public int? CategoryId { get; set; }
 
+        public decimal? Review { get; set; }
+
         public virtual  Category? CategoryIdNavigation { get; set; }
 
         public virtual  Chef? ChefIdNavigation { get; set; }

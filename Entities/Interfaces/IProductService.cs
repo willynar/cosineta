@@ -38,14 +38,10 @@ namespace Entities.Interfaces
         /// <summary>
         /// get all products paginated by store procedure
         /// </summary>
-        /// <param name="Pagina"></param>
-        /// <param name="Registros"></param>
-        /// <param name="Filtrado"></param>
-        /// <param name="Orden"></param>
-        /// <param name="Ordenar"></param>
+        /// <param name="objectParams"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        Task<List<ProductStoreProcedure>> GetAllProductsFromPaginated(int Pagina, int Registros, string? Filtrado, string? Orden, bool Ordenar);
+        Task<List<ProductStoreProcedure>> GetAllProductsFromPaginated(ProductPaginatedParams objectParams);
 
         /// <summary>
         /// list  datatable  to list<T>

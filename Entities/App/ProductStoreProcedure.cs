@@ -6,12 +6,13 @@
         public string? ProductName { get; set; }
         public string? ProductDescription { get; set; }
         public string? ProductImage { get; set; }
-        public string? ChefId { get; set; }
+        public int? ChefId { get; set; }
         public decimal Price { get; set; }
         public int Serving { get; set; }
         public string? Ingredients { get; set; }
         public bool ProductActive { get; set; }
         public int? CategoryId { get; set; }
+        public decimal? Review { get; set; }
         public string? CategoryName { get; set; }
         public string? CategoryImage { get; set; }
         public bool CategoryActive { get; set; }

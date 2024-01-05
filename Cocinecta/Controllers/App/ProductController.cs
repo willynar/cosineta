@@ -51,23 +51,20 @@ namespace Cocinecta.Controllers.App
         }
 
 
-        // GET api/<ProductController>/Paginated/ProductId/1/ProductId/0
+        // Post api/<ProductController>/Paginated/ProductId/1/ProductId/0
         /// <summary>
         /// get paginated products eye the filter and order are the properties in PascalCase
         /// </summary>
-        /// <param name="Reg"></param>
-        /// <param name="Filter"></param>
-        /// <param name="Pagina"></param>
-        /// <param name="Sort"></param>
-        /// <param name="Sorter"></param>
+        /// <param name="objectParams"></param>
         /// <returns></returns>
-        [HttpGet("Paginated/{Reg}/{Filter}/{Page}/{Sort}/{Sorter}")]
+        [HttpPost("Paginated")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(List<ProductStoreProcedure>), 200)]
-        public async Task<IActionResult> GetFiltradoAsync([FromRoute] int Reg, [FromRoute] string Filter, [FromRoute] int Page, [FromRoute] string Sort, [FromRoute] bool Sorter)
+        public async Task<IActionResult> GetFiltradoAsync([FromBody] ProductPaginatedParams objectParams)
         {
             try
             {
-                return Ok(await IProductService.GetAllProductsFromPaginated(Page, Reg, Filter, Sort, Sorter));
+                return Ok(await IProductService.GetAllProductsFromPaginated(objectParams));
 
             }
             catch (Exception exc)

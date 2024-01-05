@@ -92,27 +92,72 @@ namespace Logic.App
         /// <summary>
         /// get all products paginated by store procedure
         /// </summary>
-        /// <param name="Page"></param>
-        /// <param name="Reg"></param>
-        /// <param name="Filter"></param>
-        /// <param name="Sort"></param>
-        /// <param name="Sorter"></param>
+        /// <param name="objectParams"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<List<ProductStoreProcedure>> GetAllProductsFromPaginated(int Page, int Reg, string? Filter, string? Sort, bool Sorter)
+        public async Task<List<ProductStoreProcedure>> GetAllProductsFromPaginated(ProductPaginatedParams objectParams)
         {
             try
             {
-                //Se crea array con los parametros
-                SqlParameter[] parameters = {
-                        new SqlParameter("@Page",Page),
-                        new SqlParameter("@Reg",Reg),
-                        new SqlParameter("@Filter",Filter ?? ""),
-                        new SqlParameter("@Sort",Sort ?? ""),
-                        new SqlParameter("@Sorter",Sorter ? 1 : 0)
+                string? Filter = objectParams switch
+                {
+                    var op when op.PriceMin != null && op.PriceMax != null && op.Review != null && op.CategoryValue != null && op.SorterValue != null && op.FilterValue != null => "All",
+
+                    var op when op.PriceMin != null && op.PriceMax != null && op.Review == null && op.CategoryValue == null && op.FilterValue == null => "PriceRange",
+
+                    var op when op.PriceMin == null && op.PriceMax == null && op.Review == null && op.CategoryValue == null && op.FilterValue != null => "FilterValue",
+
+                    var op when op.PriceMin == null && op.PriceMax == null && op.Review == null && op.CategoryValue != null && op.FilterValue == null => "Category",
+
+                    var op when op.PriceMin == null && op.PriceMax == null && op.Review != null && op.CategoryValue == null && op.FilterValue == null => "Review",
+
+                    var op when op.PriceMin != null && op.PriceMax != null && op.Review == null && op.CategoryValue != null && op.FilterValue == null => "PriceRange,Category",
+
+                    var op when op.PriceMin == null && op.PriceMax == null && op.Review != null && op.CategoryValue != null && op.FilterValue == null => "Review,Category",
+
+                    var op when op.PriceMin != null && op.PriceMax != null && op.Review != null && op.CategoryValue == null && op.FilterValue == null => "PriceRange,Review",
+
+                    var op when op.PriceMin != null && op.PriceMax != null && op.Review == null && op.CategoryValue == null && op.FilterValue == null => "PriceRange,FilterValue",
+
+                    var op when op.PriceMin == null && op.PriceMax == null && op.Review != null && op.CategoryValue != null && op.FilterValue == null => "Category,FilterValue",
+
+                    var op when op.PriceMin == null && op.PriceMax == null && op.Review != null && op.CategoryValue == null && op.FilterValue != null => "Review,FilterValue",
+
+                    var op when op.PriceMin != null && op.PriceMax != null && op.Review != null && op.CategoryValue != null && op.FilterValue == null => "PriceRange,Category,Review",
+
+                    var op when op.PriceMin != null && op.PriceMax != null && op.Review == null && op.CategoryValue != null && op.FilterValue != null => "PriceRange,Category,FilterValue",
+
+                    var op when op.PriceMin != null && op.PriceMax != null && op.Review != null && op.CategoryValue == null && op.FilterValue != null => "PriceRange,Review,FilterValue",
+
+                    var op when op.PriceMin == null && op.PriceMax == null && op.Review != null && op.CategoryValue != null && op.FilterValue != null => "Category,Review,FilterValue",
+
+                    _ => null,
                 };
+                SqlParameter[] parameters =
+                {
+                      new SqlParameter("@Page", objectParams.Page),
+                      new SqlParameter("@Reg", objectParams.Reg),
+                      new SqlParameter("@Filter", Filter),
+                      new SqlParameter("@FilterValue", objectParams.FilterValue),
+                      new SqlParameter("@PriceMin", objectParams.PriceMin),
+                      new SqlParameter("@PriceMax", objectParams.PriceMax),
+                      new SqlParameter("@Review", objectParams.Review),
+                      new SqlParameter("@CategoryValue", objectParams.CategoryValue != null?string.Join(",", objectParams.CategoryValue):null),
+                      new SqlParameter("@SorterValue", objectParams.SorterValue),
+                      new SqlParameter("@Sort", objectParams.Sort ? 1 : 0)
+                };
+
+                //Se crea array con los parametros
+
                 var Data = await IExecuteProceduresService.GetPaginatedProducts(parameters);
-                return ListProductsFronStoreProcedure(Data);
+                if (!Data.Columns.Contains("error"))
+                {
+                    return ListProductsFronStoreProcedure(Data);
+                }
+                else
+                {
+                    throw new Exception($"{Data.Rows[0][0]}");
+                }
 
             }
             catch (Exception ex)
@@ -140,12 +185,13 @@ namespace Logic.App
                         ProductName = data.Rows[i]["ProductName"] != DBNull.Value ? data.Rows[i]["ProductName"].ToString() : null,
                         ProductDescription = data.Rows[i]["ProductDescription"] != DBNull.Value ? data.Rows[i]["ProductDescription"].ToString() : null,
                         ProductImage = data.Rows[i]["ProductImage"] != DBNull.Value ? data.Rows[i]["ProductImage"].ToString() : null,
-                        ChefId = data.Rows[i]["ChefId"] != DBNull.Value ? data.Rows[i]["ChefId"].ToString() : null,
-                        Price = data.Rows[i]["Price"] != DBNull.Value ? (int)data.Rows[i]["Price"] : 0,
+                        ChefId = data.Rows[i]["ChefId"] != DBNull.Value ? (int)data.Rows[i]["ChefId"] : null,
+                        Price = data.Rows[i]["Price"] != DBNull.Value ? (decimal)data.Rows[i]["Price"] : 0,
                         Serving = data.Rows[i]["Serving"] != DBNull.Value ? (int)data.Rows[i]["Serving"] : 0,
                         Ingredients = data.Rows[i]["Ingredients"] != DBNull.Value ? data.Rows[i]["Ingredients"].ToString() : null,
                         ProductActive = data.Rows[i]["ProductActive"] != DBNull.Value ? (bool)data.Rows[i]["ProductActive"] : false,
                         CategoryId = data.Rows[i]["CategoryId"] != DBNull.Value ? (int)data.Rows[i]["CategoryId"] : 0,
+                        Review = data.Rows[i]["Review"] != DBNull.Value ? (decimal)data.Rows[i]["Review"] : null,
                         CategoryName = data.Rows[i]["CategoryName"] != DBNull.Value ? data.Rows[i]["CategoryName"].ToString() : null,
                         ChefName = data.Rows[i]["ChefName"] != DBNull.Value ? data.Rows[i]["ChefName"].ToString() : null,
                         ChefPhone = data.Rows[i]["ChefPhone"] != DBNull.Value ? data.Rows[i]["ChefPhone"].ToString() : null,
