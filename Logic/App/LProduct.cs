@@ -220,5 +220,133 @@ namespace Logic.App
                 throw new Exception(ex.Message);
             }
         }
+
+        #region Reviews
+
+        /// <summary>
+        /// call actions necesary to save new review product
+        /// </summary>
+        /// <param name="productReview"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task ActionsAddProductReview(ProductReview productReview)
+        {
+            try
+            {
+                await AddProductReview(productReview);
+                List<int> productReviews = await ListReviewStarsProductId(productReview);
+                int average = (int)Math.Round(productReviews.Average());
+                await UpdStarsProduct(productReview.ProductId, average);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// call actions necesary to update review product
+        /// </summary>
+        /// <param name="productReview"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task ActionsUpdProductReview(ProductReview productReview)
+        {
+            try
+            {
+                await UpdProductReviewById(productReview);
+                List<int> productReviews = await ListReviewStarsProductId(productReview);
+                int average = (int)Math.Round(productReviews.Average());
+                await UpdStarsProduct(productReview.ProductId, average);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// list revies stars
+        /// </summary>
+        /// <param name="productReview"></param>
+        /// <returns></returns>
+        public async Task<List<int>> ListReviewStarsProductId(ProductReview productReview) => 
+            await _context.ProductsReviews.Where(x => x.ProductId == productReview.ProductId).Select(x => x.Stars).ToListAsync();
+
+        /// <summary>
+        /// update stars averrange fro product
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="averageStars"></param>
+        /// <returns></returns>
+        public async Task UpdStarsProduct(int? productId, int averageStars)
+        {
+            var ProductReview = _context.Products.Find(productId);
+
+            if (ProductReview != null)
+            {
+                ProductReview.Review = averageStars;
+
+                _context.Entry(ProductReview).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<List<ProductReview>> GetAllProductReviews() =>
+         await _context.ProductsReviews.ToListAsync();
+
+        /// <summary>
+        /// get ProductReview by id ProductReview
+        /// </summary>
+        /// <param name="ProductReviewId"></param>
+        /// <returns></returns>
+        public async Task<ProductReview> GetProductReviewByProductId(int productId) =>
+          await _context.ProductsReviews.FirstOrDefaultAsync(p => p.ProductId == productId);
+
+        /// <summary>
+        /// save new ProductReview
+        /// </summary>
+        /// <param name="productReview"></param>
+        public async Task AddProductReview(ProductReview productReview)
+        {
+            _context.ProductsReviews.Add(productReview);
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// update ProductReview by id
+        /// </summary>
+        /// <param name="updatedProductReview"></param>
+        public async Task UpdProductReviewById(ProductReview updatedProductReview)
+        {
+            var ProductReview = _context.ProductsReviews.Find(updatedProductReview.IdProductReview);
+
+            if (ProductReview != null)
+            {
+                ProductReview.Title = updatedProductReview.Title;
+                ProductReview.Description = updatedProductReview.Description;
+                ProductReview.Author = updatedProductReview.Author;
+                ProductReview.ProductId = updatedProductReview.ProductId;
+
+                _context.Entry(ProductReview).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        /// <summary>
+        /// delete ProductReview by id ProductReview
+        /// </summary>
+        /// <param name="productReviewId"></param>
+        public async Task DeleteProductReviewById(int productReviewId)
+        {
+            var ProductReview = _context.ProductsReviews.Find(productReviewId);
+
+            if (ProductReview != null)
+            {
+                _context.ProductsReviews.Remove(ProductReview);
+                await _context.SaveChangesAsync();
+            }
+        }
+        #endregion
     }
 }
