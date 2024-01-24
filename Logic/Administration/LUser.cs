@@ -6,6 +6,7 @@ using System;
 using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
 using Entities.Administration;
 using System.Data;
+using Entities.App;
 
 namespace Logic.Administration
 {
@@ -36,7 +37,8 @@ namespace Logic.Administration
                        .ThenInclude(userRole => userRole.ApplicationRoleIdNavigation)
                            .ThenInclude(role => role.RolLinks)
                                .ThenInclude(rolLink => rolLink.LinkIdNavigation)
-                                   .ThenInclude(link => link.ModuleIdNavigation) // Include para Module en Link
+                                   .ThenInclude(link => link.ModuleIdNavigation) 
+                    .Include(deliveryMan=> deliveryMan.DeliveryMans)
                                                                                  // Agrega Include para otras propiedades de navegación según sea necesario
                    .FirstOrDefaultAsync();
         }
@@ -47,8 +49,9 @@ namespace Logic.Administration
                      .Include(user => user.UsersRoles)
                          .ThenInclude(userRole => userRole.ApplicationRoleIdNavigation)
                              .ThenInclude(role => role.RolLinks)
-                         .ThenInclude(rolLink => rolLink.LinkIdNavigation)
-                             .ThenInclude(link => link.ModuleIdNavigation)
+                                 .ThenInclude(rolLink => rolLink.LinkIdNavigation)
+                                     .ThenInclude(link => link.ModuleIdNavigation)
+                     .Include(deliveryMan => deliveryMan.DeliveryMans)
                      .ToListAsync();
             return result;
         }

@@ -11,10 +11,23 @@ namespace Entities.Administration
 
         [NotMapped]
         public string Login { get; set; } = string.Empty;
+
         [NotMapped]
         public string Password { get; set; } = string.Empty;
 
+        [NotMapped]
+        public string TokenFacebook { get; set; } = string.Empty;
+
+        [NotMapped]
+        public string TokenGoogle { get; set; } = string.Empty;
+
+        [NotMapped]
+        public string TokenOutlook { get; set; } = string.Empty;
+
         public virtual ICollection<UserRole> UsersRoles { get; } = new List<UserRole>();
+
+        public virtual ICollection<DeliveryMan> DeliveryMans { get; } = new List<DeliveryMan>();
+        //public virtual ICollection<Chef> UsersRoles { get; } = new List<Chef>();
     }
 
     public class ApplicationRole : IdentityRole<string>

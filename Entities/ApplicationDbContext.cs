@@ -29,6 +29,10 @@ namespace Entities
         public DbSet<Module> Modules { get; set; }
         public DbSet<UserRole> UsersRoles { get; set; }
         public DbSet<ProductReview> ProductsReviews { get; set; }
+        public DbSet<ChefReview> ChefReviews { get; set; }
+        public DbSet<DeliveryMan> DeliveryMans { get; set; }
+        public DbSet<DeliveryManReview> DeliveryManReviews { get; set; }
+        public DbSet<DeliveryManSchedule> DeliveryManSchedules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

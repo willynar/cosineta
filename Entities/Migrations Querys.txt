@@ -1,5 +1,5 @@
-﻿Add-Migration add-table-productsrevies -Context ApplicationDbContext -OutputDir Migrations -p Entities
-update-database -Context ApplicationDbContext -p Entities -migration 20240105143843_add-table-productsrevies
+﻿Add-Migration add-tables-reviews-schedule -Context ApplicationDbContext -OutputDir Migrations -p Entities
+update-database -Context ApplicationDbContext -p Entities -migration 20240124022110_add-tables-reviews-schedule
 
 
 

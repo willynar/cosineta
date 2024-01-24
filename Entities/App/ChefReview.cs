@@ -1,9 +1,9 @@
 ﻿namespace Entities.App
 {
-    public class ProductReview
+    public class ChefReview
     {
         [Key]
-        public int IdProductReview { get; set; }
+        public int IdChefReview { get; set; }
 
         public string? Title { get; set; }
 
@@ -13,8 +13,8 @@
 
         public int Stars { get; set; }
 
-        public int? ProductId { get; set; }
+        public int? ChefId { get; set; }
 
-        public virtual Product? ProductIdNavigation { get; set; }
+        public virtual Chef? ChefIdNavigation { get; set; }
     }
 }
