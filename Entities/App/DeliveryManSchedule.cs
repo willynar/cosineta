@@ -9,9 +9,9 @@
 
         public int EndTime { get; set; }
 
-        [Required, ForeignKey("ApplicationUser")]
-        public required string ApplicationUserId { get; set; }
+        [Required, ForeignKey("DeliveryMan")]
+        public required string DeliveryManId { get; set; }
 
-        public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
+        public virtual DeliveryMan? DeliveryManIdNavigation { get; set; }
     }
 }

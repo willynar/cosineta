@@ -1,5 +1,5 @@
-﻿Add-Migration add-tables-reviews-schedule -Context ApplicationDbContext -OutputDir Migrations -p Entities
-update-database -Context ApplicationDbContext -p Entities -migration 20240124022110_add-tables-reviews-schedule
+﻿Add-Migration mdf-pk-delivery -Context ApplicationDbContext -OutputDir Migrations -p Entities
+update-database -Context ApplicationDbContext -p Entities -migration 20240124022741_mdf-pk-delivery
 
 
 
