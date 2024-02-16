@@ -22,7 +22,6 @@ namespace Cocinecta
             services.AddScoped<ILUserTokenService, LUserToken>();
             services.AddScoped<ILLoginService, LLogin>();
             services.AddScoped<ICategoryService, LCategory>();
-            services.AddScoped<IChefService, LChefs>();
             services.AddScoped<IProductService, LProduct>();
             services.AddScoped<IDaoService, LDao>();
             services.AddScoped<IExecuteProceduresService, LExecuteProcedures>();

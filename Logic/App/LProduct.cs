@@ -24,8 +24,6 @@ namespace Logic.App
         /// <returns></returns>
         public async Task<List<Product>> GetAllProducts() =>
           await _context.Products
-                .Include(p => p.CategoryIdNavigation)
-                .Include(p => p.ChefIdNavigation)
                 .ToListAsync();
 
         /// <summary>
@@ -35,8 +33,6 @@ namespace Logic.App
         /// <returns></returns>
         public async Task<Product> GetProductById(int productId) =>
           await _context.Products
-                .Include(p => p.CategoryIdNavigation)
-                .Include(p => p.ChefIdNavigation)
                 .FirstOrDefaultAsync(p => p.ProductId == productId);
 
         /// <summary>
@@ -63,11 +59,8 @@ namespace Logic.App
                 product.Price = updatedProduct.Price;
                 product.Description = updatedProduct.Description;
                 product.Image = updatedProduct.Image;
-                product.ChefId = updatedProduct.ChefId;
-                product.Serving = updatedProduct.Serving;
                 product.Ingredients = updatedProduct.Ingredients;
                 product.Active = updatedProduct.Active;
-                product.CategoryId = updatedProduct.CategoryId;
 
                 _context.Entry(product).State = EntityState.Modified;
                 await _context.SaveChangesAsync();

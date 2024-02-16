@@ -1,5 +1,5 @@
-﻿Add-Migration mdf-pk-delivery -Context ApplicationDbContext -OutputDir Migrations -p Entities
-update-database -Context ApplicationDbContext -p Entities -migration 20240124022741_mdf-pk-delivery
+﻿Add-Migration add-new-tables-CRUP -Context ApplicationDbContext -OutputDir Migrations -p Entities
+update-database -Context ApplicationDbContext -p Entities -migration 20240216175455_add-new-tables-CRUP
 
 
 

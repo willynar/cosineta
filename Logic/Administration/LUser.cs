@@ -38,7 +38,6 @@ namespace Logic.Administration
                            .ThenInclude(role => role.RolLinks)
                                .ThenInclude(rolLink => rolLink.LinkIdNavigation)
                                    .ThenInclude(link => link.ModuleIdNavigation) 
-                    .Include(deliveryMan=> deliveryMan.DeliveryMans)
                                                                                  // Agrega Include para otras propiedades de navegación según sea necesario
                    .FirstOrDefaultAsync();
         }
@@ -51,7 +50,6 @@ namespace Logic.Administration
                              .ThenInclude(role => role.RolLinks)
                                  .ThenInclude(rolLink => rolLink.LinkIdNavigation)
                                      .ThenInclude(link => link.ModuleIdNavigation)
-                     .Include(deliveryMan => deliveryMan.DeliveryMans)
                      .ToListAsync();
             return result;
         }

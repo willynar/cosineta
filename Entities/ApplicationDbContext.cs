@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Type = Entities.Administration.Type;
 
 namespace Entities
 {
@@ -21,7 +22,6 @@ namespace Entities
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<UserToken> UserToken { get; set; }
-        public DbSet<Chef> Chefs { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Link> Links { get; set; }
@@ -29,10 +29,10 @@ namespace Entities
         public DbSet<Module> Modules { get; set; }
         public DbSet<UserRole> UsersRoles { get; set; }
         public DbSet<ProductReview> ProductsReviews { get; set; }
-        public DbSet<ChefReview> ChefReviews { get; set; }
-        public DbSet<DeliveryMan> DeliveryMans { get; set; }
-        public DbSet<DeliveryManReview> DeliveryManReviews { get; set; }
-        public DbSet<DeliveryManSchedule> DeliveryManSchedules { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<UserSchedule> UserSchedules { get; set; }
+        public DbSet<ProductCategory> ProductCategorys { get; set; }
+        public DbSet<Type> Types { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

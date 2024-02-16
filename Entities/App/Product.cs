@@ -15,20 +15,17 @@
 
         public decimal Price { get; set; }
 
-        public int Serving { get; set; }
-
         public string? Ingredients { get; set; }
 
         public bool Active { get; set; }
 
-        public int? ChefId { get; set; }
-
-        public int? CategoryId { get; set; }
-
         public decimal? Review { get; set; }
 
-        public virtual  Category? CategoryIdNavigation { get; set; }
+        [Required, ForeignKey("ApplicationUser")]
+        public required string ApplicationUserId { get; set; }
 
-        public virtual  Chef? ChefIdNavigation { get; set; }
+        public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
+
+        public virtual ICollection<ProductCategory> ProductCategorys { get; } = new List<ProductCategory>();
     }
 }

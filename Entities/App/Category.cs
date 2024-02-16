@@ -13,6 +13,6 @@
 
         public bool Active { get; set; }
 
-        public virtual ICollection<Product> Products { get; } = new List<Product>();
+        public virtual ICollection<ProductCategory> ProductCategorys { get; } = new List<ProductCategory>();
     }
 }
