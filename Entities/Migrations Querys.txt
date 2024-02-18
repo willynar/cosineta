@@ -1,5 +1,5 @@
-﻿Add-Migration mdf-tables-ids -Context ApplicationDbContext -OutputDir Migrations -p Entities
-update-database -Context ApplicationDbContext -p Entities -migration 20240218013845_mdf-tables-ids
+﻿Add-Migration mdf-productfeacture-ids -Context ApplicationDbContext -OutputDir Migrations -p Entities
+update-database -Context ApplicationDbContext -p Entities -migration 20240218211044_mdf-productfeacture-ids
 
 
 

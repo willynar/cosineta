@@ -22,7 +22,7 @@ namespace Entities.App
 
         public List<string>? CategoryValue { get; set; } = null;
 
-        [Display(Description = "Admited Values: ProductId,ProductName,ProductDescription,ProductImage,ChefId,Price,Serving,Ingredients,ProductActive,CategoryId,Review,CategoryName,ChefName,ChefPhone,ChefCellphone,ChefEmail,ChefImage,ChefCover,ChefGender,ChefNationality,ChefCountry,ChefDepartment,ChefStatus,ChefCertified,ChefCertifiedMessage,ChefDescription,ChefActive,CategoryImage,CategoryActive")]
+        [Display(Description = "Admited Values: ProductId,ProductName,ProductDescription,ProductImage,TypeId,Price,Serving,Ingredients,ProductActive,Review ,ApplicationUserId,UserName,UserLastName")]
         [Required]
         public string? SorterValue { get; set; } = null;
 

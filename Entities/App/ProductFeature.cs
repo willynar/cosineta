@@ -4,7 +4,7 @@
     {
 
         [Key]
-        public int FeaturesId { get; set; }
+        public int ProductFeatureId { get; set; }
 
         public required string Features { get; set; }
 
