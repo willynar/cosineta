@@ -16,7 +16,7 @@ namespace Entities.Administration
         public string? Longitude { get; set; }
 
         [Required, ForeignKey("Type")]
-        public required string TypeId { get; set; }
+        public required int TypeId { get; set; }
 
         public string? Address { get; set; }
 

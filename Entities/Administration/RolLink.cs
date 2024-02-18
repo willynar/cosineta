@@ -15,7 +15,7 @@
         public bool Especial { get; set; }
 
         [Required, ForeignKey("UserRole")]
-        public required string UserRoleId { get; set; }
+        public required int UserRoleId { get; set; }
 
         [Required, ForeignKey("Link")]
         public required string LinkId { get; set; }

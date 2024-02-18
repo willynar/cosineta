@@ -16,7 +16,7 @@
         public DateTime Date { get; set; }
 
         [Required, ForeignKey("Type")]
-        public required string TypeId { get; set; }
+        public required int TypeId { get; set; }
 
 
         [ForeignKey("ApplicationUser")]

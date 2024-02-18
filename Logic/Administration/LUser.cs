@@ -37,8 +37,8 @@ namespace Logic.Administration
                        .ThenInclude(userRole => userRole.ApplicationRoleIdNavigation)
                            .ThenInclude(role => role.RolLinks)
                                .ThenInclude(rolLink => rolLink.LinkIdNavigation)
-                                   .ThenInclude(link => link.ModuleIdNavigation) 
-                                                                                 // Agrega Include para otras propiedades de navegación según sea necesario
+                                   .ThenInclude(link => link.ModuleIdNavigation)
+                   // Agrega Include para otras propiedades de navegación según sea necesario
                    .FirstOrDefaultAsync();
         }
 
@@ -103,13 +103,19 @@ namespace Logic.Administration
 
         public async Task<IdentityResult> Save(ApplicationUser entity)
         {
-            entity.TwoFactorEnabled = false;
-            entity.LockoutEnabled = false;
-            var result = await _userManager.CreateAsync(entity, entity.Password);
+            if (_context.Types.Where(x => x.TypeId == entity.TypeId && x.ValidForUser).Any())
+            {
 
-
-            _userManager.Dispose();
-            return result;
+                entity.TwoFactorEnabled = false;
+                entity.LockoutEnabled = false;
+                var result = await _userManager.CreateAsync(entity, entity.Password);
+                _userManager.Dispose();
+                return result;
+            }
+            else
+            {
+                throw new Exception("User Type not exist.");
+            }
         }
 
         public async Task<IdentityResult> SaveRole(ApplicationRole role)

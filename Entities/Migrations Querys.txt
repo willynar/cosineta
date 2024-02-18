@@ -1,5 +1,5 @@
-﻿Add-Migration mdf-table-user-role -Context ApplicationDbContext -OutputDir Migrations -p Entities
-update-database -Context ApplicationDbContext -p Entities -migration 20240218010845_mdf-table-user-role
+﻿Add-Migration mdf-tables-ids -Context ApplicationDbContext -OutputDir Migrations -p Entities
+update-database -Context ApplicationDbContext -p Entities -migration 20240218013845_mdf-tables-ids
 
 
 

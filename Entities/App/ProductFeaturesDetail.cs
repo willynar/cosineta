@@ -11,7 +11,7 @@
         public required int ProductId { get; set; }
 
         [Required, ForeignKey("ProductFeatures")]
-        public required string ProductFeaturesId { get; set; }
+        public required int ProductFeaturesId { get; set; }
 
 
         public virtual Product? ProductIdNavigation { get; set; } 
