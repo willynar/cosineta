@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Entities.App;
+using Microsoft.AspNetCore.Identity;
 
 namespace Entities.Administration
 {
@@ -46,6 +47,9 @@ namespace Entities.Administration
         public virtual ICollection<UserRole> UsersRoles { get; } = new List<UserRole>();
         public virtual ICollection<Review> UserReviews { get; } = new List<Review>();
         public virtual ICollection<UserSchedule> UserSchedules { get; } = new List<UserSchedule>();
+        public virtual ICollection<Order> Orders { get; } = new List<Order>();
+        public virtual ICollection<ProductFeature> ProductFeature { get; } = new List<ProductFeature>();
+        public virtual ICollection<UserPaymentMethod> UserPaymentMethods { get; } = new List<UserPaymentMethod>();
 
 
         /*eliminamos  la propiedades que no vamos a utilizar*/

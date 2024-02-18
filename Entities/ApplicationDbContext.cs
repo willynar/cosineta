@@ -28,11 +28,16 @@ namespace Entities
         public DbSet<RolLink> RolLinks { get; set; }
         public DbSet<Module> Modules { get; set; }
         public DbSet<UserRole> UsersRoles { get; set; }
-        public DbSet<ProductReview> ProductsReviews { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<UserSchedule> UserSchedules { get; set; }
         public DbSet<ProductCategory> ProductCategorys { get; set; }
         public DbSet<Type> Types { get; set; }
+        public DbSet<ProductFeaturesDetail> ProductFeaturesDetails { get; set; }
+        public DbSet<ProductFeature> ProductFeatures { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderProductFeactureDetail> OrderProductFeactureDetails { get; set; }
+        public DbSet<OrderProductFeacture> OrderProductFeactures { get; set; }
+        public DbSet<UserPaymentMethod> UserPaymentMethods { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -58,25 +58,25 @@ namespace Entities.Interfaces
         /// <summary>
         /// call actions necesary to save new review product
         /// </summary>
-        /// <param name="productReview"></param>
+        /// <param name="review"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        Task ActionsAddProductReview(ProductReview productReview);
+        Task ActionsAddProductReview(Review review);
 
         /// <summary>
         /// call actions necesary to update review product
         /// </summary>
-        /// <param name="productReview"></param>
+        /// <param name="review"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        Task ActionsUpdProductReview(ProductReview productReview);
+        Task ActionsUpdProductReview(Review review);
 
         /// <summary>
         /// list revies stars
         /// </summary>
-        /// <param name="productReview"></param>
+        /// <param name="review"></param>
         /// <returns></returns>
-        Task<List<int>> ListReviewStarsProductId(ProductReview productReview);
+        Task<List<int>> ListReviewStarsProductId(Review review);
 
         /// <summary>
         /// update stars averrange fro product
@@ -86,32 +86,32 @@ namespace Entities.Interfaces
         /// <returns></returns>
         Task UpdStarsProduct(int? productId, int averageStars);
 
-        Task<List<ProductReview>> GetAllProductReviews();
+        Task<List<Review>> GetAllProductReviews();
 
         /// <summary>
         /// get ProductReview by id ProductReview
         /// </summary>
         /// <param name="ProductReviewId"></param>
         /// <returns></returns>
-        Task<ProductReview> GetProductReviewByProductId(int productId);
+        Task<Review> GetProductReviewByProductId(int productId);
 
         /// <summary>
         /// save new ProductReview
         /// </summary>
-        /// <param name="productReview"></param>
-        Task AddProductReview(ProductReview productReview);
+        /// <param name="review"></param>
+        Task AddProductReview(Review review);
 
         /// <summary>
         /// update ProductReview by id
         /// </summary>
-        /// <param name="updatedProductReview"></param>
-        Task UpdProductReviewById(ProductReview updatedProductReview);
+        /// <param name="updatedReview"></param>
+        Task UpdProductReviewById(Review updatedReview);
 
         /// <summary>
         /// delete ProductReview by id ProductReview
         /// </summary>
-        /// <param name="productReviewId"></param>
-        Task DeleteProductReviewById(int productReviewId);
+        /// <param name="ReviewId"></param>
+        Task DeleteProductReviewById(int ReviewId);
 
         #endregion
     }

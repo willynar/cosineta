@@ -268,7 +268,6 @@ namespace Logic.Administration
                 .Include(link => link.ModuleIdNavigation)
                 .Include(link => link.RolLinks)
                     .ThenInclude(rolLink => rolLink.ApplicationRoleIdNavigation)
-                    .ThenInclude(role => role.UsersRoles)
                 .ToListAsync();
         }
 
@@ -276,7 +275,6 @@ namespace Logic.Administration
         {
             return await _context.RolLinks
                 .Include(rolLink => rolLink.ApplicationRoleIdNavigation)
-                    .ThenInclude(role => role.UsersRoles)
                 .Include(rolLink => rolLink.LinkIdNavigation)
                     .ThenInclude(link => link.ModuleIdNavigation)
                 .ToListAsync();
@@ -288,7 +286,6 @@ namespace Logic.Administration
                 .Include(module => module.Links)
                     .ThenInclude(link => link.RolLinks)
                         .ThenInclude(rolLink => rolLink.ApplicationRoleIdNavigation)
-                        .ThenInclude(role => role.UsersRoles)
                 .ToListAsync();
         }
 

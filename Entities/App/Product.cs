@@ -27,5 +27,7 @@
         public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
 
         public virtual ICollection<ProductCategory> ProductCategorys { get; } = new List<ProductCategory>();
+
+        public virtual ICollection<ProductFeaturesDetail> ProductFeaturesDetails { get; } = new List<ProductFeaturesDetail>();
     }
 }

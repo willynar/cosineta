@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240218005000_add-table-OPF")]
+    partial class addtableOPF
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,11 +218,8 @@ namespace Entities.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RolLinkId"));
 
-                    b.Property<string>("ApplicationRoleId")
+                    b.Property<string>("ApplicationRoleIdNavigationId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("ApplicationRoleIdNavigationUserRoleId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("Consult")
                         .HasColumnType("bit");
@@ -237,21 +237,19 @@ namespace Entities.Migrations
                     b.Property<int?>("LinkIdNavigationLinkId")
                         .HasColumnType("int");
 
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Save")
                         .HasColumnType("bit");
 
                     b.Property<bool>("Update")
                         .HasColumnType("bit");
 
-                    b.Property<string>("UserRoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("RolLinkId");
 
-                    b.HasIndex("ApplicationRoleId");
-
-                    b.HasIndex("ApplicationRoleIdNavigationUserRoleId");
+                    b.HasIndex("ApplicationRoleIdNavigationId");
 
                     b.HasIndex("LinkIdNavigationLinkId");
 
@@ -323,6 +321,7 @@ namespace Entities.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("RoleId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserRoleId");
@@ -819,13 +818,9 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Administration.RolLink", b =>
                 {
-                    b.HasOne("Entities.Administration.ApplicationRole", null)
+                    b.HasOne("Entities.Administration.ApplicationRole", "ApplicationRoleIdNavigation")
                         .WithMany("RolLinks")
-                        .HasForeignKey("ApplicationRoleId");
-
-                    b.HasOne("Entities.Administration.UserRole", "ApplicationRoleIdNavigation")
-                        .WithMany()
-                        .HasForeignKey("ApplicationRoleIdNavigationUserRoleId");
+                        .HasForeignKey("ApplicationRoleIdNavigationId");
 
                     b.HasOne("Entities.Administration.Link", "LinkIdNavigation")
                         .WithMany("RolLinks")

@@ -219,17 +219,17 @@ namespace Logic.App
         /// <summary>
         /// call actions necesary to save new review product
         /// </summary>
-        /// <param name="productReview"></param>
+        /// <param name="review"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task ActionsAddProductReview(ProductReview productReview)
+        public async Task ActionsAddProductReview(Review review)
         {
             try
             {
-                await AddProductReview(productReview);
-                List<int> productReviews = await ListReviewStarsProductId(productReview);
-                int average = (int)Math.Round(productReviews.Average());
-                await UpdStarsProduct(productReview.ProductId, average);
+                await AddProductReview(review);
+                List<int> reviews = await ListReviewStarsProductId(review);
+                int average = (int)Math.Round(reviews.Average());
+                await UpdStarsProduct(review.ProductId, average);
             }
             catch (Exception ex)
             {
@@ -240,17 +240,17 @@ namespace Logic.App
         /// <summary>
         /// call actions necesary to update review product
         /// </summary>
-        /// <param name="productReview"></param>
+        /// <param name="review"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task ActionsUpdProductReview(ProductReview productReview)
+        public async Task ActionsUpdProductReview(Review review)
         {
             try
             {
-                await UpdProductReviewById(productReview);
-                List<int> productReviews = await ListReviewStarsProductId(productReview);
-                int average = (int)Math.Round(productReviews.Average());
-                await UpdStarsProduct(productReview.ProductId, average);
+                await UpdProductReviewById(review);
+                List<int> reviews = await ListReviewStarsProductId(review);
+                int average = (int)Math.Round(reviews.Average());
+                await UpdStarsProduct(review.ProductId, average);
             }
             catch (Exception ex)
             {
@@ -261,10 +261,10 @@ namespace Logic.App
         /// <summary>
         /// list revies stars
         /// </summary>
-        /// <param name="productReview"></param>
+        /// <param name="review"></param>
         /// <returns></returns>
-        public async Task<List<int>> ListReviewStarsProductId(ProductReview productReview) => 
-            await _context.ProductsReviews.Where(x => x.ProductId == productReview.ProductId).Select(x => x.Stars).ToListAsync();
+        public async Task<List<int>> ListReviewStarsProductId(Review review) => 
+            await _context.Reviews.Where(x => x.ProductId == review.ProductId).Select(x => x.Stars).ToListAsync();
 
         /// <summary>
         /// update stars averrange fro product
@@ -274,69 +274,69 @@ namespace Logic.App
         /// <returns></returns>
         public async Task UpdStarsProduct(int? productId, int averageStars)
         {
-            var ProductReview = _context.Products.Find(productId);
+            var Review = _context.Products.Find(productId);
 
-            if (ProductReview != null)
+            if (Review != null)
             {
-                ProductReview.Review = averageStars;
+                Review.Review = averageStars;
 
-                _context.Entry(ProductReview).State = EntityState.Modified;
+                _context.Entry(Review).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
         }
 
-        public async Task<List<ProductReview>> GetAllProductReviews() =>
-         await _context.ProductsReviews.ToListAsync();
+        public async Task<List<Review>> GetAllProductReviews() =>
+         await _context.Reviews.ToListAsync();
 
         /// <summary>
-        /// get ProductReview by id ProductReview
+        /// get Review by id Review
         /// </summary>
         /// <param name="ProductReviewId"></param>
         /// <returns></returns>
-        public async Task<ProductReview> GetProductReviewByProductId(int productId) =>
-          await _context.ProductsReviews.FirstOrDefaultAsync(p => p.ProductId == productId);
+        public async Task<Review> GetProductReviewByProductId(int productId) =>
+          await _context.Reviews.FirstOrDefaultAsync(p => p.ProductId == productId);
 
         /// <summary>
-        /// save new ProductReview
+        /// save new Review
         /// </summary>
-        /// <param name="productReview"></param>
-        public async Task AddProductReview(ProductReview productReview)
+        /// <param name="review"></param>
+        public async Task AddProductReview(Review review)
         {
-            _context.ProductsReviews.Add(productReview);
+            _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
         }
 
         /// <summary>
-        /// update ProductReview by id
+        /// update Review by id
         /// </summary>
-        /// <param name="updatedProductReview"></param>
-        public async Task UpdProductReviewById(ProductReview updatedProductReview)
+        /// <param name="updatedReview"></param>
+        public async Task UpdProductReviewById(Review updatedReview)
         {
-            var ProductReview = _context.ProductsReviews.Find(updatedProductReview.IdProductReview);
+            var Review = _context.Reviews.Find(updatedReview.ReviewId);
 
-            if (ProductReview != null)
+            if (Review != null)
             {
-                ProductReview.Title = updatedProductReview.Title;
-                ProductReview.Description = updatedProductReview.Description;
-                ProductReview.Author = updatedProductReview.Author;
-                ProductReview.ProductId = updatedProductReview.ProductId;
+                Review.Title = updatedReview.Title;
+                Review.Description = updatedReview.Description;
+                Review.Author = updatedReview.Author;
+                Review.ProductId = updatedReview.ProductId;
 
-                _context.Entry(ProductReview).State = EntityState.Modified;
+                _context.Entry(Review).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
         }
 
         /// <summary>
-        /// delete ProductReview by id ProductReview
+        /// delete Review by id Review
         /// </summary>
-        /// <param name="productReviewId"></param>
-        public async Task DeleteProductReviewById(int productReviewId)
+        /// <param name="reviewId"></param>
+        public async Task DeleteProductReviewById(int reviewId)
         {
-            var ProductReview = _context.ProductsReviews.Find(productReviewId);
+            var Review = _context.Reviews.Find(reviewId);
 
-            if (ProductReview != null)
+            if (Review != null)
             {
-                _context.ProductsReviews.Remove(ProductReview);
+                _context.Reviews.Remove(Review);
                 await _context.SaveChangesAsync();
             }
         }

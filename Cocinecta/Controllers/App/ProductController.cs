@@ -137,7 +137,7 @@ namespace Cocinecta.Controllers.App
 
         // GET: api/<ProductController>/Review
         [HttpGet("Review")]
-        [ProducesResponseType(typeof(List<ProductReview>), 200)]
+        [ProducesResponseType(typeof(List<Review>), 200)]
         public async Task<IActionResult> GetReview()
         {
             try
@@ -153,7 +153,7 @@ namespace Cocinecta.Controllers.App
 
         // GET api/<ProductController>/Review/5
         [HttpGet("Review/{productId}")]
-        [ProducesResponseType(typeof(ProductReview), 200)]
+        [ProducesResponseType(typeof(Review), 200)]
 
         public async Task<IActionResult> GetReview([FromRoute] int productId)
         {
@@ -171,7 +171,7 @@ namespace Cocinecta.Controllers.App
         // POST api/<ProductController>/Review
         [HttpPost("Review")]
         [AllowAnonymous]
-        public async Task<IActionResult> PostReview([FromBody] ProductReview product)
+        public async Task<IActionResult> PostReview([FromBody] Review review)
         {
             if (!ModelState.IsValid)
             {
@@ -179,7 +179,7 @@ namespace Cocinecta.Controllers.App
             }
             try
             {
-                await IProductService.ActionsAddProductReview(product);
+                await IProductService.ActionsAddProductReview(review);
                 return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Saved) });
             }
             catch (Exception exc)
@@ -191,7 +191,7 @@ namespace Cocinecta.Controllers.App
 
         // PUT api/<ProductController>/Review/5
         [HttpPut("Review")]
-        public async Task<IActionResult> PutReview([FromBody] ProductReview product)
+        public async Task<IActionResult> PutReview([FromBody] Review review)
         {
             if (!ModelState.IsValid)
             {
@@ -199,7 +199,7 @@ namespace Cocinecta.Controllers.App
             }
             try
             {
-                await IProductService.ActionsUpdProductReview(product);
+                await IProductService.ActionsUpdProductReview(review);
                 return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Updated) });
             }
             catch (Exception exc)

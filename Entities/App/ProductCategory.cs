@@ -7,12 +7,11 @@
 
         [Required, ForeignKey("Category")]
 
-        public int? CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         [Required, ForeignKey("Category")]
 
-        public int? ProductId { get; set; }
-
+        public int ProductId { get; set; }
 
         public virtual Category? CategoryIdNavigation { get; set; }
     

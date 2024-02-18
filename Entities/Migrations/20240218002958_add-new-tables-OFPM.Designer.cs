@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240218002958_add-new-tables-OFPM")]
+    partial class addnewtablesOFPM
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,11 +218,8 @@ namespace Entities.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RolLinkId"));
 
-                    b.Property<string>("ApplicationRoleId")
+                    b.Property<string>("ApplicationRoleIdNavigationId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("ApplicationRoleIdNavigationUserRoleId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("Consult")
                         .HasColumnType("bit");
@@ -237,21 +237,19 @@ namespace Entities.Migrations
                     b.Property<int?>("LinkIdNavigationLinkId")
                         .HasColumnType("int");
 
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Save")
                         .HasColumnType("bit");
 
                     b.Property<bool>("Update")
                         .HasColumnType("bit");
 
-                    b.Property<string>("UserRoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("RolLinkId");
 
-                    b.HasIndex("ApplicationRoleId");
-
-                    b.HasIndex("ApplicationRoleIdNavigationUserRoleId");
+                    b.HasIndex("ApplicationRoleIdNavigationId");
 
                     b.HasIndex("LinkIdNavigationLinkId");
 
@@ -323,6 +321,7 @@ namespace Entities.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("RoleId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserRoleId");
@@ -406,40 +405,6 @@ namespace Entities.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("Entities.App.OrderProductFeacture", b =>
-                {
-                    b.Property<int>("OrderProductFeactureIs")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderProductFeactureIs"));
-
-                    b.Property<string>("Features")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("OrderProductFeactureDetailId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ProductFeatureId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProductFeatureIdNavigationFeaturesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrderProductFeactureIs");
-
-                    b.HasIndex("OrderProductFeactureDetailId");
-
-                    b.HasIndex("ProductFeatureIdNavigationFeaturesId");
-
-                    b.ToTable("OrderProductFeactures");
                 });
 
             modelBuilder.Entity("Entities.App.OrderProductFeactureDetail", b =>
@@ -562,9 +527,6 @@ namespace Entities.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeaturesId"));
 
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
                     b.Property<decimal?>("AdditionalValue")
                         .HasColumnType("decimal(18,2)");
 
@@ -582,9 +544,14 @@ namespace Entities.Migrations
                     b.Property<bool>("MultipleSelection")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("OrderProductFeactureDetailId")
+                        .HasColumnType("int");
+
                     b.HasKey("FeaturesId");
 
                     b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("OrderProductFeactureDetailId");
 
                     b.ToTable("ProductFeatures");
                 });
@@ -819,13 +786,9 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Administration.RolLink", b =>
                 {
-                    b.HasOne("Entities.Administration.ApplicationRole", null)
+                    b.HasOne("Entities.Administration.ApplicationRole", "ApplicationRoleIdNavigation")
                         .WithMany("RolLinks")
-                        .HasForeignKey("ApplicationRoleId");
-
-                    b.HasOne("Entities.Administration.UserRole", "ApplicationRoleIdNavigation")
-                        .WithMany()
-                        .HasForeignKey("ApplicationRoleIdNavigationUserRoleId");
+                        .HasForeignKey("ApplicationRoleIdNavigationId");
 
                     b.HasOne("Entities.Administration.Link", "LinkIdNavigation")
                         .WithMany("RolLinks")
@@ -886,23 +849,10 @@ namespace Entities.Migrations
                     b.Navigation("ApplicationUserIdNavigation");
                 });
 
-            modelBuilder.Entity("Entities.App.OrderProductFeacture", b =>
-                {
-                    b.HasOne("Entities.App.OrderProductFeactureDetail", null)
-                        .WithMany("OrderProductFeactures")
-                        .HasForeignKey("OrderProductFeactureDetailId");
-
-                    b.HasOne("Entities.App.ProductFeature", "ProductFeatureIdNavigation")
-                        .WithMany()
-                        .HasForeignKey("ProductFeatureIdNavigationFeaturesId");
-
-                    b.Navigation("ProductFeatureIdNavigation");
-                });
-
             modelBuilder.Entity("Entities.App.OrderProductFeactureDetail", b =>
                 {
                     b.HasOne("Entities.App.Order", "OrderIdNavigation")
-                        .WithMany("OrderProductFeactureDetails")
+                        .WithMany()
                         .HasForeignKey("OrderIdNavigationOrderId");
 
                     b.HasOne("Entities.App.ProductFeature", "ProductFeatureIdNavigation")
@@ -961,6 +911,10 @@ namespace Entities.Migrations
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Entities.App.OrderProductFeactureDetail", null)
+                        .WithMany("ProductFeactures")
+                        .HasForeignKey("OrderProductFeactureDetailId");
 
                     b.Navigation("ApplicationUserIdNavigation");
                 });
@@ -1094,14 +1048,9 @@ namespace Entities.Migrations
                     b.Navigation("ProductCategorys");
                 });
 
-            modelBuilder.Entity("Entities.App.Order", b =>
-                {
-                    b.Navigation("OrderProductFeactureDetails");
-                });
-
             modelBuilder.Entity("Entities.App.OrderProductFeactureDetail", b =>
                 {
-                    b.Navigation("OrderProductFeactures");
+                    b.Navigation("ProductFeactures");
                 });
 
             modelBuilder.Entity("Entities.App.Product", b =>

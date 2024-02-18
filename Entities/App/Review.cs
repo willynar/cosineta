@@ -3,7 +3,7 @@
     public class Review
     {
         [Key]
-        public int IdDeliveryManReview { get; set; }
+        public int ReviewId { get; set; }
 
         public string? Title { get; set; }
 
@@ -15,15 +15,21 @@
 
         public DateTime Date { get; set; }
 
-
-        [Required, ForeignKey("ApplicationUser")]
-        public required string ApplicationUserId { get; set; }
-
-        public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
-
         [Required, ForeignKey("Type")]
         public required string TypeId { get; set; }
 
+
+        [ForeignKey("ApplicationUser")]
+        public string? ApplicationUserId { get; set; }
+
+
+        [ForeignKey("Product")]
+        public int? ProductId { get; set; }
+
         public virtual Administration.Type? TypeIdNavigation { get; set; }
+
+        public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
+
+        public virtual Product? ProductIdNavigation { get; set; }
     }
 }
