@@ -21,13 +21,21 @@
 
         public decimal? Review { get; set; }
 
+        public int? Serving { get; set; }
+
         [Required, ForeignKey("ApplicationUser")]
         public required string ApplicationUserId { get; set; }
 
+        [NotMapped]
         public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
 
+        [NotMapped]
         public virtual ICollection<ProductCategory> ProductCategorys { get; } = new List<ProductCategory>();
 
+        [NotMapped]
         public virtual ICollection<ProductFeaturesDetail> ProductFeaturesDetails { get; } = new List<ProductFeaturesDetail>();
+
+        [NotMapped]
+        public virtual ICollection<ProductSchedule> ProductSchedules { get; } = new List<ProductSchedule>();
     }
 }

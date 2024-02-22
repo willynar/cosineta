@@ -15,8 +15,12 @@
         public string? ApplicationUserId { get; set; }
         public string? UserName { get; set; }
         public string? UserLastName { get; set; }
+
         public List<Category>? Categorys { get; set;}
+
         public List<ProductFeature>? ProductFeatures { get; set; }
+
+        public List<ProductSchedule>? ProductSchedules { get; set; }
 
     }
 }

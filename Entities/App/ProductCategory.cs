@@ -13,8 +13,10 @@
 
         public int ProductId { get; set; }
 
+        [NotMapped]
         public virtual Category? CategoryIdNavigation { get; set; }
-    
+
+        [NotMapped]
         public virtual Product? ProductIdNavigation { get; set; }
     }
 }

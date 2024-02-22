@@ -26,10 +26,13 @@
         [ForeignKey("Product")]
         public int? ProductId { get; set; }
 
+        [NotMapped]
         public virtual Administration.Type? TypeIdNavigation { get; set; }
 
+        [NotMapped]
         public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
 
+        [NotMapped]
         public virtual Product? ProductIdNavigation { get; set; }
     }
 }

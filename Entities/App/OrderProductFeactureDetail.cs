@@ -16,13 +16,17 @@
         [ForeignKey("Product")]
         public int? ProductId { get; set; }
 
+        [NotMapped]
         public virtual ICollection<OrderProductFeacture> OrderProductFeactures { get; } = new List<OrderProductFeacture>();
 
         //To Feacture
         [ForeignKey("ProductFeature")]
         public int? ProductFeatureId { get; set; }
 
+        [NotMapped]
         public virtual Product? ProductIdNavigation { get; set; }
+
+        [NotMapped]
         public virtual ProductFeature? ProductFeatureIdNavigation { get; set; }
 
     }

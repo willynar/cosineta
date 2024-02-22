@@ -12,6 +12,11 @@
         [Required, ForeignKey("ProductFeature")]
         public required int ProductFeatureId { get; set; }
 
+        public DateTime StarTime { get; set; }
+
+        public DateTime EndTime { get; set; }
+
+        [NotMapped]
         public virtual ProductFeature? ProductFeatureIdNavigation { get; set; }
     }
 }

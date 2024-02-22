@@ -12,8 +12,10 @@
         [Required, ForeignKey("ApplicationUser")]
         public required string ApplicationUserId { get; set; }
 
+        [NotMapped]
         public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
 
+        [NotMapped]
         public virtual ICollection<OrderProductFeactureDetail> OrderProductFeactureDetails { get; } = new List<OrderProductFeactureDetail>();
 
     }

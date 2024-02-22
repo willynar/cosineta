@@ -13,6 +13,7 @@
 
         public bool Active { get; set; }
 
+        [NotMapped]
         public virtual ICollection<ProductCategory> ProductCategorys { get; } = new List<ProductCategory>();
     }
 }
