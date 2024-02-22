@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /Entities/Migrations/20231214140400_add-table-RolLinks-modules.cs
+/Entities/App/prueba.cs
