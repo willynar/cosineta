@@ -11,63 +11,132 @@ namespace Logic.App
             _context = context;
         }
 
+        #region Category
         /// <summary>
-        /// gets all list of Categories
+        /// Create
         /// </summary>
-        /// <returns></returns>
-        public async Task<List<Category>> GetAllCategorys() =>
-          await _context.Categories.ToListAsync();
-
-        /// <summary>
-        /// get Category by id Category
-        /// </summary>
-        /// <param name="CategoryId"></param>
-        /// <returns></returns>
-        public async Task<Category> GetCategoryById(int CategoryId) =>
-          await _context.Categories.FirstOrDefaultAsync(p => p.CategoryId == CategoryId);
-
-        /// <summary>
-        /// save new Category
-        /// </summary>
-        /// <param name="Category"></param>
-        public async Task AddCategory(Category Category)
+        /// <param name="category"></param>
+        public async Task AddCategoryAsync(Category category)
         {
-            _context.Categories.Add(Category);
+            _context.Categories.Add(category);
             await _context.SaveChangesAsync();
         }
 
         /// <summary>
-        /// update Category by id
+        /// Read
         /// </summary>
-        /// <param name="updatedCategory"></param>
-        public async Task UpdCategoryById(Category updatedCategory)
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        public async Task<Category> GetCategoryByIdAsync(int categoryId)
         {
-            var Category = _context.Categories.Find(updatedCategory.CategoryId);
+            return await _context.Categories.FirstOrDefaultAsync(c => c.CategoryId == categoryId);
+        }
 
-            if (Category != null)
+        /// <summary>
+        /// Update
+        /// </summary>
+        /// <param name="category"></param>
+        public async Task UpdateCategoryAsync(Category category)
+        {
+            _context.Categories.Update(category);
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Delete
+        /// </summary>
+        /// <param name="categoryId"></param>
+        public async Task DeleteCategoryAsync(int categoryId)
+        {
+            var category = await _context.Categories.FirstOrDefaultAsync(c => c.CategoryId == categoryId);
+            if (category != null)
             {
-                Category.Name = updatedCategory.Name;
-                Category.Image = updatedCategory.Image;
-                Category.Active = updatedCategory.Active;
-
-                _context.Entry(Category).State = EntityState.Modified;
+                _context.Categories.Remove(category);
                 await _context.SaveChangesAsync();
             }
         }
 
         /// <summary>
-        /// delete Category by id Category
+        /// Get all categories
         /// </summary>
-        /// <param name="CategoryId"></param>
-        public async Task DeleteCategoryById(int CategoryId)
+        /// <returns></returns>
+        public async Task<List<Category>> GetAllCategoriesAsync()
         {
-            var Category = _context.Categories.Find(CategoryId);
+            return await _context.Categories.ToListAsync();
+        }
+        #endregion
 
-            if (Category != null)
+        #region CategoryDetail
+        /// <summary>
+        /// Create
+        /// </summary>
+        /// <param name="productCategory"></param>
+        public async Task AddProductCategoryAsync(ProductCategory productCategory)
+        {
+            _context.ProductCategorys.Add(productCategory);
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Read
+        /// </summary>
+        /// <param name="productCategoryId"></param>
+        /// <returns></returns>
+        public async Task<ProductCategory> GetProductCategoryByIdAsync(int productCategoryId)
+        {
+            return await _context.ProductCategorys.Include(pc => pc.CategoryIdNavigation)
+                                                .FirstOrDefaultAsync(pc => pc.ProductCategoryId == productCategoryId);
+        }
+
+        /// <summary>
+        /// Update
+        /// </summary>
+        /// <param name="productCategory"></param>
+        public async Task UpdateProductCategoryAsync(ProductCategory productCategory)
+        {
+            _context.ProductCategorys.Update(productCategory);
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Delete
+        /// </summary>
+        /// <param name="productCategoryId"></param>
+        /// <returns></returns>
+        public async Task DeleteProductCategory(int productCategoryId)
+        {
+            var productCategory = await _context.ProductCategorys.FirstOrDefaultAsync(pc => pc.ProductCategoryId == productCategoryId);
+            if (productCategory != null)
             {
-                _context.Categories.Remove(Category);
+                _context.ProductCategorys.Remove(productCategory);
                 await _context.SaveChangesAsync();
             }
         }
+
+        /// <summary>
+        /// Delete by product id
+        /// </summary>
+        /// <param name="productId"></param>
+        public async Task DeleteProductCategoryByProductIdAsync(int productId)
+        {
+            var productCategory = await _context.ProductCategorys.Where(pc => pc.ProductId == productId).ToListAsync();
+            if (productCategory != null)
+            {
+                _context.ProductCategorys.RemoveRange(productCategory);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        /// <summary>
+        /// Get all product categories with category information by product id
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+        public async Task<List<ProductCategory>> GetAllProductCategoriesByProductIdAsync(int productId)
+        {
+            return await _context.ProductCategorys.Where(x => x.ProductId == productId).Include(pc => pc.CategoryIdNavigation).ToListAsync();
+        }
+        #endregion
+
     }
 }

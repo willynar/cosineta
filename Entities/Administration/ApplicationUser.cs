@@ -47,26 +47,35 @@ namespace Entities.Administration
         public virtual ICollection<UserRole> UsersRoles { get; } = new List<UserRole>();
         public virtual ICollection<Review> UserReviews { get; } = new List<Review>();
         public virtual ICollection<UserSchedule> UserSchedules { get; } = new List<UserSchedule>();
+
+        [JsonIgnore]
         public virtual ICollection<Order> Orders { get; } = new List<Order>();
+
+        [JsonIgnore]
         public virtual ICollection<ProductFeature> ProductFeature { get; } = new List<ProductFeature>();
+
         public virtual ICollection<UserPaymentMethod> UserPaymentMethods { get; } = new List<UserPaymentMethod>();
 
 
         /*eliminamos  la propiedades que no vamos a utilizar*/
         [PersonalData]
         [NotMapped]
+        [JsonIgnore]
         public override bool TwoFactorEnabled { get; set; }
 
         [PersonalData]
         [NotMapped]
+        [JsonIgnore]
         public override string? NormalizedEmail { get; set; }
 
         [PersonalData]
         [NotMapped]
+        [JsonIgnore]
         public override bool LockoutEnabled { get; set; }
 
         [PersonalData]
         [NotMapped]
+        [JsonIgnore]
         public override DateTimeOffset? LockoutEnd { get; set; }
     }
 

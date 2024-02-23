@@ -27,6 +27,7 @@
         public required string ApplicationUserId { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
 
         [NotMapped]

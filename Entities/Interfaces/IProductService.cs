@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Data;
+﻿using System.Data;
 
 namespace Entities.Interfaces
 {
@@ -10,6 +9,13 @@ namespace Entities.Interfaces
         /// </summary>
         /// <returns></returns>
         Task<List<Product>> GetAllProducts();
+
+        /// <summary>
+        /// get all products by user
+        /// </summary>
+        /// <param name="applicationUserId"></param>
+        /// <returns></returns>
+        Task<List<Product>> GetAllProductsByUser(string applicationUserId);
 
         /// <summary>
         /// get product by id product
@@ -113,6 +119,45 @@ namespace Entities.Interfaces
         /// <param name="ReviewId"></param>
         Task DeleteProductReviewById(int ReviewId);
 
+        #endregion
+
+        #region Schedule
+        /// <summary>
+        /// Create a new ProductSchedule
+        /// </summary>
+        /// <param name="productSchedule">The ProductSchedule to be added</param>
+        Task AddProductScheduleAsync(ProductSchedule productSchedule);
+
+        /// <summary>
+        /// Get a ProductSchedule by its ID
+        /// </summary>
+        /// <param name="productScheduleId">The ID of the ProductSchedule</param>
+        /// <returns>The ProductSchedule with the specified ID</returns>
+        Task<ProductSchedule> GetProductScheduleByIdAsync(int productScheduleId);
+
+        /// <summary>
+        /// Update an existing ProductSchedule
+        /// </summary>
+        /// <param name="productSchedule">The updated ProductSchedule</param>
+        Task UpdateProductScheduleAsync(ProductSchedule productSchedule);
+
+        /// <summary>
+        /// Delete a ProductSchedule by its ID
+        /// </summary>
+        /// <param name="productScheduleId">The ID of the ProductSchedule to be deleted</param>
+        Task DeleteProductScheduleAsync(int productScheduleId);
+
+        /// <summary>
+        /// Get all ProductSchedules
+        /// </summary>
+        /// <returns>A list of all ProductSchedules</returns>
+        Task<List<ProductSchedule>> GetAllProductSchedulesAsync();
+
+        /// <summary>
+        /// Get all ProductSchedules by product Id
+        /// </summary>
+        /// <returns>A list of all ProductSchedules</returns>
+        Task<List<ProductSchedule>> GetAllProductSchedulesByProductIdAsync(int productId);
         #endregion
     }
 }

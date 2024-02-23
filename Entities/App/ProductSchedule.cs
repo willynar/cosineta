@@ -12,7 +12,7 @@
         public bool Active { get; set; }
 
         [Required, ForeignKey("Product")]
-        public required string ProductId { get; set; }
+        public required int ProductId { get; set; }
 
         [NotMapped]
         public virtual Product? ProductIdNavigation { get; set; }

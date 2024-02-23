@@ -1,5 +1,5 @@
-﻿Add-Migration mdf-schedules -Context ApplicationDbContext -OutputDir Migrations -p Entities
-update-database -Context ApplicationDbContext -p Entities -migration 20240222174202_mdf-schedules
+﻿Add-Migration mdf-id-total-delivery -Context ApplicationDbContext -OutputDir Migrations -p Entities
+update-database -Context ApplicationDbContext -p Entities -migration 20240223002521_mdf-id-total-delivery
 
 
 

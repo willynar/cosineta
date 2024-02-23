@@ -1,8 +1,6 @@
 ﻿using Entities.App;
 using Microsoft.Data.SqlClient;
-using Microsoft.Win32;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Data;
 
 namespace Logic.App
@@ -19,13 +17,34 @@ namespace Logic.App
             IExecuteProceduresService = iExecuteProceduresService ?? throw new ArgumentNullException(nameof(iExecuteProceduresService));
         }
 
+        #region Product
+
         /// <summary>
-        /// gets all list of products whit  the categories and chef
+        /// gets all list of products 
         /// </summary>
         /// <returns></returns>
         public async Task<List<Product>> GetAllProducts() =>
-          await _context.Products
-                .ToListAsync();
+          await _context.Products.Include(p => p.ApplicationUserIdNavigation)
+                                .Include(p => p.ProductCategorys)
+                                    .ThenInclude(pc => pc.CategoryIdNavigation)
+                                .Include(p => p.ProductFeaturesDetails)
+                                    .ThenInclude(pfd => pfd.ProductFeaturesIdNavigation)
+                                .Include(p => p.ProductSchedules)
+                                .ToListAsync();
+
+        /// <summary>
+        /// get all products by user
+        /// </summary>
+        /// <param name="applicationUserId"></param>
+        /// <returns></returns>
+        public async Task<List<Product>> GetAllProductsByUser(string applicationUserId) =>
+       await _context.Products.Where(x => x.ApplicationUserId == applicationUserId).Include(p => p.ApplicationUserIdNavigation)
+                             .Include(p => p.ProductCategorys)
+                                 .ThenInclude(pc => pc.CategoryIdNavigation)
+                             .Include(p => p.ProductFeaturesDetails)
+                                 .ThenInclude(pfd => pfd.ProductFeaturesIdNavigation)
+                             .Include(p => p.ProductSchedules)
+                             .ToListAsync();
 
         /// <summary>
         /// get product by id product
@@ -33,8 +52,13 @@ namespace Logic.App
         /// <param name="productId"></param>
         /// <returns></returns>
         public async Task<Product> GetProductById(int productId) =>
-          await _context.Products
-                .FirstOrDefaultAsync(p => p.ProductId == productId);
+             await _context.Products.Include(p => p.ApplicationUserIdNavigation)
+                                .Include(p => p.ProductCategorys)
+                                    .ThenInclude(pc => pc.CategoryIdNavigation)
+                                .Include(p => p.ProductFeaturesDetails)
+                                    .ThenInclude(pfd => pfd.ProductFeaturesIdNavigation)
+                                .Include(p => p.ProductSchedules)
+                                .FirstOrDefaultAsync(p => p.ProductId == productId);
 
         /// <summary>
         /// save new product
@@ -61,6 +85,7 @@ namespace Logic.App
                 product.Description = updatedProduct.Description;
                 product.Image = updatedProduct.Image;
                 product.Ingredients = updatedProduct.Ingredients;
+                product.Serving = updatedProduct.Serving;
                 product.Active = updatedProduct.Active;
 
                 _context.Entry(product).State = EntityState.Modified;
@@ -189,7 +214,7 @@ namespace Logic.App
                         UserName = data.Rows[i]["UserName"] != DBNull.Value ? data.Rows[i]["UserName"].ToString() : null,
                         UserLastName = data.Rows[i]["UserLastName"] != DBNull.Value ? data.Rows[i]["UserLastName"].ToString() : null,
                         Categorys = data.Rows[i]["Categories"] != DBNull.Value ? JsonConvert.DeserializeObject<List<Category>>($"[{data.Rows[i]["Categories"]}]".Replace("\"\"", "\"")) : null,
-                        ProductFeatures = data.Rows[i]["ProductFeatures"] != DBNull.Value ? JsonConvert.DeserializeObject< List<ProductFeature>>($"[{data.Rows[i]["ProductFeatures"]}]".Replace("\"\"", "\"")) : null
+                        ProductFeatures = data.Rows[i]["ProductFeatures"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductFeature>>($"[{data.Rows[i]["ProductFeatures"]}]".Replace("\"\"", "\"")) : null
 
 
                     };
@@ -202,6 +227,7 @@ namespace Logic.App
                 throw new Exception(ex.Message);
             }
         }
+        #endregion
 
         #region Reviews
 
@@ -252,7 +278,7 @@ namespace Logic.App
         /// </summary>
         /// <param name="review"></param>
         /// <returns></returns>
-        public async Task<List<int>> ListReviewStarsProductId(Review review) => 
+        public async Task<List<int>> ListReviewStarsProductId(Review review) =>
             await _context.Reviews.Where(x => x.ProductId == review.ProductId).Select(x => x.Stars).ToListAsync();
 
         /// <summary>
@@ -328,6 +354,66 @@ namespace Logic.App
                 _context.Reviews.Remove(Review);
                 await _context.SaveChangesAsync();
             }
+        }
+        #endregion
+
+        #region Schedule
+        /// <summary>
+        /// Create a new ProductSchedule
+        /// </summary>
+        /// <param name="productSchedule">The ProductSchedule to be added</param>
+        public async Task AddProductScheduleAsync(ProductSchedule productSchedule)
+        {
+            _context.ProductSchedules.Add(productSchedule);
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Get a ProductSchedule by its ID
+        /// </summary>
+        /// <param name="productScheduleId">The ID of the ProductSchedule</param>
+        /// <returns>The ProductSchedule with the specified ID</returns>
+        public async Task<ProductSchedule> GetProductScheduleByIdAsync(int productScheduleId)
+        {
+            return await _context.ProductSchedules.FirstOrDefaultAsync(ps => ps.UserScheduleId == productScheduleId);
+        }
+
+        /// <summary>
+        /// Update an existing ProductSchedule
+        /// </summary>
+        /// <param name="productSchedule">The updated ProductSchedule</param>
+        public async Task UpdateProductScheduleAsync(ProductSchedule productSchedule)
+        {
+            _context.ProductSchedules.Update(productSchedule);
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Delete a ProductSchedule by its ID
+        /// </summary>
+        /// <param name="productScheduleId">The ID of the ProductSchedule to be deleted</param>
+        public async Task DeleteProductScheduleAsync(int productScheduleId)
+        {
+            var productSchedule = await _context.ProductSchedules.FirstOrDefaultAsync(ps => ps.UserScheduleId == productScheduleId);
+            if (productSchedule != null)
+            {
+                _context.ProductSchedules.Remove(productSchedule);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        /// <summary>
+        /// Get all ProductSchedules
+        /// </summary>
+        /// <returns>A list of all ProductSchedules</returns>
+        public async Task<List<ProductSchedule>> GetAllProductSchedulesAsync()
+        {
+            return await _context.ProductSchedules.ToListAsync();
+        }
+
+        public async Task<List<ProductSchedule>> GetAllProductSchedulesByProductIdAsync(int productId)
+        {
+            return await _context.ProductSchedules.Where(x => x.ProductId == productId).ToListAsync();
         }
         #endregion
     }

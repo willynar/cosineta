@@ -13,9 +13,11 @@
         [Required, ForeignKey("ProductFeatures")]
         public required int ProductFeaturesId { get; set; }
 
+        [JsonIgnore]
         [NotMapped]
         public virtual Product? ProductIdNavigation { get; set; }
 
+        [JsonIgnore]
         [NotMapped]
         public virtual ProductFeature? ProductFeaturesIdNavigation { get; set; }
     }

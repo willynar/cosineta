@@ -24,9 +24,11 @@
         public int? ProductFeatureId { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public virtual Product? ProductIdNavigation { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public virtual ProductFeature? ProductFeatureIdNavigation { get; set; }
 
     }

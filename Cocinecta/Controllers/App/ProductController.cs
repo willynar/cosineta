@@ -226,5 +226,114 @@ namespace Cocinecta.Controllers.App
         }
 
         #endregion
+
+        #region ProductChedule
+
+
+        // GET: api/<ProductController>/ProductSchedule
+        [HttpGet("ProductSchedule")]
+        [ProducesResponseType(typeof(List<ProductSchedule>), 200)]
+        public async Task<IActionResult> GetAllProductSchedulesAsync()
+        {
+            try
+            {
+                return Ok(await IProductService.GetAllProductSchedulesAsync());
+            }
+            catch (Exception exc)
+            {
+                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
+            }
+        }
+
+        // GET api/<ProductController>/ProductSchedule/5
+        [HttpGet("ProductSchedule/{id}")]
+        [ProducesResponseType(typeof(ProductSchedule), 200)]
+        public async Task<IActionResult> GetProductScheduleByIdAsync([FromRoute] int id)
+        {
+            try
+            {
+                return Ok(await IProductService.GetProductScheduleByIdAsync(id));
+            }
+            catch (Exception exc)
+            {
+                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
+            }
+        }
+
+        // GET api/<ProductController>/ProductSchedule/5
+        [HttpGet("ProductSchedule/Product/{productId}")]
+        [ProducesResponseType(typeof(List<ProductSchedule>), 200)]
+        public async Task<IActionResult> GetProductScheduleByProductIdAsync([FromRoute] int productId)
+        {
+            try
+            {
+                return Ok(await IProductService.GetAllProductSchedulesByProductIdAsync(productId));
+            }
+            catch (Exception exc)
+            {
+                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
+            }
+        }
+
+        // POST api/<ProductController>/ProductSchedule
+        [HttpPost("ProductSchedule")]
+        public async Task<IActionResult> AddProductScheduleAsync([FromBody] ProductSchedule ProductSchedule)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { success = false, message = ErrorModelValidation.ShowError(new SerializableError(ModelState).Values) });
+            }
+            try
+            {
+                await IProductService.AddProductScheduleAsync(ProductSchedule);
+                return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Saved) });
+            }
+            catch (Exception exc)
+            {
+                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
+            }
+        }
+
+        // PUT api/<ProductController>/ProductSchedule/5
+        [HttpPut("ProductSchedule")]
+        public async Task<IActionResult> UpdateProductScheduleAsync([FromBody] ProductSchedule ProductSchedule)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { success = false, message = ErrorModelValidation.ShowError(new SerializableError(ModelState).Values) });
+            }
+            try
+            {
+                await IProductService.UpdateProductScheduleAsync(ProductSchedule);
+                return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Updated) });
+            }
+            catch (Exception exc)
+            {
+                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
+            }
+        }
+
+        // DELETE api/<ProductController>/ProductSchedule/5
+        [HttpDelete("ProductSchedule/{id}")]
+        public async Task<IActionResult> DeleteProductScheduleAsync(int id)
+        {
+            try
+            {
+                await IProductService.DeleteProductScheduleAsync(id);
+                return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Logout) });
+            }
+            catch (Exception exc)
+            {
+                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
+            }
+        }
+
+        #endregion
     }
 }

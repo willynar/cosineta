@@ -12,6 +12,7 @@
         [Required, ForeignKey("ApplicationUser")]
         public required string ApplicationUserId { get; set; }
 
+        [JsonIgnore]
         [NotMapped]
         public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
     }

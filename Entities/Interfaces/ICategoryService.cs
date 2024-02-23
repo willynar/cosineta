@@ -2,35 +2,79 @@
 {
     public interface ICategoryService
     {
+        #region Category
         /// <summary>
-        /// gets all list of Categories
+        /// Create
+        /// </summary>
+        /// <param name="category"></param>
+        Task AddCategoryAsync(Category category);
+
+        /// <summary>
+        /// Read
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        Task<Category> GetCategoryByIdAsync(int categoryId);
+
+        /// <summary>
+        /// Update
+        /// </summary>
+        /// <param name="category"></param>
+        Task UpdateCategoryAsync(Category category);
+
+        /// <summary>
+        /// Delete
+        /// </summary>
+        /// <param name="categoryId"></param>
+        Task DeleteCategoryAsync(int categoryId);
+
+        /// <summary>
+        /// Get all categories
         /// </summary>
         /// <returns></returns>
-        Task<List<Category>> GetAllCategorys();
+        Task<List<Category>> GetAllCategoriesAsync();
+        #endregion
+
+        #region CategoryDetail
+        /// <summary>
+        /// Create
+        /// </summary>
+        /// <param name="productCategory"></param>
+        Task AddProductCategoryAsync(ProductCategory productCategory);
 
         /// <summary>
-        /// get Category by id Category
+        /// Read
         /// </summary>
-        /// <param name="CategoryId"></param>
+        /// <param name="productCategoryId"></param>
         /// <returns></returns>
-        Task<Category> GetCategoryById(int CategoryId);
+        Task<ProductCategory> GetProductCategoryByIdAsync(int productCategoryId);
 
         /// <summary>
-        /// save new Category
+        /// Update
         /// </summary>
-        /// <param name="Category"></param>
-        Task AddCategory(Category Category);
+        /// <param name="productCategory"></param>
+        Task UpdateProductCategoryAsync(ProductCategory productCategory);
 
         /// <summary>
-        /// update Category by id
+        /// Delete
         /// </summary>
-        /// <param name="updatedCategory"></param>
-        Task UpdCategoryById(Category updatedCategory);
+        /// <param name="productCategoryId"></param>
+        /// <returns></returns>
+        Task DeleteProductCategory(int productCategoryId);
 
         /// <summary>
-        /// delete Category by id Category
+        /// Delete
         /// </summary>
-        /// <param name="CategoryId"></param>
-        Task DeleteCategoryById(int CategoryId);
+        /// <param name="productId"></param>
+        Task DeleteProductCategoryByProductIdAsync(int productId);
+
+        /// <summary>
+        /// Get all product categories with category information by product id
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+        Task<List<ProductCategory>> GetAllProductCategoriesByProductIdAsync(int productId);
+        #endregion
+
     }
 }

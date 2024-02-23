@@ -1,4 +1,5 @@
-﻿namespace Entities.App
+﻿
+namespace Entities.App
 {
     public class Category
     {
@@ -14,6 +15,7 @@
         public bool Active { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public virtual ICollection<ProductCategory> ProductCategorys { get; } = new List<ProductCategory>();
     }
 }

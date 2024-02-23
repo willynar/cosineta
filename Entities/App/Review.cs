@@ -1,4 +1,6 @@
-﻿namespace Entities.App
+﻿using System.ComponentModel;
+
+namespace Entities.App
 {
     public class Review
     {
@@ -20,18 +22,23 @@
 
 
         [ForeignKey("ApplicationUser")]
+        [Description("Parametro opcional depende del tipo si es usuario o producto")]
         public string? ApplicationUserId { get; set; }
 
 
         [ForeignKey("Product")]
+        [Description("Parametro opcional depende del tipo si es usuario o producto")]
         public int? ProductId { get; set; }
 
+        [JsonIgnore]
         [NotMapped]
         public virtual Administration.Type? TypeIdNavigation { get; set; }
 
+        [JsonIgnore]
         [NotMapped]
         public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
 
+        [JsonIgnore]
         [NotMapped]
         public virtual Product? ProductIdNavigation { get; set; }
     }

@@ -17,6 +17,7 @@
         public DateTime EndTime { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public virtual ProductFeature? ProductFeatureIdNavigation { get; set; }
     }
 }
