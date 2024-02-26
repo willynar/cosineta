@@ -1,6 +1,6 @@
 USE [trabajo]
 GO
-/****** Object:  UserDefinedFunction [dbo].[ValidateFilterValue]    Script Date: 18/02/2024 5:46:27 p. m. ******/
+/****** Object:  UserDefinedFunction [dbo].[ValidateFilterValue]    Script Date: 25/02/2024 9:14:07 p. m. ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -19,8 +19,6 @@ ALTER FUNCTION [dbo].[ValidateFilterValue]
     @ApplicationUserId NVARCHAR(MAX) NULL,
     @UserName NVARCHAR(MAX) NULL,
     @UserLastName NVARCHAR(MAX) NULL,
-	@Categories NVARCHAR(MAX) NULL,
-	@ProductFeatures NVARCHAR(MAX) NULL,
     @FilterValue NVARCHAR(MAX) NULL
 )
 RETURNS BIT
@@ -34,21 +32,18 @@ BEGIN
 				THEN
 				CASE 
 					WHEN (
-						@ProductId				LIKE '%' + @FilterValue + '%' OR
-						@ProductName			LIKE '%' + @FilterValue + '%' OR
-						@ProductDescription		LIKE '%' + @FilterValue + '%' OR
-						@ProductImage			LIKE '%' + @FilterValue + '%' OR
-						@TypeId					LIKE '%' + @FilterValue + '%' OR
-						@Price					LIKE '%' + @FilterValue + '%' OR
-						@Ingredients			LIKE '%' + @FilterValue + '%' OR
-						@ProductActive			LIKE '%' + @FilterValue + '%' OR
-						@Review					LIKE '%' + @FilterValue + '%' OR
-						@ApplicationUserId		LIKE '%' + @FilterValue + '%' OR
-						@UserName				LIKE '%' + @FilterValue + '%' OR
-						@UserLastName			LIKE '%' + @FilterValue + '%' OR
-						@Categories				LIKE '%' + @FilterValue + '%' OR
-						@ProductFeatures		LIKE '%' + @FilterValue + '%'
-						
+						@ProductId				LIKE '%' + @FilterValue + '%'  OR
+						@ProductName			LIKE '%' + @FilterValue + '%'  OR
+						@ProductDescription		LIKE '%' + @FilterValue + '%'  OR
+						@ProductImage			LIKE '%' + @FilterValue + '%'  OR
+						@TypeId					LIKE '%' + @FilterValue + '%'  OR
+						@Price					LIKE '%' + @FilterValue + '%'  OR
+						@Ingredients			LIKE '%' + @FilterValue + '%'  OR
+						@ProductActive			LIKE '%' + @FilterValue + '%'  OR
+						@Review					LIKE '%' + @FilterValue + '%'  OR
+						@ApplicationUserId		LIKE '%' + @FilterValue + '%'  OR
+						@UserName				LIKE '%' + @FilterValue + '%'  OR
+						@UserLastName			LIKE '%' + @FilterValue + '%'  
 					)
 				THEN 1 
 				ELSE 0 
