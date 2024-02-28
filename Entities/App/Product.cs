@@ -23,20 +23,28 @@
 
         public int? Serving { get; set; }
 
+        public int? Stock { get; set; }
+
+        [JsonIgnore]
+        public DateTime CreationDate { get; set; }
+
+        [JsonIgnore]
+        public DateTime UpdateDate { get; set; }
+
+
         [Required, ForeignKey("ApplicationUser")]
         public required string ApplicationUserId { get; set; }
 
-        [NotMapped]
         [JsonIgnore]
         public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
 
-        [NotMapped]
+        [JsonIgnore]
         public virtual ICollection<ProductCategory> ProductCategorys { get; } = new List<ProductCategory>();
 
-        [NotMapped]
+        [JsonIgnore]
         public virtual ICollection<ProductFeaturesDetail> ProductFeaturesDetails { get; } = new List<ProductFeaturesDetail>();
 
-        [NotMapped]
+        [JsonIgnore]
         public virtual ICollection<ProductSchedule> ProductSchedules { get; } = new List<ProductSchedule>();
     }
 }

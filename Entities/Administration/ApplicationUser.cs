@@ -26,19 +26,19 @@ namespace Entities.Administration
 
         public int VerifyNumber { get; set; }
 
-        [NotMapped]
+        [JsonIgnore]
         public string Login { get; set; } = string.Empty;
 
-        [NotMapped]
+        [JsonIgnore]
         public string Password { get; set; } = string.Empty;
 
-        [NotMapped]
+        [JsonIgnore]
         public string TokenFacebook { get; set; } = string.Empty;
 
-        [NotMapped]
+        [JsonIgnore]
         public string TokenGoogle { get; set; } = string.Empty;
 
-        [NotMapped]
+        [JsonIgnore]
         public string TokenOutlook { get; set; } = string.Empty;
 
         public virtual Type? TypeIdNavigation { get; set; }
@@ -59,22 +59,18 @@ namespace Entities.Administration
 
         /*eliminamos  la propiedades que no vamos a utilizar*/
         [PersonalData]
-        [NotMapped]
         [JsonIgnore]
         public override bool TwoFactorEnabled { get; set; }
 
         [PersonalData]
-        [NotMapped]
         [JsonIgnore]
         public override string? NormalizedEmail { get; set; }
 
         [PersonalData]
-        [NotMapped]
         [JsonIgnore]
         public override bool LockoutEnabled { get; set; }
 
         [PersonalData]
-        [NotMapped]
         [JsonIgnore]
         public override DateTimeOffset? LockoutEnd { get; set; }
     }

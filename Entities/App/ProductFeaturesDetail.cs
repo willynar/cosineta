@@ -14,11 +14,15 @@
         public required int ProductFeaturesId { get; set; }
 
         [JsonIgnore]
-        [NotMapped]
+        public DateTime CreationDate { get; set; }
+
+        [JsonIgnore]
+        public DateTime UpdateDate { get; set; }
+
+        [JsonIgnore]
         public virtual Product? ProductIdNavigation { get; set; }
 
         [JsonIgnore]
-        [NotMapped]
         public virtual ProductFeature? ProductFeaturesIdNavigation { get; set; }
     }
 }

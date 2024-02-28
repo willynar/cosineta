@@ -20,8 +20,10 @@
         [Required, ForeignKey("Link")]
         public required string LinkId { get; set; }
 
+        [JsonIgnore]
         public virtual UserRole? ApplicationRoleIdNavigation { get; set; }
 
+        [JsonIgnore]
         public virtual Link? LinkIdNavigation { get; set; }
     }
 }

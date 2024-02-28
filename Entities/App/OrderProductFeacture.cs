@@ -12,12 +12,15 @@
         [Required, ForeignKey("ProductFeature")]
         public required int ProductFeatureId { get; set; }
 
-        public DateTime StarTime { get; set; }
+        //public DateTime StarTime { get; set; }
 
-        public DateTime EndTime { get; set; }
+        //public DateTime EndTime { get; set; }
 
-        [NotMapped]
         [JsonIgnore]
-        public virtual ProductFeature? ProductFeatureIdNavigation { get; set; }
+        public DateTime CreationDate { get; set; }
+
+        [JsonIgnore]
+        public DateTime UpdateDate { get; set; }
+
     }
 }

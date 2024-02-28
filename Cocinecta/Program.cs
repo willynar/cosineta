@@ -1,12 +1,14 @@
 using Cocinecta;
 using Entities.Administration;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-
+using NSwag;
+using NSwag.Generation.Processors.Security;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -73,31 +75,73 @@ builder.Services.AddNecessaryServices();
 
 // Swagger Configuration
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(opt =>
+//builder.Services.AddSwaggerGen(opt =>
+//{
+//    opt.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
+//    {
+//        Name = "Authorization",
+//        Description = "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
+//        In = ParameterLocation.Header,
+//        Type = SecuritySchemeType.Http,
+//        BearerFormat = "JWT",
+//        Scheme = "Bearer"
+//    });
+//    opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+//    {
+//        {
+//            new OpenApiSecurityScheme
+//            {
+//                Reference = new OpenApiReference
+//                {
+//                    Type = ReferenceType.SecurityScheme,
+//                    Id = "Bearer"
+//                }
+//            },
+//            Array.Empty<string>()
+//        }
+//    });
+//});
+builder.Services.AddSwaggerDocument(config =>
 {
-    opt.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
+    config.Title = "Cocineta";
+    config.PostProcess = document =>
     {
-        Name = "Authorization",
-        Description = "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",
-        Scheme = "Bearer"
-    });
-    opt.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
+        document.Info.Version = "v1";
+        document.Info.Title = "Cocineta API";
+        document.Info.Description = "API Cocineta";
+        document.Info.TermsOfService = "None";
+        document.Info.Contact = new NSwag.OpenApiContact
         {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
-                }
-            },
-            Array.Empty<string>()
+            Name = "support",
+            Email = "",
+            //Url = new Uri("https://twitter.com/spboyer"),
+        };
+        document.Info.License = new NSwag.OpenApiLicense
+        {
+            Name = "Cocineta",
+            //Url = "https://example.com/license"
+        };
+    };
+
+    // CONFIGURAMOS LA SEGURIDAD JWT PARA SWAGGER,
+    // PERMITE AÑADIR EL TOKEN JWT A LA CABECERA.
+    config.AddSecurity("JWT", Enumerable.Empty<string>(),
+        new NSwag.OpenApiSecurityScheme
+        {
+            Type = OpenApiSecuritySchemeType.ApiKey,
+            Name = "Authorization",
+            In = OpenApiSecurityApiKeyLocation.Header,
+            Description = "Enter the Bearer Authorization string as following: Bearer {Token JWT}."
         }
-    });
+    );
+
+    config.PostProcess = document => document.Produces = new List<string>
+                    {
+                        "application/json",
+                        "application/xml"
+                    };
+
+    config.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
 });
 
 var app = builder.Build();
@@ -106,8 +150,33 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
 }
-app.UseSwagger();
-app.UseSwaggerUI();
+//app.UseSwagger();
+//app.UseSwaggerUI();
+//AÑADIMOS EL MIDDLEWARE DE SWAGGER(NSwag)
+//app.UseOpenApi(); // serve documents (same as app.UseSwagger()) para  local
+app.UseOpenApi(a =>
+{
+    a.PostProcess = (document, _) =>
+    {
+        document.Schemes = new[] { NSwag.OpenApiSchema.Https, NSwag.OpenApiSchema.Http };
+    };
+});
+// serve documents (same as app.UseSwagger())
+//app.UseSwaggerUi3();
+app.UseSwaggerUi3(options =>
+{
+    // Define web UI route
+    options.Path = "/swagger";
+});
+// serve Swagger UI
+//app.UseReDoc();
+
+app.UseReDoc(options =>
+{
+    //c.Path = "/redoc";
+    options.DocumentPath = "/swagger/v1/swagger.json";
+});
+
 
 app.UseCors("CorsPolicy");
 app.UseAuthentication();

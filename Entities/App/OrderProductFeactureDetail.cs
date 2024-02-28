@@ -16,20 +16,22 @@
         [ForeignKey("Product")]
         public int? ProductId { get; set; }
 
-        [NotMapped]
+        [JsonIgnore]
         public virtual ICollection<OrderProductFeacture> OrderProductFeactures { get; } = new List<OrderProductFeacture>();
 
         //To Feacture
         [ForeignKey("ProductFeature")]
         public int? ProductFeatureId { get; set; }
 
-        [NotMapped]
-        [JsonIgnore]
-        public virtual Product? ProductIdNavigation { get; set; }
+        public DateTime StarTime { get; set; }
 
-        [NotMapped]
+        public DateTime EndTime { get; set; }
+
         [JsonIgnore]
-        public virtual ProductFeature? ProductFeatureIdNavigation { get; set; }
+        public DateTime CreationDate { get; set; }
+
+        [JsonIgnore]
+        public DateTime UpdateDate { get; set; }
 
     }
 }

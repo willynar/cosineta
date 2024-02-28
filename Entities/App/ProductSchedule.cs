@@ -9,12 +9,22 @@
 
         public DateTime EndTime { get; set; }
 
+        public DateTime PublicationStarTime { get; set; }
+
+        public DateTime PublicationEndTime { get; set; }
+
+        [JsonIgnore]
+        public DateTime CreationDate { get; set; }
+
+        [JsonIgnore]
+        public DateTime UpdateDate { get; set; }
+
         public bool Active { get; set; }
 
         [Required, ForeignKey("Product")]
         public required int ProductId { get; set; }
 
-        [NotMapped]
+        [JsonIgnore]
         public virtual Product? ProductIdNavigation { get; set; }
     }
 }

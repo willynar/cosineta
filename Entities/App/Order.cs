@@ -11,14 +11,18 @@
 
         public int QuantityOfProducts { get; set; }
 
+        public string? Latitude { get; set; }
+
+        public string? Longitude { get; set; }
+
+        public string? Direccion { get; set; }
+
         [Required, ForeignKey("ApplicationUser")]
         public required string ApplicationUserId { get; set; }
 
-        [NotMapped]
         [JsonIgnore]
         public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
 
-        [NotMapped]
         [JsonIgnore]
         public virtual ICollection<OrderProductFeactureDetail> OrderProductFeactureDetails { get; } = new List<OrderProductFeactureDetail>();
 

@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240228022932_mdf-not-mapped-tables")]
+    partial class mdfnotmappedtables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -472,6 +475,8 @@ namespace Entities.Migrations
 
                     b.HasIndex("OrderProductFeactureDetailId");
 
+                    b.HasIndex("ProductFeatureId");
+
                     b.ToTable("OrderProductFeactures");
                 });
 
@@ -510,6 +515,10 @@ namespace Entities.Migrations
                     b.HasKey("OrderProductFeactureDetailId");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductFeatureId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderProductFeactureDetails");
                 });
@@ -990,6 +999,14 @@ namespace Entities.Migrations
                     b.HasOne("Entities.App.OrderProductFeactureDetail", null)
                         .WithMany("OrderProductFeactures")
                         .HasForeignKey("OrderProductFeactureDetailId");
+
+                    b.HasOne("Entities.App.ProductFeature", "ProductFeatureIdNavigation")
+                        .WithMany()
+                        .HasForeignKey("ProductFeatureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductFeatureIdNavigation");
                 });
 
             modelBuilder.Entity("Entities.App.OrderProductFeactureDetail", b =>
@@ -1000,7 +1017,19 @@ namespace Entities.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Entities.App.ProductFeature", "ProductFeatureIdNavigation")
+                        .WithMany()
+                        .HasForeignKey("ProductFeatureId");
+
+                    b.HasOne("Entities.App.Product", "ProductIdNavigation")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
                     b.Navigation("OrderIdNavigation");
+
+                    b.Navigation("ProductFeatureIdNavigation");
+
+                    b.Navigation("ProductIdNavigation");
                 });
 
             modelBuilder.Entity("Entities.App.Product", b =>

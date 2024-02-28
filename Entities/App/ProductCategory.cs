@@ -13,11 +13,15 @@
 
         public int ProductId { get; set; }
 
-        [NotMapped]
+        [JsonIgnore]
+        public DateTime CreationDate { get; set; }
+
+        [JsonIgnore]
+        public DateTime UpdateDate { get; set; }
+
         [JsonIgnore]
         public virtual Category? CategoryIdNavigation { get; set; }
 
-        [NotMapped]
         [JsonIgnore]
         public virtual Product? ProductIdNavigation { get; set; }
     }

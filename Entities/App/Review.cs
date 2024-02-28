@@ -31,15 +31,12 @@ namespace Entities.App
         public int? ProductId { get; set; }
 
         [JsonIgnore]
-        [NotMapped]
         public virtual Administration.Type? TypeIdNavigation { get; set; }
 
         [JsonIgnore]
-        [NotMapped]
         public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
 
         [JsonIgnore]
-        [NotMapped]
         public virtual Product? ProductIdNavigation { get; set; }
     }
 }
