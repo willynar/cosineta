@@ -11,17 +11,20 @@
         public required int OrderId { get; set; }
 
         public virtual Order? OrderIdNavigation { get; set; }
-        
+
         //To Product 
-        [ForeignKey("Product")]
-        public int? ProductId { get; set; }
+        [Required, ForeignKey("OrderProduct")]
+        public int? OrderProductId { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<OrderProductFeacture> OrderProductFeactures { get; } = new List<OrderProductFeacture>();
+        public virtual OrderProduct? OrderProductIdNavigation { get; set; }
 
         //To Feacture
-        [ForeignKey("ProductFeature")]
-        public int? ProductFeatureId { get; set; }
+        [Required, ForeignKey("OrderProductFeactureOnly")]
+        public int? OrderProductFeactureOnlyId { get; set; }
+
+        [JsonIgnore]
+        public virtual OrderProductFeactureOnly? OrderProductFeactureOnlyIdNavigation { get; set; }
 
         public DateTime StarTime { get; set; }
 

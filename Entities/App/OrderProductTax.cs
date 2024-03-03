@@ -1,9 +1,9 @@
 ﻿namespace Entities.App
 {
-    internal class OrderProductTaxes
+    public class OrderProductTax
     {
         [Key]
-        public int OrderProductTaxesId { get; set; }
+        public int OrderProductTaxId { get; set; }
 
         public required decimal Taxes { get; set; }
 

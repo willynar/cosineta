@@ -20,9 +20,17 @@ namespace Entities.App
 
         public decimal? Review { get; set; } = null;
 
-        public List<string>? CategoryValue { get; set; } = null;
+        public DateTime? StarTime { get; set; }
 
-        [Display(Description = "Admited Values: ProductId,ProductName,ProductDescription,ProductImage,TypeId,Price,Serving,Ingredients,ProductActive,Review ,ApplicationUserId,UserName,UserLastName")]
+        public DateTime? EndTime { get; set; }
+
+        public List<int>? CategoryIds { get; set; } = null;
+
+        public List<int>? FeatureIds { get; set; } = null;
+
+        public int? Serving { get; set; } = null;
+
+        [Display(Description = "Admited Values: all product values in camelCase")]
         [Required]
         public string? SorterValue { get; set; } = null;
 

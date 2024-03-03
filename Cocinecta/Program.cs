@@ -75,32 +75,6 @@ builder.Services.AddNecessaryServices();
 
 // Swagger Configuration
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen(opt =>
-//{
-//    opt.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
-//    {
-//        Name = "Authorization",
-//        Description = "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
-//        In = ParameterLocation.Header,
-//        Type = SecuritySchemeType.Http,
-//        BearerFormat = "JWT",
-//        Scheme = "Bearer"
-//    });
-//    opt.AddSecurityRequirement(new OpenApiSecurityRequirement
-//    {
-//        {
-//            new OpenApiSecurityScheme
-//            {
-//                Reference = new OpenApiReference
-//                {
-//                    Type = ReferenceType.SecurityScheme,
-//                    Id = "Bearer"
-//                }
-//            },
-//            Array.Empty<string>()
-//        }
-//    });
-//});
 builder.Services.AddSwaggerDocument(config =>
 {
     config.Title = "Cocineta";
@@ -123,8 +97,6 @@ builder.Services.AddSwaggerDocument(config =>
         };
     };
 
-    // CONFIGURAMOS LA SEGURIDAD JWT PARA SWAGGER,
-    // PERMITE AÑADIR EL TOKEN JWT A LA CABECERA.
     config.AddSecurity("JWT", Enumerable.Empty<string>(),
         new NSwag.OpenApiSecurityScheme
         {
@@ -150,10 +122,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
 }
-//app.UseSwagger();
-//app.UseSwaggerUI();
-//AÑADIMOS EL MIDDLEWARE DE SWAGGER(NSwag)
-//app.UseOpenApi(); // serve documents (same as app.UseSwagger()) para  local
+var algo = app.Environment.IsDevelopment();
+
 app.UseOpenApi(a =>
 {
     a.PostProcess = (document, _) =>

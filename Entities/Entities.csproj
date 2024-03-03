@@ -23,8 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\NewFolder\" />
-    <Folder Include="StoreProceduresQuerys\" />
+    <Folder Include="Migrations\History\" />
   </ItemGroup>
 
 </Project>

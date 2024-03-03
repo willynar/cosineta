@@ -1,6 +1,5 @@
-﻿Add-Migration mdf-relations-order -Context ApplicationDbContext -OutputDir Migrations -p Entities
-update-database -Context ApplicationDbContext -p Entities -migration 20240228023614_mdf-relations-order
-
+﻿Add-Migration mdf-product-colum -Context ApplicationDbContext -OutputDir Migrations -p Entities
+update-database -Context ApplicationDbContext -p Entities -migration 20240303224812_mdf-product-colum
 
 
 

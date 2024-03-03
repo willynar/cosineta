@@ -1,9 +1,9 @@
 ﻿namespace Entities.App
 {
-    public class OrderProductFeacture
+    public class OrderProductFeactureOnly
     {
         [Key]
-        public int OrderProductFeactureId { get; set; }
+        public int OrderProductFeactureOnlyId { get; set; }
 
         public required string Features { get; set; }
 
@@ -20,12 +20,6 @@
         public DateTime UpdateDate { get; set; }
 
         public string? ApplicationUserIdFeacture { get; set; }
-
-        [Required, ForeignKey("OrderProduct")]
-        public  int? OrderProductId { get; set; }
-
-        [JsonIgnore]
-        public virtual OrderProduct? OrderProductIdNavigation { get; set; }
 
     }
 }

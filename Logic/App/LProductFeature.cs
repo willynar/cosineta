@@ -1,8 +1,9 @@
-﻿using Entities.App;
+﻿using Entities.Administration;
+using Entities.App;
 
 namespace Logic.App
 {
-    public class LProductFeature: IProductFeatureService
+    public class LProductFeature : IProductFeatureService
     {
         private readonly ApplicationDbContext _context;
 
@@ -15,8 +16,7 @@ namespace Logic.App
         /// <summary>
         /// Create a new ProductFeature
         /// </summary>
-        /// <param name="productFeature">The ProductFeature object to add</param>
-        /// <returns></returns>
+        /// <param name="productFeature">The ProductFeature to be added</param>
         public async Task AddProductFeatureAsync(ProductFeature productFeature)
         {
             _context.ProductFeatures.Add(productFeature);
@@ -26,35 +26,35 @@ namespace Logic.App
         /// <summary>
         /// Get a ProductFeature by its ID
         /// </summary>
-        /// <param name="productFeatureId">The ID of the ProductFeature to retrieve</param>
-        /// <returns>The ProductFeature</returns>
+        /// <param name="productFeatureId">The ID of the ProductFeature</param>
+        /// <returns>The ProductFeature with the specified ID</returns>
         public async Task<ProductFeature> GetProductFeatureByIdAsync(int productFeatureId)
         {
-            return await _context.ProductFeatures
-                .FirstOrDefaultAsync(pf => pf.ProductFeatureId == productFeatureId);
+            return await _context.ProductFeatures.FirstOrDefaultAsync(pf => pf.ProductFeatureId == productFeatureId);
         }
 
         /// <summary>
         /// Update an existing ProductFeature
         /// </summary>
-        /// <param name="productFeature">The updated ProductFeature object</param>
-        /// <returns></returns>
+        /// <param name="productFeature">The updated ProductFeature</param>
         public async Task UpdateProductFeatureAsync(ProductFeature productFeature)
         {
-            _context.ProductFeatures.Update(productFeature);
-            await _context.SaveChangesAsync();
+            var existingProductFeature = await _context.ProductFeatures.FindAsync(productFeature.ProductFeatureId);
+
+            if (existingProductFeature != null)
+            {
+                _context.Entry(existingProductFeature).CurrentValues.SetValues(productFeature);
+                await _context.SaveChangesAsync();
+            }
         }
 
         /// <summary>
         /// Delete a ProductFeature by its ID
         /// </summary>
-        /// <param name="productFeatureId">The ID of the ProductFeature to delete</param>
-        /// <returns></returns>
+        /// <param name="productFeatureId">The ID of the ProductFeature to be deleted</param>
         public async Task DeleteProductFeatureAsync(int productFeatureId)
         {
-            var productFeature = await _context.ProductFeatures
-                .FirstOrDefaultAsync(pf => pf.ProductFeatureId == productFeatureId);
-
+            var productFeature = await _context.ProductFeatures.FirstOrDefaultAsync(pf => pf.ProductFeatureId == productFeatureId);
             if (productFeature != null)
             {
                 _context.ProductFeatures.Remove(productFeature);
@@ -70,6 +70,16 @@ namespace Logic.App
         {
             return await _context.ProductFeatures.ToListAsync();
         }
+
+        /// <summary>
+        /// Get all ProductFeatures Additional
+        /// </summary>
+        /// <returns>A list of all ProductFeatures</returns>
+        public async Task<List<ProductFeature>> GetAllAdditionalProductFeaturesByUserAsync(string applicationUserId)
+        {
+            return await _context.ProductFeatures.Where(x => x.IsAdditional && x.ApplicationUserId == applicationUserId).ToListAsync();
+        }
+
         #endregion
 
         #region ProductFeatureDetail
@@ -77,8 +87,7 @@ namespace Logic.App
         /// <summary>
         /// Create a new ProductFeaturesDetail
         /// </summary>
-        /// <param name="productFeaturesDetail">The ProductFeaturesDetail object to add</param>
-        /// <returns></returns>
+        /// <param name="productFeaturesDetail">The ProductFeaturesDetail to be added</param>
         public async Task AddProductFeaturesDetailAsync(ProductFeaturesDetail productFeaturesDetail)
         {
             _context.ProductFeaturesDetails.Add(productFeaturesDetail);
@@ -86,10 +95,10 @@ namespace Logic.App
         }
 
         /// <summary>
-        /// Get a ProductFeaturesDetail by its ID with included ProductFeatures
+        /// Get a ProductFeaturesDetail by its ID
         /// </summary>
-        /// <param name="productFeaturesDetailId">The ID of the ProductFeaturesDetail to retrieve</param>
-        /// <returns>The ProductFeaturesDetail with included ProductFeatures</returns>
+        /// <param name="productFeaturesDetailId">The ID of the ProductFeaturesDetail</param>
+        /// <returns>The ProductFeaturesDetail with the specified ID</returns>
         public async Task<ProductFeaturesDetail> GetProductFeaturesDetailByIdAsync(int productFeaturesDetailId)
         {
             return await _context.ProductFeaturesDetails
@@ -97,33 +106,44 @@ namespace Logic.App
                 .FirstOrDefaultAsync(pfd => pfd.ProductFeaturesDetailId == productFeaturesDetailId);
         }
 
-
         /// <summary>
         /// Update an existing ProductFeaturesDetail
         /// </summary>
-        /// <param name="productFeaturesDetail">The updated ProductFeaturesDetail object</param>
-        /// <returns></returns>
+        /// <param name="productFeaturesDetail">The updated ProductFeaturesDetail</param>
         public async Task UpdateProductFeaturesDetailAsync(ProductFeaturesDetail productFeaturesDetail)
         {
-            _context.ProductFeaturesDetails.Update(productFeaturesDetail);
-            await _context.SaveChangesAsync();
+            var existingProductFeaturesDetail = await _context.ProductFeaturesDetails.FindAsync(productFeaturesDetail.ProductFeaturesDetailId);
+
+            if (existingProductFeaturesDetail != null)
+            {
+                _context.Entry(existingProductFeaturesDetail).CurrentValues.SetValues(productFeaturesDetail);
+                await _context.SaveChangesAsync();
+            }
         }
 
         /// <summary>
         /// Delete a ProductFeaturesDetail by its ID
         /// </summary>
-        /// <param name="productFeaturesDetailId">The ID of the ProductFeaturesDetail to delete</param>
-        /// <returns></returns>
+        /// <param name="productFeaturesDetailId">The ID of the ProductFeaturesDetail to be deleted</param>
         public async Task DeleteProductFeaturesDetailAsync(int productFeaturesDetailId)
         {
-            var productFeaturesDetail = await _context.ProductFeaturesDetails
-                .FirstOrDefaultAsync(pfd => pfd.ProductFeaturesDetailId == productFeaturesDetailId);
-
+            var productFeaturesDetail = await _context.ProductFeaturesDetails.FindAsync(productFeaturesDetailId);
             if (productFeaturesDetail != null)
             {
                 _context.ProductFeaturesDetails.Remove(productFeaturesDetail);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        /// <summary>
+        /// Get all ProductFeaturesDetails
+        /// </summary>
+        /// <returns>A list of all ProductFeaturesDetails</returns>
+        public async Task<List<ProductFeaturesDetail>> GetAllProductFeaturesDetailsAsync()
+        {
+            return await _context.ProductFeaturesDetails
+                .Include(pfd => pfd.ProductFeaturesIdNavigation)
+                .ToListAsync();
         }
 
         /// <summary>

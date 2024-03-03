@@ -60,7 +60,7 @@
         /// </summary>
         /// <param name="productCategoryId"></param>
         /// <returns></returns>
-        Task DeleteProductCategory(int productCategoryId);
+        Task DeleteProductCategoryAsync(int productCategoryId);
 
         /// <summary>
         /// Delete

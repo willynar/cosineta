@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using System.Data;
+using System.Linq;
 
 namespace Logic.App
 {
@@ -66,6 +67,7 @@ namespace Logic.App
         /// <param name="product"></param>
         public async Task AddProduct(Product product)
         {
+            product.CreationDate = DateTime.Now;
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
         }
@@ -80,6 +82,7 @@ namespace Logic.App
 
             if (product != null)
             {
+                product.UpdateDate = DateTime.Now;
                 product.Name = updatedProduct.Name;
                 product.Price = updatedProduct.Price;
                 product.Description = updatedProduct.Description;
@@ -118,57 +121,27 @@ namespace Logic.App
         {
             try
             {
-                string? Filter = objectParams switch
-                {
-                    var op when op.PriceMin != null && op.PriceMax != null && op.Review != null && op.CategoryValue != null && op.SorterValue != null && op.FilterValue != null => "All",
-
-                    var op when op.PriceMin != null && op.PriceMax != null && op.Review == null && op.CategoryValue == null && op.FilterValue == null => "PriceRange",
-
-                    var op when op.PriceMin == null && op.PriceMax == null && op.Review == null && op.CategoryValue == null && op.FilterValue != null => "FilterValue",
-
-                    var op when op.PriceMin == null && op.PriceMax == null && op.Review == null && op.CategoryValue != null && op.FilterValue == null => "Category",
-
-                    var op when op.PriceMin == null && op.PriceMax == null && op.Review != null && op.CategoryValue == null && op.FilterValue == null => "Review",
-
-                    var op when op.PriceMin != null && op.PriceMax != null && op.Review == null && op.CategoryValue != null && op.FilterValue == null => "PriceRange,Category",
-
-                    var op when op.PriceMin == null && op.PriceMax == null && op.Review != null && op.CategoryValue != null && op.FilterValue == null => "Review,Category",
-
-                    var op when op.PriceMin != null && op.PriceMax != null && op.Review != null && op.CategoryValue == null && op.FilterValue == null => "PriceRange,Review",
-
-                    var op when op.PriceMin != null && op.PriceMax != null && op.Review == null && op.CategoryValue == null && op.FilterValue == null => "PriceRange,FilterValue",
-
-                    var op when op.PriceMin == null && op.PriceMax == null && op.Review != null && op.CategoryValue != null && op.FilterValue == null => "Category,FilterValue",
-
-                    var op when op.PriceMin == null && op.PriceMax == null && op.Review != null && op.CategoryValue == null && op.FilterValue != null => "Review,FilterValue",
-
-                    var op when op.PriceMin != null && op.PriceMax != null && op.Review != null && op.CategoryValue != null && op.FilterValue == null => "PriceRange,Category,Review",
-
-                    var op when op.PriceMin != null && op.PriceMax != null && op.Review == null && op.CategoryValue != null && op.FilterValue != null => "PriceRange,Category,FilterValue",
-
-                    var op when op.PriceMin != null && op.PriceMax != null && op.Review != null && op.CategoryValue == null && op.FilterValue != null => "PriceRange,Review,FilterValue",
-
-                    var op when op.PriceMin == null && op.PriceMax == null && op.Review != null && op.CategoryValue != null && op.FilterValue != null => "Category,Review,FilterValue",
-
-                    _ => null,
-                };
+                string? Filter = string.Join(",", FilterCombinations.GetCombinations(objectParams));
                 SqlParameter[] parameters =
                 {
-                      new SqlParameter("@Page", objectParams.Page),
-                      new SqlParameter("@Reg", objectParams.Reg),
-                      new SqlParameter("@Filter", Filter),
-                      new SqlParameter("@FilterValue", objectParams.FilterValue),
-                      new SqlParameter("@PriceMin", objectParams.PriceMin),
-                      new SqlParameter("@PriceMax", objectParams.PriceMax),
-                      new SqlParameter("@Review", objectParams.Review),
-                      new SqlParameter("@CategoryValue", objectParams.CategoryValue != null?string.Join(",", objectParams.CategoryValue):null),
-                      new SqlParameter("@SorterValue", objectParams.SorterValue),
-                      new SqlParameter("@Sort", objectParams.Sort ? 1 : 0)
+                    new SqlParameter("@Page", objectParams.Page),
+                    new SqlParameter("@Reg", objectParams.Reg),
+                    new SqlParameter("@Filter", Filter),
+                    new SqlParameter("@FilterValue", objectParams.FilterValue),
+                    new SqlParameter("@PriceMin", objectParams.PriceMin),
+                    new SqlParameter("@PriceMax", objectParams.PriceMax),
+                    new SqlParameter("@Review", objectParams.Review),
+                    new SqlParameter("@CategoryIds", objectParams.CategoryIds != null ? string.Join(",", objectParams.CategoryIds) : null),
+                    new SqlParameter("@FeactureIds", objectParams.FeatureIds != null ? string.Join(",", objectParams.FeatureIds) : null),
+                    new SqlParameter("@StarTime", objectParams.StarTime),
+                    new SqlParameter("@EndTime", objectParams.EndTime),
+                    new SqlParameter("@Serving", objectParams.Serving),
+                    new SqlParameter("@SorterValue", objectParams.SorterValue),
+                    new SqlParameter("@Sort", objectParams.Sort ? 1 : 0)
                 };
 
-                //Se crea array con los parametros
-
                 var Data = await IExecuteProceduresService.GetPaginatedProducts(parameters);
+
                 if (!Data.Columns.Contains("error"))
                 {
                     return ListProductsFronStoreProcedure(Data);
@@ -177,13 +150,13 @@ namespace Logic.App
                 {
                     throw new Exception($"{Data.Rows[0][0]}");
                 }
-
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
+
 
         /// <summary>
         /// list  datatable  to list<T>
@@ -241,6 +214,7 @@ namespace Logic.App
         {
             try
             {
+                review.CreationDate = DateTime.Now;
                 await AddProductReview(review);
                 List<int> reviews = await ListReviewStarsProductId(review);
                 int average = (int)Math.Round(reviews.Average());
@@ -262,6 +236,7 @@ namespace Logic.App
         {
             try
             {
+                review.UpdateDate = DateTime.Now;
                 await UpdProductReviewById(review);
                 List<int> reviews = await ListReviewStarsProductId(review);
                 int average = (int)Math.Round(reviews.Average());
@@ -289,13 +264,13 @@ namespace Logic.App
         /// <returns></returns>
         public async Task UpdStarsProduct(int? productId, int averageStars)
         {
-            var Review = _context.Products.Find(productId);
+            var Product = _context.Products.Find(productId);
 
-            if (Review != null)
+            if (Product != null)
             {
-                Review.Review = averageStars;
-
-                _context.Entry(Review).State = EntityState.Modified;
+                Product.UpdateDate = DateTime.Now;
+                Product.Review = averageStars;
+                _context.Entry(Product).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
         }
@@ -317,6 +292,7 @@ namespace Logic.App
         /// <param name="review"></param>
         public async Task AddProductReview(Review review)
         {
+            review.CreationDate = DateTime.Now;
             _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
         }
@@ -331,6 +307,7 @@ namespace Logic.App
 
             if (Review != null)
             {
+                Review.UpdateDate = DateTime.Now;
                 Review.Title = updatedReview.Title;
                 Review.Description = updatedReview.Description;
                 Review.Author = updatedReview.Author;
@@ -375,7 +352,7 @@ namespace Logic.App
         /// <returns>The ProductSchedule with the specified ID</returns>
         public async Task<ProductSchedule> GetProductScheduleByIdAsync(int productScheduleId)
         {
-            return await _context.ProductSchedules.FirstOrDefaultAsync(ps => ps.UserScheduleId == productScheduleId);
+            return await _context.ProductSchedules.FirstOrDefaultAsync(ps => ps.ProductScheduleId == productScheduleId);
         }
 
         /// <summary>
@@ -384,8 +361,13 @@ namespace Logic.App
         /// <param name="productSchedule">The updated ProductSchedule</param>
         public async Task UpdateProductScheduleAsync(ProductSchedule productSchedule)
         {
-            _context.ProductSchedules.Update(productSchedule);
-            await _context.SaveChangesAsync();
+            var existingProductSchedule = await _context.ProductSchedules.FindAsync(productSchedule.ProductScheduleId);
+
+            if (existingProductSchedule != null)
+            {
+                _context.Entry(existingProductSchedule).CurrentValues.SetValues(productSchedule);
+                await _context.SaveChangesAsync();
+            }
         }
 
         /// <summary>
@@ -394,7 +376,7 @@ namespace Logic.App
         /// <param name="productScheduleId">The ID of the ProductSchedule to be deleted</param>
         public async Task DeleteProductScheduleAsync(int productScheduleId)
         {
-            var productSchedule = await _context.ProductSchedules.FirstOrDefaultAsync(ps => ps.UserScheduleId == productScheduleId);
+            var productSchedule = await _context.ProductSchedules.FirstOrDefaultAsync(ps => ps.ProductScheduleId == productScheduleId);
             if (productSchedule != null)
             {
                 _context.ProductSchedules.Remove(productSchedule);

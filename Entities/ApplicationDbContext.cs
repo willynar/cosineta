@@ -38,7 +38,9 @@ namespace Entities
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProductFeactureDetail> OrderProductFeactureDetails { get; set; }
         public DbSet<OrderProductFeacture> OrderProductFeactures { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<UserPaymentMethod> UserPaymentMethods { get; set; }
+        public DbSet<OrderProductTax> OrderProductTaxes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

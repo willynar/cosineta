@@ -3,7 +3,7 @@
     public class ProductSchedule
     {
         [Key]
-        public int UserScheduleId { get; set; }
+        public int ProductScheduleId { get; set; }
 
         public DateTime StarTime { get; set; }
 

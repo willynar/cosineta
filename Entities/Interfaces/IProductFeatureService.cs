@@ -36,6 +36,12 @@
         /// </summary>
         /// <returns>A list of all ProductFeatures</returns>
         Task<List<ProductFeature>> GetAllProductFeaturesAsync();
+
+        /// <summary>
+        /// Get all ProductFeatures Additional
+        /// </summary>
+        /// <returns>A list of all ProductFeatures</returns>
+        Task<List<ProductFeature>> GetAllAdditionalProductFeaturesByUserAsync(string applicationUserId);
         #endregion
 
         #region ProductFeatureDetail

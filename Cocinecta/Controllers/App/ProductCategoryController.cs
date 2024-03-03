@@ -184,7 +184,7 @@ namespace Cocinecta.Controllers.App
         {
             try
             {
-                await ICategoryService.DeleteProductCategory(id);
+                await ICategoryService.DeleteProductCategoryAsync(id);
                 return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Logout) });
             }
             catch (Exception exc)

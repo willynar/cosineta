@@ -15,7 +15,11 @@ namespace Entities.App
 
         public int Stars { get; set; }
 
-        public DateTime Date { get; set; }
+        [JsonIgnore]
+        public DateTime CreationDate { get; set; }
+
+        [JsonIgnore]
+        public DateTime UpdateDate { get; set; }
 
         [Required, ForeignKey("Type")]
         public required int TypeId { get; set; }

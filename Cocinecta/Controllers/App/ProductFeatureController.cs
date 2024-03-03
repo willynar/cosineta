@@ -1,4 +1,5 @@
-﻿using Entities.App;
+﻿using Entities.Administration;
+using Entities.App;
 
 namespace Cocinecta.Controllers.App
 {
@@ -46,6 +47,23 @@ namespace Cocinecta.Controllers.App
                 return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
             }
         }
+
+        // GET api/<ProductFeatureController>/Additional/User/5
+        [HttpGet("Additional/User/{applicationUserId}")]
+        [ProducesResponseType(typeof(ProductFeature), 200)]
+        public async Task<IActionResult> GetAdditionalUser([FromRoute] string applicationUserId)
+        {
+            try
+            {
+                return Ok(await IProductFeatureService.GetAllAdditionalProductFeaturesByUserAsync(applicationUserId));
+            }
+            catch (Exception exc)
+            {
+                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
+            }
+        }
+
 
         // POST api/<ProductFeatureController>
         [HttpPost]
