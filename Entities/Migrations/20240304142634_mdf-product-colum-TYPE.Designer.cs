@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240304142634_mdf-product-colum-TYPE")]
+    partial class mdfproductcolumTYPE
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -694,17 +697,12 @@ namespace Entities.Migrations
                     b.Property<int?>("Stock")
                         .HasColumnType("int");
 
-                    b.Property<int>("TypeId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("ProductId");
 
                     b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("TypeId");
 
                     b.ToTable("Products");
                 });
@@ -1169,15 +1167,7 @@ namespace Entities.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Administration.Type", "TypeIdNavigation")
-                        .WithMany("Products")
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("ApplicationUserIdNavigation");
-
-                    b.Navigation("TypeIdNavigation");
                 });
 
             modelBuilder.Entity("Entities.App.ProductCategory", b =>
@@ -1249,7 +1239,7 @@ namespace Entities.Migrations
                         .HasForeignKey("ProductId");
 
                     b.HasOne("Entities.Administration.Type", "TypeIdNavigation")
-                        .WithMany("Reviews")
+                        .WithMany("Products")
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1345,8 +1335,6 @@ namespace Entities.Migrations
                     b.Navigation("ApplicationUsers");
 
                     b.Navigation("Products");
-
-                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Entities.App.Order", b =>

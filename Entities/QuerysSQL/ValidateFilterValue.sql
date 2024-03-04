@@ -1,3 +1,9 @@
+/****** Object:  UserDefinedFunction [dbo].[ValidateFilterValue]    Script Date: 4/03/2024 1:50:22 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
 ALTER FUNCTION [dbo].[ValidateFilterValue]
 (
 	@ProductId NVARCHAR(MAX) NULL,

@@ -25,6 +25,9 @@
 
         public int? Stock { get; set; }
 
+        [Required, ForeignKey("Type")]
+        public required int TypeId { get; set; }
+
         [JsonIgnore]
         public DateTime CreationDate { get; set; }
 
@@ -46,5 +49,8 @@
 
         [JsonIgnore]
         public virtual ICollection<ProductSchedule> ProductSchedules { get; } = new List<ProductSchedule>();
+
+        [JsonIgnore]
+        public virtual Administration.Type? TypeIdNavigation { get; set; }
     }
 }

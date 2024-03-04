@@ -10,6 +10,9 @@
         public bool ValidForUser { get; set; }
 
         [JsonIgnore]
+        public virtual ICollection<Review> Reviews { get; } = new List<Review>();
+
+        [JsonIgnore]
         public virtual ICollection<Product> Products { get; } = new List<Product>();
 
         [JsonIgnore]

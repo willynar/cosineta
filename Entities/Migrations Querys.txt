@@ -1,4 +1,4 @@
-﻿Add-Migration mdf-product-colum -Context ApplicationDbContext -OutputDir Migrations -p Entities
+﻿Add-Migration add-product-colum-TYPE -Context ApplicationDbContext -OutputDir Migrations -p Entities
 update-database -Context ApplicationDbContext -p Entities -migration 20240303224812_mdf-product-colum
 
 

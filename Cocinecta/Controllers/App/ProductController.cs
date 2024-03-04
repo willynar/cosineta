@@ -78,6 +78,7 @@ namespace Cocinecta.Controllers.App
 
         // POST api/<ProductController>
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody] Product product)
         {
             if (!ModelState.IsValid)
