@@ -26,23 +26,23 @@ namespace Entities.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "TypeId",
-                table: "Products",
-                type: "int",
-                nullable: true);
+            //migrationBuilder.AddColumn<int>(
+            //    name: "TypeId",
+            //    table: "Products",
+            //    type: "int",
+            //    nullable: true);
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_TypeId",
-                table: "Products",
-                column: "TypeId");
+            //migrationBuilder.CreateIndex(
+            //    name: "IX_Products_TypeId",
+            //    table: "Products",
+            //    column: "TypeId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Products_Types_TypeId",
-                table: "Products",
-                column: "TypeId",
-                principalTable: "Types",
-                principalColumn: "TypeId");
+            //migrationBuilder.AddForeignKey(
+            //    name: "FK_Products_Types_TypeId",
+            //    table: "Products",
+            //    column: "TypeId",
+            //    principalTable: "Types",
+            //    principalColumn: "TypeId");
         }
     }
 }

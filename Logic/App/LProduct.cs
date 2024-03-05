@@ -168,6 +168,7 @@ namespace Logic.App
         {
             try
             {
+
                 List<ProductStoreProcedure> objEafit = new();
                 for (var i = 0; i < data.Rows.Count; i++)
                 {
@@ -186,10 +187,9 @@ namespace Logic.App
                         ApplicationUserId = data.Rows[i]["ApplicationUserId"] != DBNull.Value ? data.Rows[i]["ApplicationUserId"].ToString() : null,
                         UserName = data.Rows[i]["UserName"] != DBNull.Value ? data.Rows[i]["UserName"].ToString() : null,
                         UserLastName = data.Rows[i]["UserLastName"] != DBNull.Value ? data.Rows[i]["UserLastName"].ToString() : null,
-                        //Categorys = data.Rows[i]["Categories"] != DBNull.Value ? JsonConvert.DeserializeObject<List<Category>>($"[{data.Rows[i]["Categories"]}]".Replace("\"\"", "\"")) : null,
-                        //ProductFeatures = data.Rows[i]["ProductFeatures"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductFeature>>($"[{data.Rows[i]["ProductFeatures"]}]".Replace("\"\"", "\"")) : null
-
-
+                        Categorys = data.Rows[i]["Categories"] != DBNull.Value ? JsonConvert.DeserializeObject<List<Category>>($"[{data.Rows[i]["Categories"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x=>x.CategoryId).ToList() : null,
+                        ProductFeatures = data.Rows[i]["ProductFeatures"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductFeature>>($"[{data.Rows[i]["ProductFeatures"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x=>x.ProductFeatureId).ToList() : null,
+                        ProductSchedules = data.Rows[i]["ProductSchedules"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductSchedule>>($"[{data.Rows[i]["ProductSchedules"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x=>x.ProductScheduleId).ToList() : null
                     };
                     objEafit.Add(obj);
                 }
