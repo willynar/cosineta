@@ -17,6 +17,8 @@
 
         public string? Direccion { get; set; }
 
+        public decimal? Kilometers { get; set; }
+
         [Required, ForeignKey("ApplicationUser")]
         public required string ApplicationUserId { get; set; }
 

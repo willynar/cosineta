@@ -26,10 +26,8 @@ namespace Entities.Administration
 
         public int VerifyNumber { get; set; }
 
-        [JsonIgnore]
         public string Login { get; set; } = string.Empty;
 
-        [JsonIgnore]
         public string Password { get; set; } = string.Empty;
 
         [JsonIgnore]
@@ -43,9 +41,14 @@ namespace Entities.Administration
 
         public virtual Type? TypeIdNavigation { get; set; }
 
+        [JsonIgnore]
 
         public virtual ICollection<UserRole> UsersRoles { get; } = new List<UserRole>();
+        [JsonIgnore]
+
         public virtual ICollection<Review> UserReviews { get; } = new List<Review>();
+        [JsonIgnore]
+
         public virtual ICollection<UserSchedule> UserSchedules { get; } = new List<UserSchedule>();
 
         [JsonIgnore]
@@ -53,7 +56,8 @@ namespace Entities.Administration
 
         [JsonIgnore]
         public virtual ICollection<ProductFeature> ProductFeature { get; } = new List<ProductFeature>();
-
+        
+        [JsonIgnore]
         public virtual ICollection<UserPaymentMethod> UserPaymentMethods { get; } = new List<UserPaymentMethod>();
 
 
