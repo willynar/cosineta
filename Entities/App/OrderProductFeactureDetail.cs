@@ -5,7 +5,6 @@
         [Key]
         public int OrderProductFeactureDetailId { get; set; }
 
-        public decimal Price { get; set; }
 
         [Required, ForeignKey("Order")]
         public required int OrderId { get; set; }
@@ -16,15 +15,15 @@
         [Required, ForeignKey("OrderProduct")]
         public int? OrderProductId { get; set; }
 
-        [JsonIgnore]
         public virtual OrderProduct? OrderProductIdNavigation { get; set; }
 
         //To Feacture
         [Required, ForeignKey("OrderProductFeactureOnly")]
         public int? OrderProductFeactureOnlyId { get; set; }
 
-        [JsonIgnore]
         public virtual OrderProductFeactureOnly? OrderProductFeactureOnlyIdNavigation { get; set; }
+
+        public string? ApplicationUserIdSeller{ get; set; }
 
         public DateTime StarTime { get; set; }
 

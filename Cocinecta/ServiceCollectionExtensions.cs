@@ -27,6 +27,7 @@ namespace Cocinecta
             services.AddScoped<IExecuteProceduresService, LExecuteProcedures>();
             services.AddScoped<IStoredProceduresService, LStoreProcedures>();
             services.AddScoped<IProductFeatureService, LProductFeature>();
+            services.AddScoped<IOrderService, LOrder>();
 
             return services;
         }

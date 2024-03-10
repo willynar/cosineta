@@ -19,13 +19,19 @@
 
         public decimal? Kilometers { get; set; }
 
+        public string? Bin { get; set; }
+
+        public string? PaymentMethod { get; set; }
+
+        public string? PaymentStatus { get; set; }
+
+
         [Required, ForeignKey("ApplicationUser")]
         public required string ApplicationUserId { get; set; }
 
         [JsonIgnore]
         public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
 
-        [JsonIgnore]
         public virtual ICollection<OrderProductFeactureDetail> OrderProductFeactureDetails { get; } = new List<OrderProductFeactureDetail>();
 
     }

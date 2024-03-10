@@ -27,15 +27,12 @@
 
         public int? Stock { get; set; }
 
-        public string? ApplicationUserIdFeacture { get; set; }
-
         [JsonIgnore]
         public DateTime CreationDate { get; set; }
 
         [JsonIgnore]
         public DateTime UpdateDate { get; set; }
 
-        [JsonIgnore]
         public virtual ICollection<OrderProductFeacture> OrderProductFeactures { get; } = new List<OrderProductFeacture>();
     }
 }

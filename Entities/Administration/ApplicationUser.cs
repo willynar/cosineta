@@ -39,6 +39,7 @@ namespace Entities.Administration
         [JsonIgnore]
         public string TokenOutlook { get; set; } = string.Empty;
 
+        [JsonIgnore]
         public virtual Type? TypeIdNavigation { get; set; }
 
         [JsonIgnore]

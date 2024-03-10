@@ -19,8 +19,6 @@
         [JsonIgnore]
         public DateTime UpdateDate { get; set; }
 
-        public string? ApplicationUserIdFeacture { get; set; }
-
         [Required, ForeignKey("OrderProduct")]
         public  int? OrderProductId { get; set; }
 
