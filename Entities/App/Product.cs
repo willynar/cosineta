@@ -19,7 +19,9 @@
 
         public bool Active { get; set; }
 
-        public decimal? Review { get; set; }
+        public decimal? AVGReview { get; set; }
+
+        public int? QuantityReview { get; set; }
 
         public int? Serving { get; set; }
 

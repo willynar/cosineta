@@ -1,5 +1,5 @@
-﻿Add-Migration mdf-orders-2 -Context ApplicationDbContext -OutputDir Migrations -p Entities
-update-database -Context ApplicationDbContext -p Entities -migration 20240310182901_mdf-orders-2
+﻿Add-Migration mdf-revies-UP -Context ApplicationDbContext -OutputDir Migrations -p Entities
+update-database -Context ApplicationDbContext -p Entities -migration 20240319020702_mdf-revies-UP
 
 
 

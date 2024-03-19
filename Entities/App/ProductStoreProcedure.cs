@@ -11,7 +11,8 @@
         public int? Serving { get; set; }
         public string? Ingredients { get; set; }
         public bool ProductActive { get; set; }
-        public decimal? Review { get; set; }
+        public decimal? AVGReview { get; set; }
+        public int? QuantityReview { get; set; }
         public string? ApplicationUserId { get; set; }
         public string? UserName { get; set; }
         public string? UserLastName { get; set; }
@@ -21,6 +22,5 @@
         public List<ProductFeature>? ProductFeatures { get; set; }
 
         public List<ProductSchedule>? ProductSchedules { get; set; }
-
     }
 }

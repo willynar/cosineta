@@ -90,7 +90,7 @@ namespace Entities.Interfaces
         /// <param name="productId"></param>
         /// <param name="averageStars"></param>
         /// <returns></returns>
-        Task UpdStarsProduct(int? productId, int averageStars);
+        Task UpdStarsProduct(int? productId, decimal averageStars, int quantityReview);
 
         Task<List<Review>> GetAllProductReviews();
 

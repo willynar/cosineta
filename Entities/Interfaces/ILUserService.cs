@@ -33,5 +33,66 @@ namespace Entities.Interfaces
         Task<List<RolLink>> GetAllRolLinks();
         Task<List<Module>> GetAllModules();
         Task<List<UserRole>> GetAllUsersRoles();
+
+        #region Reviews
+
+        /// <summary>
+        /// call actions necesary to save new review User
+        /// </summary>
+        /// <param name="review"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        Task ActionsAddUserReview(Review review);
+
+        /// <summary>
+        /// call actions necesary to update review User
+        /// </summary>
+        /// <param name="review"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        Task ActionsUpdUserReview(Review review);
+
+        /// <summary>
+        /// list revies stars
+        /// </summary>
+        /// <param name="review"></param>
+        /// <returns></returns>
+        Task<List<int>> ListReviewStarsUserId(Review review);
+
+        /// <summary>
+        /// update stars averrange fro User
+        /// </summary>
+        /// <param name="applicationUserId"></param>
+        /// <param name="averageStars"></param>
+        /// <returns></returns>
+        Task UpdStarsUser(string? applicationUserId, decimal averageStars, int quantityReview);
+
+        Task<List<Review>> GetAllUserReviews();
+
+        /// <summary>
+        /// get Review by id Review
+        /// </summary>
+        /// <param name="applicationUserId"></param>
+        /// <returns></returns>
+        Task<Review> GetUserReviewByUserId(string? applicationUserId);
+
+        /// <summary>
+        /// save new Review
+        /// </summary>
+        /// <param name="review"></param>
+        Task AddUserReview(Review review);
+
+        /// <summary>
+        /// update Review by id
+        /// </summary>
+        /// <param name="updatedReview"></param>
+        Task UpdUserReviewById(Review updatedReview);
+
+        /// <summary>
+        /// delete Review by id Review
+        /// </summary>
+        /// <param name="reviewId"></param>
+        Task DeleteUserReviewById(int reviewId);
+        #endregion
     }
 }

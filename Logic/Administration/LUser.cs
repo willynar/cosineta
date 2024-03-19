@@ -306,5 +306,138 @@ namespace Logic.Administration
                 .ToListAsync();
         }
 
+
+        #region Reviews
+
+        /// <summary>
+        /// call actions necesary to save new review User
+        /// </summary>
+        /// <param name="review"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task ActionsAddUserReview(Review review)
+        {
+            try
+            {
+                review.CreationDate = DateTime.Now;
+                await AddUserReview(review);
+                List<int> reviews = await ListReviewStarsUserId(review);
+                int average = (int)Math.Round(reviews.Average());
+                await UpdStarsUser(review.ApplicationUserId, average, reviews.Count);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// call actions necesary to update review User
+        /// </summary>
+        /// <param name="review"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task ActionsUpdUserReview(Review review)
+        {
+            try
+            {
+                review.UpdateDate = DateTime.Now;
+                await UpdUserReviewById(review);
+                List<int> reviews = await ListReviewStarsUserId(review);
+                int average = (int)Math.Round(reviews.Average());
+                await UpdStarsUser(review.ApplicationUserId, average, reviews.Count);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// list revies stars
+        /// </summary>
+        /// <param name="review"></param>
+        /// <returns></returns>
+        public async Task<List<int>> ListReviewStarsUserId(Review review) =>
+            await _context.Reviews.Where(x => x.ApplicationUserId == review.ApplicationUserId).Select(x => x.Stars).ToListAsync();
+
+        /// <summary>
+        /// update stars averrange fro User
+        /// </summary>
+        /// <param name="applicationUserId"></param>
+        /// <param name="averageStars"></param>
+        /// <returns></returns>
+        public async Task UpdStarsUser(string? applicationUserId, decimal averageStars, int quantityReview)
+        {
+            var User = _context.Users.Find(applicationUserId);
+
+            if (User != null)
+            {
+                User.UpdateDate = DateTime.Now;
+                User.AvgReview = averageStars;
+                User.QuantityReview = quantityReview;
+                _context.Entry(User).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<List<Review>> GetAllUserReviews() =>
+         await _context.Reviews.ToListAsync();
+
+        /// <summary>
+        /// get Review by id Review
+        /// </summary>
+        /// <param name="applicationUserId"></param>
+        /// <returns></returns>
+        public async Task<Review> GetUserReviewByUserId(string? applicationUserId) =>
+          await _context.Reviews.FirstOrDefaultAsync(p => p.ApplicationUserId == applicationUserId);
+
+        /// <summary>
+        /// save new Review
+        /// </summary>
+        /// <param name="review"></param>
+        public async Task AddUserReview(Review review)
+        {
+            review.CreationDate = DateTime.Now;
+            _context.Reviews.Add(review);
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// update Review by id
+        /// </summary>
+        /// <param name="updatedReview"></param>
+        public async Task UpdUserReviewById(Review updatedReview)
+        {
+            var Review = _context.Reviews.Find(updatedReview.ReviewId);
+
+            if (Review != null)
+            {
+                Review.UpdateDate = DateTime.Now;
+                Review.Title = updatedReview.Title;
+                Review.Description = updatedReview.Description;
+                Review.Author = updatedReview.Author;
+                Review.ApplicationUserId = updatedReview.ApplicationUserId;
+
+                _context.Entry(Review).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        /// <summary>
+        /// delete Review by id Review
+        /// </summary>
+        /// <param name="reviewId"></param>
+        public async Task DeleteUserReviewById(int reviewId)
+        {
+            var Review = _context.Reviews.Find(reviewId);
+
+            if (Review != null)
+            {
+                _context.Reviews.Remove(Review);
+                await _context.SaveChangesAsync();
+            }
+        }
+        #endregion
     }
 }

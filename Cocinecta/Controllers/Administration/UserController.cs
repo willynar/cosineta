@@ -1,4 +1,5 @@
 ﻿using Entities.Administration;
+using Entities.App;
 using Entities.Interfaces;
 
 namespace Cocinecta.Controllers.Administration
@@ -468,5 +469,100 @@ namespace Cocinecta.Controllers.Administration
         //        return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
         //    }
         //}
+
+
+        #region ReviewsReview
+
+        // GET: api/<UserController>/Review
+        [HttpGet("Review")]
+        [ProducesResponseType(typeof(List<Review>), 200)]
+        public async Task<IActionResult> GetReview()
+        {
+            try
+            {
+                return Ok(await _lUser.GetAllUserReviews());
+            }
+            catch (Exception exc)
+            {
+                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
+            }
+        }
+
+        // GET api/<UserController>/Review/5
+        [HttpGet("Review/{applicationUserId}")]
+        [ProducesResponseType(typeof(Review), 200)]
+
+        public async Task<IActionResult> GetReview([FromRoute] string applicationUserId)
+        {
+            try
+            {
+                return Ok(await _lUser.GetUserReviewByUserId(applicationUserId));
+            }
+            catch (Exception exc)
+            {
+                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
+            }
+        }
+
+        // POST api/<UserController>/Review
+        [HttpPost("Review")]
+        [AllowAnonymous]
+        public async Task<IActionResult> PostReview([FromBody] Review review)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { success = false, message = ErrorModelValidation.ShowError(new SerializableError(ModelState).Values) });
+            }
+            try
+            {
+                await _lUser.ActionsAddUserReview(review);
+                return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Saved) });
+            }
+            catch (Exception exc)
+            {
+                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
+            }
+        }
+
+        // PUT api/<UserController>/Review/5
+        [HttpPut("Review")]
+        public async Task<IActionResult> PutReview([FromBody] Review review)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { success = false, message = ErrorModelValidation.ShowError(new SerializableError(ModelState).Values) });
+            }
+            try
+            {
+                await _lUser.ActionsUpdUserReview(review);
+                return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Updated) });
+            }
+            catch (Exception exc)
+            {
+                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
+            }
+        }
+
+        // DELETE api/<UserController>/Review/5
+        [HttpDelete("Review/{id}")]
+        public async Task<IActionResult> DeleteReview([FromRoute] int id)
+        {
+            try
+            {
+                await _lUser.DeleteUserReviewById(id);
+                return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Logout) });
+            }
+            catch (Exception exc)
+            {
+                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
+            }
+        }
+
+        #endregion
     }
 }

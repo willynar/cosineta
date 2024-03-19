@@ -183,7 +183,8 @@ namespace Logic.App
                         Serving = data.Rows[i]["Serving"] != DBNull.Value ? (int?)data.Rows[i]["Serving"] : 0,
                         Ingredients = data.Rows[i]["Ingredients"] != DBNull.Value ? data.Rows[i]["Ingredients"].ToString() : null,
                         ProductActive = data.Rows[i]["ProductActive"] != DBNull.Value ? (bool)data.Rows[i]["ProductActive"] : false,
-                        Review = data.Rows[i]["Review"] != DBNull.Value ? (decimal)data.Rows[i]["Review"] : null,
+                        AVGReview = data.Rows[i]["AVGReview"] != DBNull.Value ? (decimal)data.Rows[i]["AVGReview"] : null,
+                        QuantityReview = data.Rows[i]["QuantityReview"] != DBNull.Value ? (int)data.Rows[i]["QuantityReview"] : null,
                         ApplicationUserId = data.Rows[i]["ApplicationUserId"] != DBNull.Value ? data.Rows[i]["ApplicationUserId"].ToString() : null,
                         UserName = data.Rows[i]["UserName"] != DBNull.Value ? data.Rows[i]["UserName"].ToString() : null,
                         UserLastName = data.Rows[i]["UserLastName"] != DBNull.Value ? data.Rows[i]["UserLastName"].ToString() : null,
@@ -218,7 +219,7 @@ namespace Logic.App
                 await AddProductReview(review);
                 List<int> reviews = await ListReviewStarsProductId(review);
                 int average = (int)Math.Round(reviews.Average());
-                await UpdStarsProduct(review.ProductId, average);
+                await UpdStarsProduct(review.ProductId, average, reviews.Count);
             }
             catch (Exception ex)
             {
@@ -240,7 +241,7 @@ namespace Logic.App
                 await UpdProductReviewById(review);
                 List<int> reviews = await ListReviewStarsProductId(review);
                 int average = (int)Math.Round(reviews.Average());
-                await UpdStarsProduct(review.ProductId, average);
+                await UpdStarsProduct(review.ProductId, average, reviews.Count);
             }
             catch (Exception ex)
             {
@@ -262,14 +263,15 @@ namespace Logic.App
         /// <param name="productId"></param>
         /// <param name="averageStars"></param>
         /// <returns></returns>
-        public async Task UpdStarsProduct(int? productId, int averageStars)
+        public async Task UpdStarsProduct(int? productId, decimal averageStars,int quantityReview)
         {
             var Product = _context.Products.Find(productId);
 
             if (Product != null)
             {
                 Product.UpdateDate = DateTime.Now;
-                Product.Review = averageStars;
+                Product.AVGReview = averageStars;
+                Product.QuantityReview = quantityReview;
                 _context.Entry(Product).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }

@@ -78,6 +78,8 @@ namespace Entities.Administration
         [PersonalData]
         [JsonIgnore]
         public override DateTimeOffset? LockoutEnd { get; set; }
+        public DateTime UpdateDate { get; set; }
+        public int QuantityReview { get; set; }
     }
 
     public class ApplicationRole : IdentityRole<string>
