@@ -87,6 +87,13 @@
         /// <param name="productId">The ID of the related Product</param>
         /// <returns></returns>
         Task DeleteAllProductFeaturesDetailsByProductIdAsync(int productId);
+
+        /// <summary>
+        /// create new product categoryfecture ans fecture relationship
+        /// </summary>
+        /// <param name="productFeatureCategory"></param>
+        /// <returns></returns>
+        Task AddProductFeaturesCategoryAsync(ProductCategoryFeactureModel productFeatureCategory);
         #endregion
     }
 }

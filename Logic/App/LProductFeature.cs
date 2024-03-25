@@ -183,6 +183,46 @@ namespace Logic.App
                 await _context.SaveChangesAsync();
             }
         }
+
+        /// <summary>
+        /// create new product categoryfecture ans fecture relationship
+        /// </summary>
+        /// <param name="productFeatureCategory"></param>
+        /// <returns></returns>
+        public async Task AddProductFeaturesCategoryAsync(ProductCategoryFeactureModel productFeatureCategory)
+        {
+            var category = new ProductFeactureCategory()
+            {
+                Category = productFeatureCategory.Category,
+                CreationDate = DateTime.Now
+            };
+            _context.ProductFeactureCategorys.Add(category);
+            await _context.SaveChangesAsync();
+
+            foreach (var item in productFeatureCategory.ListProductFeactures)
+            {
+                var feacture = new ProductFeature()
+                {
+                    Features = item.Features,
+                    MultipleSelection = item.MultipleSelection,
+                    IsAdditional = item.IsAdditional,
+                    AdditionalValue = item.AdditionalValue,
+                    Active = item.Active,
+                    ApplicationUserId = item.ApplicationUserId,
+                    CreationDate = DateTime.Now
+                };
+                _context.ProductFeatures.Add(feacture);
+                await _context.SaveChangesAsync();
+
+                _context.ProductFeaturesDetails.Add(new ProductFeaturesDetail()
+                {
+                    ProductFeactureCategoryId = category.ProductFeactureCategoryId,
+                    ProductFeaturesId = feacture.ProductFeatureId,
+                    ProductId = productFeatureCategory.ProductId
+                });
+                await _context.SaveChangesAsync();
+            }
+        }
         #endregion
     }
 }

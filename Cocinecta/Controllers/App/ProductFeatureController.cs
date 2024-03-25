@@ -176,6 +176,26 @@ namespace Cocinecta.Controllers.App
             }
         }
 
+        // POST api/<ProductFeatureController>/ProductFeatureCategoryDetail
+        [HttpPost("ProductFeatureCategoryDetail")]
+        public async Task<IActionResult> PostProductFeaturesCategoryDetail([FromBody] ProductCategoryFeactureModel ProductFeaturesDetail)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { success = false, message = ErrorModelValidation.ShowError(new SerializableError(ModelState).Values) });
+            }
+            try
+            {
+                await IProductFeatureService.AddProductFeaturesCategoryAsync(ProductFeaturesDetail);
+                return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Saved) });
+            }
+            catch (Exception exc)
+            {
+                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
+            }
+        }
+
         // PUT api/<ProductFeatureController>/ProductFeature/5
         [HttpPut("ProductFeatureDetail")]
         public async Task<IActionResult> PutProductFeatureDetail([FromBody] ProductFeaturesDetail ProductFeaturesDetail)
