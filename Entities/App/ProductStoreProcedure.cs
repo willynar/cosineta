@@ -22,5 +22,6 @@
         public List<ProductFeature>? ProductFeatures { get; set; }
 
         public List<ProductSchedule>? ProductSchedules { get; set; }
+        public List<ProductCategoryFeactureModel> ProductFeactureCategorys { get; set; }
     }
 }

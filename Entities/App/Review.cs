@@ -19,7 +19,7 @@ namespace Entities.App
         public DateTime CreationDate { get; set; }
 
         [JsonIgnore]
-        public DateTime UpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
         [Required, ForeignKey("Type")]
         public required int TypeId { get; set; }

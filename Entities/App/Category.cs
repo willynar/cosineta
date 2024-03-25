@@ -14,6 +14,12 @@ namespace Entities.App
 
         public bool Active { get; set; }
 
+        [JsonIgnore]
+        public DateTime CreationDate { get; set; }
+
+        [JsonIgnore]
+        public DateTime? UpdateDate { get; set; }
+
         [NotMapped]
         [JsonIgnore]
         public virtual ICollection<ProductCategory> ProductCategorys { get; } = new List<ProductCategory>();

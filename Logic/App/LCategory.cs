@@ -18,6 +18,7 @@ namespace Logic.App
         /// <param name="category">The Category to be added</param>
         public async Task AddCategoryAsync(Category category)
         {
+            category.CreationDate = DateTime.Now;
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
         }
@@ -42,6 +43,7 @@ namespace Logic.App
 
             if (existingCategory != null)
             {
+                category.UpdateDate = DateTime.Now;
                 _context.Entry(existingCategory).CurrentValues.SetValues(category);
                 await _context.SaveChangesAsync();
             }
@@ -80,6 +82,7 @@ namespace Logic.App
         /// <param name="productCategory">The ProductCategory to be added</param>
         public async Task AddProductCategoryAsync(ProductCategory productCategory)
         {
+            productCategory.CreationDate = DateTime.Now;
             _context.ProductCategorys.Add(productCategory);
             await _context.SaveChangesAsync();
         }
@@ -106,6 +109,7 @@ namespace Logic.App
 
             if (existingProductCategory != null)
             {
+                productCategory.UpdateDate = DateTime.Now;
                 _context.Entry(existingProductCategory).CurrentValues.SetValues(productCategory);
                 await _context.SaveChangesAsync();
             }

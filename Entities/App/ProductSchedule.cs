@@ -17,7 +17,7 @@
         public DateTime CreationDate { get; set; }
 
         [JsonIgnore]
-        public DateTime UpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
         public bool Active { get; set; }
 

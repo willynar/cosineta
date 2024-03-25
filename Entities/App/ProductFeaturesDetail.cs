@@ -20,7 +20,7 @@
         public DateTime CreationDate { get; set; }
 
         [JsonIgnore]
-        public DateTime UpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
         [JsonIgnore]
         public virtual Product? ProductIdNavigation { get; set; }

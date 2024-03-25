@@ -19,6 +19,7 @@ namespace Logic.App
         /// <param name="productFeature">The ProductFeature to be added</param>
         public async Task AddProductFeatureAsync(ProductFeature productFeature)
         {
+            productFeature.CreationDate = DateTime.Now;
             _context.ProductFeatures.Add(productFeature);
             await _context.SaveChangesAsync();
         }
@@ -43,6 +44,7 @@ namespace Logic.App
 
             if (existingProductFeature != null)
             {
+                productFeature.UpdateDate = DateTime.Now;
                 _context.Entry(existingProductFeature).CurrentValues.SetValues(productFeature);
                 await _context.SaveChangesAsync();
             }
@@ -90,6 +92,7 @@ namespace Logic.App
         /// <param name="productFeaturesDetail">The ProductFeaturesDetail to be added</param>
         public async Task AddProductFeaturesDetailAsync(ProductFeaturesDetail productFeaturesDetail)
         {
+            productFeaturesDetail.CreationDate = DateTime.Now;
             _context.ProductFeaturesDetails.Add(productFeaturesDetail);
             await _context.SaveChangesAsync();
         }
@@ -117,6 +120,7 @@ namespace Logic.App
 
             if (existingProductFeaturesDetail != null)
             {
+                productFeaturesDetail.UpdateDate = DateTime.Now;
                 _context.Entry(existingProductFeaturesDetail).CurrentValues.SetValues(productFeaturesDetail);
                 await _context.SaveChangesAsync();
             }

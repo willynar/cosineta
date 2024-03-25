@@ -34,7 +34,7 @@
         public DateTime CreationDate { get; set; }
 
         [JsonIgnore]
-        public DateTime UpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
 
         [Required, ForeignKey("ApplicationUser")]

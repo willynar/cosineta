@@ -169,7 +169,7 @@ namespace Logic.App
             try
             {
 
-                List<ProductStoreProcedure> objEafit = new();
+                List<ProductStoreProcedure> lstProduct = new();
                 for (var i = 0; i < data.Rows.Count; i++)
                 {
                     ProductStoreProcedure obj = new()
@@ -188,13 +188,15 @@ namespace Logic.App
                         ApplicationUserId = data.Rows[i]["ApplicationUserId"] != DBNull.Value ? data.Rows[i]["ApplicationUserId"].ToString() : null,
                         UserName = data.Rows[i]["UserName"] != DBNull.Value ? data.Rows[i]["UserName"].ToString() : null,
                         UserLastName = data.Rows[i]["UserLastName"] != DBNull.Value ? data.Rows[i]["UserLastName"].ToString() : null,
-                        Categorys = data.Rows[i]["Categories"] != DBNull.Value ? JsonConvert.DeserializeObject<List<Category>>($"[{data.Rows[i]["Categories"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x=>x.CategoryId).ToList() : new(),
-                        ProductFeatures = data.Rows[i]["ProductFeatures"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductFeature>>($"[{data.Rows[i]["ProductFeatures"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x=>x.ProductFeatureId).ToList() : new(),
-                        ProductSchedules = data.Rows[i]["ProductSchedules"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductSchedule>>($"[{data.Rows[i]["ProductSchedules"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x=>x.ProductScheduleId).ToList() : new()
+                        Categorys = data.Rows[i]["Categories"] != DBNull.Value ? JsonConvert.DeserializeObject<List<Category>>($"[{data.Rows[i]["Categories"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x => x.CategoryId).ToList() : new(),
+                        ProductFeatures = data.Rows[i]["ProductFeatures"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductFeature>>($"[{data.Rows[i]["ProductFeatures"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x => x.ProductFeatureId).ToList() : new(),
+                        ProductSchedules = data.Rows[i]["ProductSchedules"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductSchedule>>($"[{data.Rows[i]["ProductSchedules"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x => x.ProductScheduleId).ToList() : new(),
+                        ProductFeactureCategorys = data.Rows[i]["ProductFeactureCategorys"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductCategoryFeactureModel>>($"[{data.Rows[i]["ProductFeactureCategorys"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x => x.ProductFeactureCategoryId).ToList() : new()
                     };
-                    objEafit.Add(obj);
+                    lstProduct.Add(obj);
                 }
-                return objEafit;
+                //lstProduct.ForEach(x => x.ProductFeactureCategorys.ForEach(z => z.ListProductFeactures = x.ProductFeatures.Where(y => y.)));
+                return lstProduct;
             }
             catch (Exception ex)
             {
@@ -263,7 +265,7 @@ namespace Logic.App
         /// <param name="productId"></param>
         /// <param name="averageStars"></param>
         /// <returns></returns>
-        public async Task UpdStarsProduct(int? productId, decimal averageStars,int quantityReview)
+        public async Task UpdStarsProduct(int? productId, decimal averageStars, int quantityReview)
         {
             var Product = _context.Products.Find(productId);
 
@@ -343,6 +345,7 @@ namespace Logic.App
         /// <param name="productSchedule">The ProductSchedule to be added</param>
         public async Task AddProductScheduleAsync(ProductSchedule productSchedule)
         {
+            productSchedule.CreationDate = DateTime.Now;
             _context.ProductSchedules.Add(productSchedule);
             await _context.SaveChangesAsync();
         }

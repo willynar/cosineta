@@ -5,7 +5,7 @@
         public int? ProductFeactureCategoryId { get; set; }
         public required string Category { get; set; }
 
-        public required List<ProductFeactureModel> ListProductFeactures { get; set; }
+        public List<ProductFeactureModel>? ListProductFeactures { get; set; }
 
     }
 }
