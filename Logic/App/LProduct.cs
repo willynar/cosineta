@@ -189,13 +189,15 @@ namespace Logic.App
                         UserName = data.Rows[i]["UserName"] != DBNull.Value ? data.Rows[i]["UserName"].ToString() : null,
                         UserLastName = data.Rows[i]["UserLastName"] != DBNull.Value ? data.Rows[i]["UserLastName"].ToString() : null,
                         Categorys = data.Rows[i]["Categories"] != DBNull.Value ? JsonConvert.DeserializeObject<List<Category>>($"[{data.Rows[i]["Categories"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x => x.CategoryId).ToList() : new(),
-                        ProductFeatures = data.Rows[i]["ProductFeatures"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductFeature>>($"[{data.Rows[i]["ProductFeatures"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x => x.ProductFeatureId).ToList() : new(),
-                        ProductSchedules = data.Rows[i]["ProductSchedules"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductSchedule>>($"[{data.Rows[i]["ProductSchedules"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x => x.ProductScheduleId).ToList() : new(),
-                        ProductFeactureCategorys = data.Rows[i]["ProductFeactureCategorys"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductCategoryFeactureModel>>($"[{data.Rows[i]["ProductFeactureCategorys"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x => x.ProductFeactureCategoryId).ToList() : new()
+                        ProductFeactureCategorys = data.Rows[i]["ProductFeactureCategorys"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductFeactureCategoryStoreProcedure>>($"[{data.Rows[i]["ProductFeactureCategorys"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x => x.ProductFeactureCategoryId).ToList() : new(),
+                        ProductSchedules = data.Rows[i]["ProductSchedules"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductSchedule>>($"[{data.Rows[i]["ProductSchedules"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x => x.ProductScheduleId).ToList() : new()
                     };
+                    var ProductFeactureCategorys = data.Rows[i]["ProductFeatures"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductFeactureStoreProcedure>>($"[{data.Rows[i]["ProductFeatures"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x => x.ProductFeactureCategoryId).ToList() : new();
+
+                    obj.ProductFeactureCategorys.ForEach(x => x.ListProductFeactures = ProductFeactureCategorys.Where(z => z.ProductFeactureCategoryId == x.ProductFeactureCategoryId).ToList());
+
                     lstProduct.Add(obj);
                 }
-                //lstProduct.ForEach(x => x.ProductFeactureCategorys.ForEach(z => z.ListProductFeactures = x.ProductFeatures.Where(y => y.)));
                 return lstProduct;
             }
             catch (Exception ex)

@@ -19,9 +19,8 @@
 
         public List<Category>? Categorys { get; set;}
 
-        public List<ProductFeature>? ProductFeatures { get; set; }
-
         public List<ProductSchedule>? ProductSchedules { get; set; }
-        public List<ProductCategoryFeactureModel> ProductFeactureCategorys { get; set; }
+
+        public List<ProductFeactureCategoryStoreProcedure>? ProductFeactureCategorys { get; set; }
     }
 }

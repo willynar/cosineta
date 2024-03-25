@@ -223,6 +223,89 @@ namespace Logic.App
                 await _context.SaveChangesAsync();
             }
         }
+
+        /// <summary>
+        /// update product feactures category detail all
+        /// </summary>
+        /// <param name="productFeatureCategory"></param>
+        /// <returns></returns>
+        public async Task UpdProductFeaturesCategoryAsync(ProductCategoryFeactureModel productFeatureCategory)
+        {
+            var category = _context.ProductFeactureCategorys.Find(productFeatureCategory.ProductFeactureCategoryId);
+
+            if (category != null)
+            {
+
+                category.Category = productFeatureCategory.Category;
+                category.UpdateDate = DateTime.Now;
+                _context.Entry(category).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                var newCategory = new ProductFeactureCategory()
+                {
+                    Category = productFeatureCategory.Category,
+                    CreationDate = DateTime.Now
+                };
+                _context.ProductFeactureCategorys.Add(newCategory);
+                await _context.SaveChangesAsync();
+            }
+
+            foreach (var item in productFeatureCategory.ListProductFeactures)
+            {
+                var feacture = _context.ProductFeatures.Find(item.ProductFeatureId);
+
+                if (feacture != null)
+                {
+                    feacture.Features = item.Features;
+                    feacture.MultipleSelection = item.MultipleSelection;
+                    feacture.IsAdditional = item.IsAdditional;
+                    feacture.AdditionalValue = item.AdditionalValue;
+                    feacture.Active = item.Active;
+                    feacture.ApplicationUserId = item.ApplicationUserId;
+                    feacture.UpdateDate = DateTime.Now;
+                    _context.Entry(feacture).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    var newFeacture = new ProductFeature()
+                    {
+                        Features = item.Features,
+                        MultipleSelection = item.MultipleSelection,
+                        IsAdditional = item.IsAdditional,
+                        AdditionalValue = item.AdditionalValue,
+                        Active = item.Active,
+                        ApplicationUserId = item.ApplicationUserId,
+                        CreationDate = DateTime.Now
+                    };
+                    _context.ProductFeatures.Add(newFeacture);
+                    await _context.SaveChangesAsync();
+                }
+
+                var detail = await _context.ProductFeaturesDetails.Where(x => x.ProductFeaturesDetailId == item.ProductFeatureId && x.ProductId == productFeatureCategory.ProductId).FirstOrDefaultAsync();
+
+                if (detail != null)
+                {
+                    detail.ProductFeactureCategoryId = category.ProductFeactureCategoryId;
+                    detail.ProductFeaturesId = feacture.ProductFeatureId;
+                    _context.Entry(feacture).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    _context.ProductFeaturesDetails.Add(new ProductFeaturesDetail()
+                    {
+                        ProductFeactureCategoryId = category.ProductFeactureCategoryId,
+                        ProductFeaturesId = feacture.ProductFeatureId,
+                        ProductId = productFeatureCategory.ProductId
+                    });
+                    await _context.SaveChangesAsync();
+                }
+
+            }
+        }
         #endregion
     }
 }

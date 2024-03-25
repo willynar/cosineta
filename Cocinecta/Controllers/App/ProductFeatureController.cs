@@ -196,7 +196,7 @@ namespace Cocinecta.Controllers.App
             }
         }
 
-        // PUT api/<ProductFeatureController>/ProductFeature/5
+        // PUT api/<ProductFeatureController>/ProductFeature
         [HttpPut("ProductFeatureDetail")]
         public async Task<IActionResult> PutProductFeatureDetail([FromBody] ProductFeaturesDetail ProductFeaturesDetail)
         {
@@ -207,6 +207,26 @@ namespace Cocinecta.Controllers.App
             try
             {
                 await IProductFeatureService.UpdateProductFeaturesDetailAsync(ProductFeaturesDetail);
+                return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Updated) });
+            }
+            catch (Exception exc)
+            {
+                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
+            }
+        }
+
+        // PUT api/<ProductFeatureController>/ProductFeaturesCategoryDetail
+        [HttpPut("ProductFeatureCategoryDetail")]
+        public async Task<IActionResult> PutProductFeaturesCategoryDetail([FromBody] ProductCategoryFeactureModel productFeatureCategory)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { success = false, message = ErrorModelValidation.ShowError(new SerializableError(ModelState).Values) });
+            }
+            try
+            {
+                await IProductFeatureService.UpdProductFeaturesCategoryAsync(productFeatureCategory);
                 return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Updated) });
             }
             catch (Exception exc)

@@ -1,8 +1,10 @@
 ﻿namespace Entities.App
 {
-    public class ProductFeactureModel
+    public class ProductFeactureStoreProcedure
     {
-        public int? ProductFeatureId { get; set; }
+        public int ProductFeatureId { get; set; }
+
+        public int ProductFeactureCategoryId { get; set; }
 
         public required string Features { get; set; }
 
@@ -15,8 +17,5 @@
         public bool Active { get; set; }
 
         public required string ApplicationUserId { get; set; }
-
-        public int? ProductFeactureCategoryId { get; set; }
-
     }
 }

@@ -94,6 +94,13 @@
         /// <param name="productFeatureCategory"></param>
         /// <returns></returns>
         Task AddProductFeaturesCategoryAsync(ProductCategoryFeactureModel productFeatureCategory);
+
+        /// <summary>
+        /// update product feactures category detail all
+        /// </summary>
+        /// <param name="productFeatureCategory"></param>
+        /// <returns></returns>
+        Task UpdProductFeaturesCategoryAsync(ProductCategoryFeactureModel productFeatureCategory);
         #endregion
     }
 }
