@@ -35,6 +35,7 @@ namespace Entities
         public DbSet<Type> Types { get; set; }
         public DbSet<ProductFeaturesDetail> ProductFeaturesDetails { get; set; }
         public DbSet<ProductFeature> ProductFeatures { get; set; }
+        public DbSet<ProductFeactureCategory> ProductFeactureCategorys { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProductFeactureDetail> OrderProductFeactureDetails { get; set; }
         public DbSet<OrderProductFeacture> OrderProductFeactures { get; set; }

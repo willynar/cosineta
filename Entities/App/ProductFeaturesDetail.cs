@@ -13,6 +13,9 @@
         [Required, ForeignKey("ProductFeatures")]
         public required int ProductFeaturesId { get; set; }
 
+        [Required, ForeignKey("ProductFeactureCategory")]
+        public required int ProductFeactureCategoryId { get; set; }
+
         [JsonIgnore]
         public DateTime CreationDate { get; set; }
 
@@ -24,5 +27,8 @@
 
         [JsonIgnore]
         public virtual ProductFeature? ProductFeaturesIdNavigation { get; set; }
+
+        //[JsonIgnore]
+        //public virtual ProductFeactureCategory? ProductFeactureCategorysIdNavigation { get; set; }
     }
 }

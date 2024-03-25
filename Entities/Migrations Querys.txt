@@ -1,6 +1,5 @@
-﻿Add-Migration mdf-revies-UP -Context ApplicationDbContext -OutputDir Migrations -p Entities
-update-database -Context ApplicationDbContext -p Entities -migration 20240319020702_mdf-revies-UP
-
+﻿Add-Migration add-tbl-feactures-category-pk -Context ApplicationDbContext -OutputDir Migrations -p Entities
+update-database -Context ApplicationDbContext -p Entities -migration 20240325191359_add-tbl-feactures-category-pk
 
 
        migrationBuilder.AddForeignKey(

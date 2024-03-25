@@ -103,6 +103,7 @@ namespace Logic.App
         {
             return await _context.ProductFeaturesDetails
                 .Include(pfd => pfd.ProductFeaturesIdNavigation)
+                //.Include(pfd => pfd.ProductFeactureCategorysIdNavigation)
                 .FirstOrDefaultAsync(pfd => pfd.ProductFeaturesDetailId == productFeaturesDetailId);
         }
 
@@ -143,6 +144,7 @@ namespace Logic.App
         {
             return await _context.ProductFeaturesDetails
                 .Include(pfd => pfd.ProductFeaturesIdNavigation)
+                //.Include(pfd => pfd.ProductFeactureCategorysIdNavigation)
                 .ToListAsync();
         }
 
@@ -156,6 +158,7 @@ namespace Logic.App
             return await _context.ProductFeaturesDetails
                 .Where(pfd => pfd.ProductId == productId)
                 .Include(pfd => pfd.ProductFeaturesIdNavigation)
+                //.Include(pfd => pfd.ProductFeactureCategorysIdNavigation)
                 .ToListAsync();
         }
 
