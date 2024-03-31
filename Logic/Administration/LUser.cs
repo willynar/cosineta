@@ -1,12 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using System.Security;
-using System;
-using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
-using Entities.Administration;
+﻿using Entities.App;
+using Microsoft.AspNetCore.Identity;
 using System.Data;
-using Entities.App;
 
 namespace Logic.Administration
 {
@@ -56,6 +50,16 @@ namespace Logic.Administration
 
         public async Task<ApplicationUser?> GetByEmail(string email) =>
             await _userManager.FindByEmailAsync(email);
+
+        public async Task<List<ApplicationUser>> GetByType(int typeId) => await _context.Users
+            .Where(x => x.TypeId == typeId)
+            .Select(x => new ApplicationUser()
+            {
+                Name = x.Name,
+                LastName = x.LastName,
+                Id = x.Id,
+                TypeId = typeId
+            }).ToListAsync();
 
         public async Task<ApplicationUser?> GetByUser(string user) =>
             await _userManager.FindByNameAsync(user);

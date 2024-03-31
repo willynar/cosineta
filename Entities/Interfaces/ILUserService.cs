@@ -1,7 +1,5 @@
 ﻿using Entities.ViewModels;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
 
 namespace Entities.Interfaces
 {
@@ -13,6 +11,7 @@ namespace Entities.Interfaces
         Task<string> GenerateToken(ApplicationUser entity);
         Task<List<ApplicationUser>> GetAll();
         Task<ApplicationUser?> GetByEmail(string email);
+        Task<List<ApplicationUser>> GetByType(int typeId);
         Task<ApplicationUser?> GetById(string id);
         Task<ApplicationUser?> GetByUser(string user);
         Task<ApplicationUser?> GetUserByUserOrEmail(string email);
