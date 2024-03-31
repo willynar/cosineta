@@ -15,7 +15,7 @@ namespace Cocinecta.Controllers.App
         }
         #region ProductFeacture
 
-      
+
         // GET: api/<ProductFeatureController>
         [HttpGet]
         [ProducesResponseType(typeof(List<ProductFeature>), 200)]
@@ -176,9 +176,14 @@ namespace Cocinecta.Controllers.App
             }
         }
 
+        /// <summary>
+        /// create new product and categoryfecture and fecture relationship
+        /// </summary>
+        /// <param name="productModel"></param>
+        /// <returns></returns>
         // POST api/<ProductFeatureController>/ProductFeatureCategoryDetail
         [HttpPost("ProductFeatureCategoryDetail")]
-        public async Task<IActionResult> PostProductFeaturesCategoryDetail([FromBody] ProductCategoryFeactureModel ProductFeaturesDetail)
+        public async Task<IActionResult> PostProductFeaturesCategoryDetail([FromBody] ProductModel productModel)
         {
             if (!ModelState.IsValid)
             {
@@ -186,7 +191,7 @@ namespace Cocinecta.Controllers.App
             }
             try
             {
-                await IProductFeatureService.AddProductFeaturesCategoryAsync(ProductFeaturesDetail);
+                await IProductFeatureService.AddProductFeaturesCategoryAsync(productModel);
                 return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Saved) });
             }
             catch (Exception exc)
@@ -216,9 +221,14 @@ namespace Cocinecta.Controllers.App
             }
         }
 
+        /// <summary>
+        /// update product and feactures  and category detail all
+        /// </summary>
+        /// <param name="productModel"></param>
+        /// <returns></returns>
         // PUT api/<ProductFeatureController>/ProductFeaturesCategoryDetail
         [HttpPut("ProductFeatureCategoryDetail")]
-        public async Task<IActionResult> PutProductFeaturesCategoryDetail([FromBody] ProductCategoryFeactureModel productFeatureCategory)
+        public async Task<IActionResult> PutProductFeaturesCategoryDetail([FromBody] ProductModel productModel)
         {
             if (!ModelState.IsValid)
             {
@@ -226,7 +236,7 @@ namespace Cocinecta.Controllers.App
             }
             try
             {
-                await IProductFeatureService.UpdProductFeaturesCategoryAsync(productFeatureCategory);
+                await IProductFeatureService.UpdProductFeaturesCategoryAsync(productModel);
                 return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Updated) });
             }
             catch (Exception exc)

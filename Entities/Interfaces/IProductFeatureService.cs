@@ -1,4 +1,6 @@
-﻿namespace Entities.Interfaces
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Entities.Interfaces
 {
     public interface IProductFeatureService
     {
@@ -89,18 +91,18 @@
         Task DeleteAllProductFeaturesDetailsByProductIdAsync(int productId);
 
         /// <summary>
-        /// create new product categoryfecture ans fecture relationship
+        /// create new product and categoryfecture and fecture relationship
         /// </summary>
-        /// <param name="productFeatureCategory"></param>
+        /// <param name="productModel"></param>
         /// <returns></returns>
-        Task AddProductFeaturesCategoryAsync(ProductCategoryFeactureModel productFeatureCategory);
+        Task AddProductFeaturesCategoryAsync(ProductModel productModel);
 
         /// <summary>
-        /// update product feactures category detail all
+        /// update product and feactures  and category detail all
         /// </summary>
-        /// <param name="productFeatureCategory"></param>
+        /// <param name="productModel"></param>
         /// <returns></returns>
-        Task UpdProductFeaturesCategoryAsync(ProductCategoryFeactureModel productFeatureCategory);
+        Task UpdProductFeaturesCategoryAsync(ProductModel productModel);
         #endregion
     }
 }

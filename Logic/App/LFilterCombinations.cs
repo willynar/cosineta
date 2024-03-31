@@ -29,6 +29,11 @@ namespace Logic.App
             if (op.Serving != null )
                 combinations.Add("Serving");
 
+            if (op.ApplicationUserId != null)
+                combinations.Add("UserId");
+
+            if (op.Latitude != null || op.Longitude != null)
+                combinations.Add("Location");
             if (combinations.Count == 6)
             {
                 combinations = new List<string>() { "All" };

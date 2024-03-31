@@ -136,6 +136,9 @@ namespace Logic.App
                     new SqlParameter("@StarTime", objectParams.StarTime),
                     new SqlParameter("@EndTime", objectParams.EndTime),
                     new SqlParameter("@Serving", objectParams.Serving),
+                    new SqlParameter("@ApplicationUserId", objectParams.ApplicationUserId),
+                    new SqlParameter("@Latitude", objectParams.Latitude),
+                    new SqlParameter("@Longitude", objectParams.Longitude),
                     new SqlParameter("@SorterValue", objectParams.SorterValue),
                     new SqlParameter("@Sort", objectParams.Sort ? 1 : 0)
                 };

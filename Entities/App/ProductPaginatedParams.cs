@@ -30,6 +30,12 @@ namespace Entities.App
 
         public int? Serving { get; set; } = null;
 
+        public string? ApplicationUserId { get; set; }
+
+        public string? Latitude { get; set; }
+
+        public string? Longitude { get; set; }
+
         [Display(Description = "Admited Values: all product values in camelCase")]
         [Required]
         public string? SorterValue { get; set; } = null;
@@ -37,5 +43,6 @@ namespace Entities.App
         [Display(Description = "ordered ascending or descending")]
         [Required]
         public bool Sort { get; set; }
+      
     }
 }
