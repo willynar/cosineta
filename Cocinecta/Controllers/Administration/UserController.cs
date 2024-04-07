@@ -49,6 +49,22 @@ namespace Cocinecta.Controllers.Administration
             }
         }
 
+        // GET: api/<UserController>
+        [HttpGet("Type/{TypeId}")]
+        public async Task<IActionResult> GetByTypeId([FromRoute] int TypeId)
+        {
+            try
+            {
+                return Ok(await _lUser.GetByType(TypeId));
+            }
+            catch (Exception exc)
+            {
+                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
+                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
+            }
+        }
+
+        
         // GET: api/<UserController>/Role
         [HttpGet("Role")]
         public async Task<IActionResult> GetAllRole()

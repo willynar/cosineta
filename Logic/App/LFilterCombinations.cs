@@ -30,7 +30,7 @@ namespace Logic.App
                 combinations.Add("Serving");
 
             if (op.ApplicationUserId != null)
-                combinations.Add("UserId");
+                combinations.Add("ApplicationUserId");
 
             if (op.Latitude != null || op.Longitude != null)
                 combinations.Add("Location");
