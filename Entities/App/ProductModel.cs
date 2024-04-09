@@ -2,8 +2,8 @@
 {
     public class ProductModel
     {
-        [Display(Description = "No reuqerido para guardar")]
-        public int ProductId { get; set; }
+        [Display(Description = "No requerido para guardar")]
+        public int? ProductId { get; set; } = null;
 
         [Required, StringLength(200)]
         public string Name { get; set; } = string.Empty;

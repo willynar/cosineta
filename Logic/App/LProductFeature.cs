@@ -303,6 +303,7 @@ namespace Logic.App
                         };
                         _context.ProductFeactureCategorys.Add(newCategory);
                         await _context.SaveChangesAsync();
+                        category = newCategory;
                     }
 
                     foreach (var item in productFeatureCategory.ListProductFeactures)
@@ -352,7 +353,7 @@ namespace Logic.App
                             {
                                 ProductFeactureCategoryId = category.ProductFeactureCategoryId,
                                 ProductFeaturesId = feacture.ProductFeatureId,
-                                ProductId = productModel.ProductId
+                                ProductId = product.ProductId
                             });
                             await _context.SaveChangesAsync();
                         }
