@@ -3,15 +3,15 @@
     public class ProductFeactureModel
     {
         [Display(Description = "No requerido para guardar")]
-        public int? ProductFeatureId { get; set; } = null;
+        public int? ProductFeactureId { get; set; } = null;
 
-        public required string Features { get; set; }
+        public required string Name { get; set; }
 
-        public bool MultipleSelection { get; set; }
-
-        public bool IsAdditional { get; set; }
+        public required string Description { get; set; }
 
         public decimal? AdditionalValue { get; set; }
+
+        public int Stock { get; set; }
 
         public bool Active { get; set; }
 

@@ -28,7 +28,11 @@
 
         public required string ApplicationUserId { get; set; }
 
-        public List<ProductCategoryFeactureModel> ListProductCategoryFeacture { get; set; } = new List<ProductCategoryFeactureModel>();
+        public List<ProductCategoryModel> Categories { get; set; } = new();
+
+        public List<ProductScheduleModel> ListProductSchedule { get; set; } = new();
+
+        public List<ProductCategoryFeactureModel> ListProductCategoryFeacture { get; set; } = new();
 
     }
 }

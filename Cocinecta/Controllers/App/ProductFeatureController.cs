@@ -177,7 +177,7 @@ namespace Cocinecta.Controllers.App
         }
 
         /// <summary>
-        /// create new product and categoryfecture and fecture relationship
+        /// create new product or update and categoryfecture and fecture relationship
         /// </summary>
         /// <param name="productModel"></param>
         /// <returns></returns>
@@ -191,7 +191,7 @@ namespace Cocinecta.Controllers.App
             }
             try
             {
-                await IProductFeatureService.AddProductFeaturesCategoryAsync(productModel);
+                await IProductFeatureService.UpdProductFeaturesCategoryAsync(productModel);
                 return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Saved) });
             }
             catch (Exception exc)
@@ -212,31 +212,6 @@ namespace Cocinecta.Controllers.App
             try
             {
                 await IProductFeatureService.UpdateProductFeaturesDetailAsync(ProductFeaturesDetail);
-                return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Updated) });
-            }
-            catch (Exception exc)
-            {
-                var ErrorMsg = exc.GetBaseException().InnerException != null ? exc.GetBaseException().InnerException?.Message : exc.GetBaseException().Message ?? string.Empty;
-                return StatusCode(StatusCodes.Status500InternalServerError, new { success = false, message = ErrorMsg });
-            }
-        }
-
-        /// <summary>
-        /// update product and feactures  and category detail all
-        /// </summary>
-        /// <param name="productModel"></param>
-        /// <returns></returns>
-        // PUT api/<ProductFeatureController>/ProductFeaturesCategoryDetail
-        [HttpPut("ProductFeatureCategoryDetail")]
-        public async Task<IActionResult> PutProductFeaturesCategoryDetail([FromBody] ProductModel productModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(new { success = false, message = ErrorModelValidation.ShowError(new SerializableError(ModelState).Values) });
-            }
-            try
-            {
-                await IProductFeatureService.UpdProductFeaturesCategoryAsync(productModel);
                 return Ok(new { success = true, message = LErrors.TranslateError(ErrorType.Updated) });
             }
             catch (Exception exc)

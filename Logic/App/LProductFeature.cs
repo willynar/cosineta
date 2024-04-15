@@ -1,5 +1,4 @@
-﻿using Entities.Administration;
-using Entities.App;
+﻿using Entities.App;
 
 namespace Logic.App
 {
@@ -79,7 +78,11 @@ namespace Logic.App
         /// <returns>A list of all ProductFeatures</returns>
         public async Task<List<ProductFeature>> GetAllAdditionalProductFeaturesByUserAsync(string applicationUserId)
         {
-            return await _context.ProductFeatures.Where(x => x.IsAdditional && x.ApplicationUserId == applicationUserId).ToListAsync();
+            return (from PF in _context.ProductFeatures
+                    join DPF in _context.ProductFeaturesDetails on PF.ProductFeatureId equals DPF.ProductId
+                    join PFC in _context.ProductFeactureCategorys on DPF.ProductFeactureCategoryId equals PFC.ProductFeactureCategoryId
+                    where PFC.IsAdditional && PF.ApplicationUserId == applicationUserId
+                    select PF).Distinct().ToList();
         }
 
         #endregion
@@ -184,73 +187,6 @@ namespace Logic.App
             }
         }
 
-        /// <summary>
-        /// create new product and categoryfecture and fecture relationship
-        /// </summary>
-        /// <param name="productModel"></param>
-        /// <returns></returns>
-        public async Task AddProductFeaturesCategoryAsync(ProductModel productModel)
-        {
-            try
-            {
-                var product = new Product()
-                {
-                    Name = productModel.Name,
-                    Description = productModel.Description,
-                    Image = productModel.Image,
-                    Price = productModel.Price,
-                    Ingredients = productModel.Ingredients,
-                    Active = productModel.Active,
-                    Serving = productModel.Serving,
-                    Stock = productModel.Stock,
-                    TypeId = productModel.TypeId,
-                    ApplicationUserId = productModel.ApplicationUserId,
-                    CreationDate = DateTime.Now
-                };
-                _context.Products.Add(product);
-                await _context.SaveChangesAsync();
-
-                foreach (var productFeatureCategory in productModel.ListProductCategoryFeacture)
-                {
-                    var category = new ProductFeactureCategory()
-                    {
-                        Category = productFeatureCategory.Category,
-                        CreationDate = DateTime.Now
-                    };
-                    _context.ProductFeactureCategorys.Add(category);
-                    await _context.SaveChangesAsync();
-
-                    foreach (var item in productFeatureCategory.ListProductFeactures)
-                    {
-                        var feacture = new ProductFeature()
-                        {
-                            Features = item.Features,
-                            MultipleSelection = item.MultipleSelection,
-                            IsAdditional = item.IsAdditional,
-                            AdditionalValue = item.AdditionalValue,
-                            Active = item.Active,
-                            ApplicationUserId = item.ApplicationUserId,
-                            CreationDate = DateTime.Now
-                        };
-                        _context.ProductFeatures.Add(feacture);
-                        await _context.SaveChangesAsync();
-
-                        _context.ProductFeaturesDetails.Add(new ProductFeaturesDetail()
-                        {
-                            ProductFeactureCategoryId = category.ProductFeactureCategoryId,
-                            ProductFeaturesId = feacture.ProductFeatureId,
-                            ProductId = product.ProductId
-                        });
-                        await _context.SaveChangesAsync();
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-
-        }
 
         /// <summary>
         /// update product and feactures  and category detail all
@@ -281,89 +217,237 @@ namespace Logic.App
                     _context.Entry(product).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
                 }
-
-                foreach (var productFeatureCategory in productModel.ListProductCategoryFeacture)
+                else
                 {
-                    var category = _context.ProductFeactureCategorys.Find(productFeatureCategory.ProductFeactureCategoryId);
-
-                    if (category != null)
+                    product = new Product()
                     {
-
-                        category.Category = productFeatureCategory.Category;
-                        category.UpdateDate = DateTime.Now;
-                        _context.Entry(category).State = EntityState.Modified;
-                        await _context.SaveChangesAsync();
-                    }
-                    else
-                    {
-                        var newCategory = new ProductFeactureCategory()
-                        {
-                            Category = productFeatureCategory.Category,
-                            CreationDate = DateTime.Now
-                        };
-                        _context.ProductFeactureCategorys.Add(newCategory);
-                        await _context.SaveChangesAsync();
-                        category = newCategory;
-                    }
-
-                    foreach (var item in productFeatureCategory.ListProductFeactures)
-                    {
-                        var feacture = _context.ProductFeatures.Find(item.ProductFeatureId);
-
-                        if (feacture != null)
-                        {
-                            feacture.Features = item.Features;
-                            feacture.MultipleSelection = item.MultipleSelection;
-                            feacture.IsAdditional = item.IsAdditional;
-                            feacture.AdditionalValue = item.AdditionalValue;
-                            feacture.Active = item.Active;
-                            feacture.ApplicationUserId = item.ApplicationUserId;
-                            feacture.UpdateDate = DateTime.Now;
-                            _context.Entry(feacture).State = EntityState.Modified;
-                            await _context.SaveChangesAsync();
-                        }
-                        else
-                        {
-                            var newFeacture = new ProductFeature()
-                            {
-                                Features = item.Features,
-                                MultipleSelection = item.MultipleSelection,
-                                IsAdditional = item.IsAdditional,
-                                AdditionalValue = item.AdditionalValue,
-                                Active = item.Active,
-                                ApplicationUserId = item.ApplicationUserId,
-                                CreationDate = DateTime.Now
-                            };
-                            _context.ProductFeatures.Add(newFeacture);
-                            await _context.SaveChangesAsync();
-                        }
-
-                        var detail = await _context.ProductFeaturesDetails.Where(x => x.ProductFeaturesDetailId == item.ProductFeatureId && x.ProductId == productModel.ProductId).FirstOrDefaultAsync();
-
-                        if (detail != null)
-                        {
-                            detail.ProductFeactureCategoryId = category.ProductFeactureCategoryId;
-                            detail.ProductFeaturesId = feacture.ProductFeatureId;
-                            _context.Entry(feacture).State = EntityState.Modified;
-                            await _context.SaveChangesAsync();
-                        }
-                        else
-                        {
-                            _context.ProductFeaturesDetails.Add(new ProductFeaturesDetail()
-                            {
-                                ProductFeactureCategoryId = category.ProductFeactureCategoryId,
-                                ProductFeaturesId = feacture.ProductFeatureId,
-                                ProductId = product.ProductId
-                            });
-                            await _context.SaveChangesAsync();
-                        }
-
-                    }
+                        Name = productModel.Name,
+                        Description = productModel.Description,
+                        Image = productModel.Image,
+                        Price = productModel.Price,
+                        Ingredients = productModel.Ingredients,
+                        Active = productModel.Active,
+                        Serving = productModel.Serving,
+                        Stock = productModel.Stock,
+                        TypeId = productModel.TypeId,
+                        ApplicationUserId = productModel.ApplicationUserId,
+                        CreationDate = DateTime.Now
+                    };
+                    _context.Products.Add(product);
+                    await _context.SaveChangesAsync();
                 }
+                //to categorys
+                await SaveProductCategory(productModel, product);
+                //to shedules
+                await SaveProductSchedules(productModel, product);
+                //to  feactures category
+                await SaveFeacturesCategory(productModel, product);
             }
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+        /// <summary>
+        /// save  product feacture category detail
+        /// </summary>
+        /// <param name="productModel"></param>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        public async Task SaveFeacturesCategory(ProductModel productModel, Product product)
+        {
+            foreach (var productFeatureCategory in productModel.ListProductCategoryFeacture)
+            {
+                var categoryFeacture = _context.ProductFeactureCategorys.Find(productFeatureCategory.ProductFeactureCategoryId);
+
+                if (categoryFeacture != null)
+                {
+
+                    categoryFeacture.Description = productFeatureCategory.Description;
+                    categoryFeacture.Required = productFeatureCategory.Required;
+                    categoryFeacture.IsAdditional = productFeatureCategory.IsAdditional;
+                    categoryFeacture.MultipleSelection = productFeatureCategory.MultipleSelection;
+                    categoryFeacture.ProductId = product.ProductId;
+                    categoryFeacture.UpdateDate = DateTime.Now;
+                    _context.Entry(categoryFeacture).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    categoryFeacture = new ProductFeactureCategory()
+                    {
+                        Description = productFeatureCategory.Description,
+                        Required = productFeatureCategory.Required,
+                        IsAdditional = productFeatureCategory.IsAdditional,
+                        MultipleSelection = productFeatureCategory.MultipleSelection,
+                        ProductId = product.ProductId,
+                        CreationDate = DateTime.Now
+                    };
+                    _context.ProductFeactureCategorys.Add(categoryFeacture);
+                    await _context.SaveChangesAsync();
+                }
+
+
+                List<ProductFeaturesDetail> deteDetail = new();
+                deteDetail = _context.ProductFeaturesDetails.Where(x => x.ProductFeactureCategoryId == categoryFeacture.ProductFeactureCategoryId && x.ProductId == product.ProductId).Select(x => x).ToList();
+                if (deteDetail.Count > 0)
+                {
+                    _context.ProductFeaturesDetails.RemoveRange(deteDetail);
+                    await _context.SaveChangesAsync();
+                }
+
+                foreach (var item in productFeatureCategory.ListDetailFeatures)
+                {
+                    var feacture = _context.ProductFeatures.Find(item.ProductFeactureId);
+
+                    if (feacture != null)
+                    {
+                        feacture.Name = item.Name;
+                        feacture.Description = item.Description;
+                        feacture.AdditionalValue = item.AdditionalValue;
+                        feacture.Stock = item.Stock;
+                        feacture.Active = item.Active;
+                        feacture.ApplicationUserId = item.ApplicationUserId;
+                        feacture.UpdateDate = DateTime.Now;
+                        _context.Entry(feacture).State = EntityState.Modified;
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        feacture = new ProductFeature()
+                        {
+                            Name = item.Name,
+                            Description = item.Description,
+                            AdditionalValue = item.AdditionalValue,
+                            Stock = item.Stock,
+                            Active = item.Active,
+                            ApplicationUserId = item.ApplicationUserId,
+                            CreationDate = DateTime.Now
+                        };
+                        _context.ProductFeatures.Add(feacture);
+                        await _context.SaveChangesAsync();
+                    }
+
+
+                    _context.ProductFeaturesDetails.Add(new ProductFeaturesDetail()
+                    {
+                        ProductFeactureCategoryId = categoryFeacture.ProductFeactureCategoryId,
+                        ProductFeatureId = feacture.ProductFeatureId,
+                        ProductId = product.ProductId
+                    });
+                    await _context.SaveChangesAsync();
+
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// save  category detail
+        /// </summary>
+        /// <param name="productModel"></param>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        public async Task SaveProductCategory(ProductModel productModel, Product product)
+        {
+            List<ProductCategory> deteDetail = new();
+            deteDetail = _context.ProductCategorys.Where(x => x.ProductId == product.ProductId).Select(x => x).ToList();
+            if (deteDetail.Count > 0)
+            {
+                _context.ProductCategorys.RemoveRange(deteDetail);
+                await _context.SaveChangesAsync();
+            }
+
+            foreach (var productFeatureCategory in productModel.Categories)
+            {
+                var category = _context.Categories.Find(productFeatureCategory.CategoryId);
+
+                if (category != null)
+                {
+
+                    category.Name = productFeatureCategory.Name;
+                    category.Image = productFeatureCategory.Image;
+                    category.Active = productFeatureCategory.Active;
+                    category.UpdateDate = DateTime.Now;
+                    _context.Entry(category).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    category = new Category()
+                    {
+                        Name = productFeatureCategory.Name,
+                        Image = productFeatureCategory.Image,
+                        Active = productFeatureCategory.Active,
+                        CreationDate = DateTime.Now
+                    };
+                    _context.Categories.Add(category);
+                    await _context.SaveChangesAsync();
+                }
+
+
+
+                _context.ProductCategorys.Add(new ProductCategory()
+                {
+                    CategoryId = category.CategoryId,
+                    ProductId = product.ProductId
+                });
+                await _context.SaveChangesAsync();
+
+            }
+        }
+
+        /// <summary>
+        /// svae  shedules detail
+        /// </summary>
+        /// <param name="productModel"></param>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        public async Task SaveProductSchedules(ProductModel productModel, Product product)
+        {
+            List<ProductSchedule> deteDetail = new();
+            deteDetail = _context.ProductSchedules.Where(x => x.ProductId == product.ProductId && x.PublicationStarTime < DateTime.Now).Select(x => x).ToList();
+
+            if (deteDetail.Count > 0)
+            {
+                _context.ProductSchedules.RemoveRange(deteDetail);
+                await _context.SaveChangesAsync();
+            }
+
+            foreach (var productShedule in productModel.ListProductSchedule)
+            {
+                var schedule = _context.ProductSchedules.Find(productShedule.ProductScheduleId);
+
+                if (schedule != null)
+                {
+
+                    schedule.StarTime = productShedule.StarTime;
+                    schedule.EndTime = productShedule.EndTime;
+                    schedule.PublicationStarTime = productShedule.PublicationStarTime;
+                    schedule.PublicationEndTime = productShedule.PublicationEndTime;
+                    schedule.ProductId = productShedule.ProductId;
+                    schedule.Active = productShedule.Active;
+                    schedule.UpdateDate = DateTime.Now;
+                    _context.Entry(schedule).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    schedule = new ProductSchedule()
+                    {
+                        StarTime = productShedule.StarTime,
+                        EndTime = productShedule.EndTime,
+                        PublicationStarTime = productShedule.PublicationStarTime,
+                        PublicationEndTime = productShedule.PublicationEndTime,
+                        ProductId = product.ProductId,
+                        Active = productShedule.Active,
+                        CreationDate = DateTime.Now
+                    };
+                    _context.ProductSchedules.Add(schedule);
+                    await _context.SaveChangesAsync();
+                }
+
             }
         }
         #endregion

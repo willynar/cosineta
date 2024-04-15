@@ -1,5 +1,5 @@
-﻿Add-Migration mdf-null-updated-date -Context ApplicationDbContext -OutputDir Migrations -p Entities
-update-database -Context ApplicationDbContext -p Entities -migration 20240325210156_mdf-null-updated-date
+﻿Add-Migration upd-prduct-models -Context ApplicationDbContext -OutputDir Migrations -p Entities
+update-database -Context ApplicationDbContext -p Entities -migration 20240414211101_upd-prduct-models
 
 
        migrationBuilder.AddForeignKey(

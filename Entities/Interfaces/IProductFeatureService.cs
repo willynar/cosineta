@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
 
 namespace Entities.Interfaces
 {
@@ -91,18 +92,35 @@ namespace Entities.Interfaces
         Task DeleteAllProductFeaturesDetailsByProductIdAsync(int productId);
 
         /// <summary>
-        /// create new product and categoryfecture and fecture relationship
-        /// </summary>
-        /// <param name="productModel"></param>
-        /// <returns></returns>
-        Task AddProductFeaturesCategoryAsync(ProductModel productModel);
-
-        /// <summary>
         /// update product and feactures  and category detail all
         /// </summary>
         /// <param name="productModel"></param>
         /// <returns></returns>
         Task UpdProductFeaturesCategoryAsync(ProductModel productModel);
+
+        /// <summary>
+        /// save  product feacture category detail
+        /// </summary>
+        /// <param name="productModel"></param>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        Task SaveFeacturesCategory(ProductModel productModel, Product product);
+
+        /// <summary>
+        /// save  category detail
+        /// </summary>
+        /// <param name="productModel"></param>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        Task SaveProductCategory(ProductModel productModel, Product product);
+
+        /// <summary>
+        /// svae  shedules detail
+        /// </summary>
+        /// <param name="productModel"></param>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        Task SaveProductSchedules(ProductModel productModel, Product product);
         #endregion
     }
 }
