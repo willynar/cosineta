@@ -2,7 +2,6 @@
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using System.Data;
-using System.Linq;
 
 namespace Logic.App
 {
@@ -193,6 +192,7 @@ namespace Logic.App
                         UserLastName = data.Rows[i]["UserLastName"] != DBNull.Value ? data.Rows[i]["UserLastName"].ToString() : null,
                         Categorys = data.Rows[i]["Categories"] != DBNull.Value ? JsonConvert.DeserializeObject<List<Category>>($"[{data.Rows[i]["Categories"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x => x.CategoryId).ToList() : new(),
                         ProductFeactureCategorys = data.Rows[i]["ProductFeactureCategorys"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductFeactureCategoryStoreProcedure>>($"[{data.Rows[i]["ProductFeactureCategorys"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x => x.ProductFeactureCategoryId).ToList() : new(),
+
                         ProductSchedules = data.Rows[i]["ProductSchedules"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductSchedule>>($"[{data.Rows[i]["ProductSchedules"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x => x.ProductScheduleId).ToList() : new()
                     };
                     var ProductFeactureCategorys = data.Rows[i]["ProductFeatures"] != DBNull.Value ? JsonConvert.DeserializeObject<List<ProductFeactureStoreProcedure>>($"[{data.Rows[i]["ProductFeatures"]}]".Replace("\"\"", "\"").TrimEnd(',')).DistinctBy(x => x.ProductFeactureCategoryId).ToList() : new();
