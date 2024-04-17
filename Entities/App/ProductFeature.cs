@@ -22,13 +22,10 @@
         [JsonIgnore]
         public DateTime? UpdateDate { get; set; }
 
-        [Required, ForeignKey("ApplicationUser")]
         public required string ApplicationUserId { get; set; }
 
-        //[JsonIgnore]
-        //public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
-
         [JsonIgnore]
+        [NotMapped]
         public virtual ICollection<ProductFeaturesDetail> ProductFeaturesDetails { get; } = new List<ProductFeaturesDetail>();
 
     }

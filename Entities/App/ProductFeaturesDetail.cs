@@ -21,12 +21,15 @@
         public DateTime? UpdateDate { get; set; }
 
         [JsonIgnore]
+        [NotMapped]
         public virtual Product? ProductIdNavigation { get; set; }
 
         [JsonIgnore]
+        [NotMapped]
         public virtual ProductFeature? ProductFeaturesIdNavigation { get; set; }
 
-        //[JsonIgnore]
-        //public virtual ProductFeactureCategory? ProductFeactureCategorysIdNavigation { get; set; }
+        [JsonIgnore]
+        [NotMapped]
+        public virtual ProductFeactureCategory? ProductFeactureCategorysIdNavigation { get; set; }
     }
 }
