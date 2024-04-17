@@ -17,6 +17,7 @@ namespace Entities.Migrations
             migrationBuilder.DropIndex(
                 name: "IX_ProductFeaturesDetails_ProductFeatureId",
                 table: "ProductFeaturesDetails");
+            //solo para comit
         }
 
         /// <inheritdoc />
