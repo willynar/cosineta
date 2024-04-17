@@ -94,21 +94,22 @@ namespace Entities.Migrations
                 table: "ProductFeaturesDetails",
                 column: "ProductFeatureId");
 
-            //migrationBuilder.AddForeignKey(
-            //    name: "FK_ProductFeaturesDetails_ProductFeatures_ProductFeatureId",
-            //    table: "ProductFeaturesDetails",
-            //    column: "ProductFeatureId",
-            //    principalTable: "ProductFeatures",
-            //    principalColumn: "ProductFeatureId",
-            //    onDelete: ReferentialAction.Cascade);
+            migrationBuilder.AddForeignKey(
+                name: "FK_ProductFeaturesDetails_ProductFeatures_ProductFeatureId",
+                table: "ProductFeaturesDetails",
+                column: "ProductFeatureId",
+                principalTable: "ProductFeatures",
+                principalColumn: "ProductFeatureId",
+                onDelete: ReferentialAction.Cascade);
+
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            //migrationBuilder.DropForeignKey(
-            //    name: "FK_ProductFeaturesDetails_ProductFeatures_ProductFeatureId",
-            //    table: "ProductFeaturesDetails");
+            migrationBuilder.DropForeignKey(
+                name: "FK_ProductFeaturesDetails_ProductFeatures_ProductFeatureId",
+                table: "ProductFeaturesDetails");
 
             migrationBuilder.DropIndex(
                 name: "IX_ProductFeaturesDetails_ProductFeatureId",

@@ -1,5 +1,5 @@
-﻿Add-Migration upd-prduct-models -Context ApplicationDbContext -OutputDir Migrations -p Entities
-update-database -Context ApplicationDbContext -p Entities -migration 20240414211101_upd-prduct-models
+﻿Add-Migration upd-prduct-models-2 -Context ApplicationDbContext -OutputDir Migrations -p Entities
+update-database -Context ApplicationDbContext -p Entities -migration 20240417030014_upd-prduct-models-2
 
 
        migrationBuilder.AddForeignKey(
