@@ -5,6 +5,8 @@
         [Key]
         public int OrderProductId { get; set; }
 
+        public int ProductId { get; set; }
+
         [Required, StringLength(200)]
         public string Name { get; set; } = string.Empty;
 
@@ -33,6 +35,19 @@
         [JsonIgnore]
         public DateTime UpdateDate { get; set; }
 
-        public virtual ICollection<OrderProductFeacture> OrderProductFeactures { get; } = new List<OrderProductFeacture>();
+        public string? Categories { get; set; }
+
+        [Required, ForeignKey("Order")]
+        public int? OrderId { get; set; }
+
+        public required string ApplicationUserIdSeller { get; set; }
+
+        [JsonIgnore]
+        [NotMapped]
+        public virtual Order? OrderIdNavigation { get; set; }
+
+        [JsonIgnore]
+        [NotMapped]
+        public virtual ICollection<OrderProductCategoryFeacture> OrderProductCategoryFeactures { get; } = new List<OrderProductCategoryFeacture>();
     }
 }

@@ -15,7 +15,7 @@
 
         public string? Longitude { get; set; }
 
-        public string? Direccion { get; set; }
+        public string? Address { get; set; }
 
         public decimal? Kilometers { get; set; }
 
@@ -30,9 +30,12 @@
         public required string ApplicationUserId { get; set; }
 
         [JsonIgnore]
+        [NotMapped]
         public virtual ApplicationUser? ApplicationUserIdNavigation { get; set; }
 
-        public virtual ICollection<OrderProductFeactureDetail> OrderProductFeactureDetails { get; } = new List<OrderProductFeactureDetail>();
+        [JsonIgnore]
+        [NotMapped]
+        public virtual ICollection<OrderProduct> OrderProducts { get; } = new List<OrderProduct>();
 
     }
 }

@@ -29,10 +29,8 @@ namespace Logic.App
         public async Task<Order> GetOrderByIdAsync(int orderId)
         {
             return await _context.Orders
-                .Include(o => o.OrderProductFeactureDetails)
-                .ThenInclude(opfd => opfd.OrderProductIdNavigation)
-                .Include(o => o.OrderProductFeactureDetails)
-                .ThenInclude(opfd => opfd.OrderProductFeactureOnlyIdNavigation)
+                .Include(o => o.OrderProducts)
+                .ThenInclude(opfd => opfd.OrderIdNavigation)
                 .FirstOrDefaultAsync(o => o.OrderId == orderId);
         }
 
@@ -43,7 +41,7 @@ namespace Logic.App
         public async Task UpdateOrderAsync(Order order)
         {
             var existingOrder = await _context.Orders
-                .Include(o => o.OrderProductFeactureDetails)
+                .Include(o => o.OrderProducts)
                 .FirstOrDefaultAsync(o => o.OrderId == order.OrderId);
 
             if (existingOrder != null)
@@ -61,10 +59,8 @@ namespace Logic.App
         {
             return await _context.Orders
                 .Where(x => x.ApplicationUserId == applicationUserIdPurchase)
-                .Include(o => o.OrderProductFeactureDetails)
-                .ThenInclude(opfd => opfd.OrderProductIdNavigation)
-                .Include(o => o.OrderProductFeactureDetails)
-                .ThenInclude(opfd => opfd.OrderProductFeactureOnlyIdNavigation)
+                .Include(o => o.OrderProducts)
+                .ThenInclude(opfd => opfd.OrderIdNavigation)
                 .ToListAsync();
         }
 
@@ -76,11 +72,9 @@ namespace Logic.App
         {
             return await _context.Orders
                 .Include(o => o.ApplicationUserIdNavigation)
-                .Include(o => o.OrderProductFeactureDetails)
-                    .ThenInclude(opfd => opfd.OrderProductIdNavigation)
-                .Include(o => o.OrderProductFeactureDetails)
-                    .ThenInclude(opfd => opfd.OrderProductFeactureOnlyIdNavigation)
-                .Where(o => o.OrderProductFeactureDetails.Any(opfd => opfd.ApplicationUserIdSeller == applicationUserIdSeller))
+                .Include(o => o.OrderProducts)
+                    .ThenInclude(opfd => opfd.OrderIdNavigation)
+                .Where(o => o.OrderProducts.Any(opfd => opfd.ApplicationUserIdSeller == applicationUserIdSeller))
                 .ToListAsync();
         }
 

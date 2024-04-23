@@ -3,15 +3,17 @@
     public class OrderProductFeacture
     {
         [Key]
-        public int OrderProductFeactureId { get; set; }
+        public int OrderProductFeactureOnlyId { get; set; }
 
-        public required string Features { get; set; }
+        public int ProductFeactureId { get; set; }
 
-        public bool MultipleSelection { get; set; }
+        public required string Name { get; set; }
 
-        public bool IsAdditional { get; set; }
+        public required string Description { get; set; }
 
         public decimal? AdditionalValue { get; set; }
+
+        public int Stock { get; set; }
 
         [JsonIgnore]
         public DateTime CreationDate { get; set; }
@@ -19,11 +21,15 @@
         [JsonIgnore]
         public DateTime UpdateDate { get; set; }
 
-        [Required, ForeignKey("OrderProduct")]
-        public  int? OrderProductId { get; set; }
+        public string? ApplicationUserIdFeacture { get; set; }
+
+        [Required, ForeignKey("OrderProductCategoryFeacture")]
+        public int? OrderProductCategoryFeactureId { get; set; }
 
         [JsonIgnore]
-        public virtual OrderProduct? OrderProductIdNavigation { get; set; }
+        [NotMapped]
+        public virtual OrderProductCategoryFeacture? OrderProductFeactureIdNavigation { get; set; }
+
 
     }
 }
